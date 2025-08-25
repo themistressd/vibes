@@ -88,13 +88,13 @@ const NavButton = styled(motion.button)<{ $isActive: boolean }>`
 `;
 
 const TopBar = styled.header`
-  height: 50px; /* Further compressed to 50px for maximum content space - total 58% reduction */
+  height: 60px; /* Exactly 60px as per Tinder target specification */
   background: ${props => props.theme.current.colors.surface};
   border-bottom: 1px solid ${props => props.theme.current.colors.primary}20;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 4px ${props => props.theme.common.spacing.sm}; /* Minimal padding for maximum space efficiency */
+  padding: 8px ${props => props.theme.common.spacing.sm}; /* Adjusted padding for 60px height */
   position: sticky;
   top: 0;
   z-index: 50;

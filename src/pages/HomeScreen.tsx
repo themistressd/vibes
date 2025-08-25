@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 const HomeContainer = styled.div`
   padding: ${props => props.theme.common.spacing.lg};
-  min-height: calc(100vh - 120px); /* Updated for compressed top bar (50px) and bottom nav (70px) = 120px total */
+  min-height: calc(100vh - 130px); /* Updated for 60px top bar and 70px bottom nav = 130px total */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,9 +24,9 @@ const SwipeArea = styled.div`
   position: relative;
   width: 100%;
   max-width: 340px; /* Fixed mobile width with padding */
-  height: 67vh; /* Further increased to use extra space from more compressed header */
-  min-height: 510px; /* Increased for larger cards */
-  max-height: 620px; /* Increased for more content */
+  height: 65vh; /* Adjusted for 60px header vs previous 50px */
+  min-height: 500px; /* Slightly reduced to maintain proportion */
+  max-height: 610px; /* Adjusted for new header height */
   margin-bottom: ${props => props.theme.common.spacing.lg};
 `;
 
@@ -49,7 +49,7 @@ const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'supe
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.1); /* Professional depth shadows */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2), 0 2px 8px rgba(0, 0, 0, 0.15); /* Enhanced Tinder-style professional shadows */
   transition: all 0.2s ease;
   position: relative;
   

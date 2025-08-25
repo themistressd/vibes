@@ -16,9 +16,9 @@ interface SwipeCardProps {
 const CardContainer = styled(motion.div)<{ $isTop: boolean }>`
   width: 100%;
   max-width: 340px; /* Fit within mobile frame with padding */
-  height: 65vh; /* Updated to match SwipeArea height */
-  min-height: 500px; /* Updated to match SwipeArea */
-  max-height: 600px; /* Updated to match SwipeArea */
+  height: 65vh; /* Match SwipeArea height - adjusted for 60px header */
+  min-height: 500px; /* Match SwipeArea dimensions */
+  max-height: 610px; /* Match SwipeArea dimensions */
   position: absolute;
   cursor: grab;
   transform-origin: center;
@@ -119,8 +119,8 @@ const ProfileInfo = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
-  padding: 40px 20px 20px; /* Increased top padding for better gradient */
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.6) 50%, rgba(0, 0, 0, 0.9)); /* Enhanced Tinder-style gradient */
+  padding: 50px 20px 24px; /* Increased padding for better text readability */
   color: white;
   z-index: 10;
 `;
