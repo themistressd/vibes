@@ -8,6 +8,13 @@ import { ProfileModal } from '../components/modals/ProfileModal';
 import { Button } from '../components/common/Button';
 import { useNavigate } from 'react-router-dom';
 
+// Import custom 3D metallic button icons
+import rewindIcon from '../assets/icons/rewind-icon.png';
+import passIcon from '../assets/icons/pass-icon.png';
+import superlikeIcon from '../assets/icons/superlike-icon.png';
+import likeIcon from '../assets/icons/like-icon.png';
+import boostIcon from '../assets/icons/boost-icon.png';
+
 const HomeContainer = styled.div`
   padding: ${props => props.theme.common.spacing.lg};
   min-height: calc(100vh - 120px); /* Updated for compressed top bar (50px) and bottom nav (70px) = 120px total */
@@ -41,8 +48,6 @@ const ActionButtons = styled.div`
 `;
 
 const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'superlike' | 'like' | 'boost' }>`
-  width: 70px; /* Perfect 70px diameter circles for all buttons - exactly like Tinder */
-  height: 70px;
   border-radius: 50%;
   border: none;
   cursor: pointer;
@@ -53,102 +58,54 @@ const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'supe
   transition: all 0.2s ease;
   position: relative;
   
-  ${props => {
-    switch (props.$variant) {
-      case 'rewind':
-        return `
-          background: linear-gradient(135deg, #FF9500, #FFB347); /* Yellow/orange circular background */
-          svg { 
-            color: white;
-            width: 24px;
-            height: 24px;
-            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
-          }
-          &:hover { 
-            background: linear-gradient(135deg, #FF8500, #FF9500);
-            box-shadow: 0 12px 25px rgba(255, 149, 0, 0.3), 0 6px 12px rgba(255, 149, 0, 0.2);
-            transform: translateY(-2px);
-          }
-          &:active {
-            transform: translateY(0) scale(0.95);
-          }
-        `;
-      case 'pass':
-        return `
-          background: linear-gradient(135deg, #FF4458, #FF6B7D); /* Pink/red circular background */
-          svg { 
-            color: white;
-            width: 28px;
-            height: 28px;
-            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
-          }
-          &:hover { 
-            background: linear-gradient(135deg, #E63946, #FF4458);
-            box-shadow: 0 12px 25px rgba(255, 68, 88, 0.3), 0 6px 12px rgba(255, 68, 88, 0.2);
-            transform: translateY(-2px);
-          }
-          &:active {
-            transform: translateY(0) scale(0.95);
-          }
-        `;
-      case 'superlike':
-        return `
-          background: linear-gradient(135deg, #00A8FF, #0078D4); /* Blue circular background */
-          svg { 
-            color: white;
-            width: 24px;
-            height: 24px;
-            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
-          }
-          &:hover { 
-            background: linear-gradient(135deg, #0090E7, #00A8FF);
-            box-shadow: 0 12px 25px rgba(0, 168, 255, 0.3), 0 6px 12px rgba(0, 168, 255, 0.2);
-            transform: translateY(-2px);
-          }
-          &:active {
-            transform: translateY(0) scale(0.95);
-          }
-        `;
-      case 'like':
-        return `
-          background: linear-gradient(135deg, #00C851, #26C6DA); /* Green circular background */
-          svg { 
-            color: white;
-            width: 28px;
-            height: 28px;
-            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
-          }
-          &:hover { 
-            background: linear-gradient(135deg, #00A243, #00C851);
-            box-shadow: 0 12px 25px rgba(0, 200, 81, 0.3), 0 6px 12px rgba(0, 200, 81, 0.2);
-            transform: translateY(-2px);
-          }
-          &:active {
-            transform: translateY(0) scale(0.95);
-          }
-        `;
-      case 'boost':
-        return `
-          background: linear-gradient(135deg, #AA00FF, #BB33FF); /* Purple circular background */
-          svg { 
-            color: white;
-            width: 24px;
-            height: 24px;
-            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
-          }
-          &:hover { 
-            background: linear-gradient(135deg, #9900E6, #AA00FF);
-            box-shadow: 0 12px 25px rgba(170, 0, 255, 0.3), 0 6px 12px rgba(170, 0, 255, 0.2);
-            transform: translateY(-2px);
-          }
-          &:active {
-            transform: translateY(0) scale(0.95);
-          }
-        `;
-      default:
-        return '';
-    }
-  }}
+  /* Size hierarchy: Pass & Like = LARGER (80px), others = smaller (60px) */
+  ${props => (props.$variant === 'pass' || props.$variant === 'like') ? `
+    width: 80px;
+    height: 80px;
+  ` : `
+    width: 60px;
+    height: 60px;
+  `}
+  
+  /* ALL buttons have grey circular backgrounds */
+  background: linear-gradient(135deg, #6B7280, #9CA3AF); /* Professional grey gradient */
+  
+  /* Custom icon styling */
+  img {
+    ${props => (props.$variant === 'pass' || props.$variant === 'like') ? `
+      width: 36px;
+      height: 36px;
+    ` : `
+      width: 28px;
+      height: 28px;
+    `}
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    pointer-events: none;
+  }
+  
+  /* Fallback for SVG icons if PNG fails to load */
+  svg { 
+    color: white;
+    ${props => (props.$variant === 'pass' || props.$variant === 'like') ? `
+      width: 32px;
+      height: 32px;
+    ` : `
+      width: 24px;
+      height: 24px;
+    `}
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+  }
+  
+  &:hover { 
+    background: linear-gradient(135deg, #4B5563, #6B7280); /* Darker grey on hover */
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2), 0 6px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+    transform: translateY(-2px);
+  }
+  
+  &:active {
+    transform: translateY(0) scale(0.95);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
 `;
 
 const EmptyState = styled(motion.div)`
@@ -331,14 +288,24 @@ export const HomeScreen: React.FC = () => {
           $variant="rewind"
           onClick={() => handleManualAction('rewind')}
         >
-          <RotateCcw size={24} />
+          <img src={rewindIcon} alt="Rewind" onError={(e) => {
+            e.currentTarget.style.display = 'none';
+            const svg = e.currentTarget.nextElementSibling as HTMLElement;
+            if (svg) svg.style.display = 'block';
+          }} />
+          <RotateCcw size={24} style={{display: 'none'}} />
         </ActionButton>
         
         <ActionButton
           $variant="pass"
           onClick={() => handleManualAction('pass')}
         >
-          <X size={28} />
+          <img src={passIcon} alt="Pass" onError={(e) => {
+            e.currentTarget.style.display = 'none';
+            const svg = e.currentTarget.nextElementSibling as HTMLElement;
+            if (svg) svg.style.display = 'block';
+          }} />
+          <X size={28} style={{display: 'none'}} />
         </ActionButton>
         
         <ActionButton
@@ -346,14 +313,24 @@ export const HomeScreen: React.FC = () => {
           onClick={() => handleManualAction('boots')}
           title="Super Like!"
         >
-          <Star size={24} />
+          <img src={superlikeIcon} alt="Super Like" onError={(e) => {
+            e.currentTarget.style.display = 'none';
+            const svg = e.currentTarget.nextElementSibling as HTMLElement;
+            if (svg) svg.style.display = 'block';
+          }} />
+          <Star size={24} style={{display: 'none'}} />
         </ActionButton>
         
         <ActionButton
           $variant="like"
           onClick={() => handleManualAction('like')}
         >
-          <Heart size={28} />
+          <img src={likeIcon} alt="Like" onError={(e) => {
+            e.currentTarget.style.display = 'none';
+            const svg = e.currentTarget.nextElementSibling as HTMLElement;
+            if (svg) svg.style.display = 'block';
+          }} />
+          <Heart size={28} style={{display: 'none'}} />
         </ActionButton>
         
         <ActionButton
@@ -361,7 +338,12 @@ export const HomeScreen: React.FC = () => {
           onClick={() => handleManualAction('wig')}
           title="Boost!"
         >
-          <Zap size={24} />
+          <img src={boostIcon} alt="Boost" onError={(e) => {
+            e.currentTarget.style.display = 'none';
+            const svg = e.currentTarget.nextElementSibling as HTMLElement;
+            if (svg) svg.style.display = 'block';
+          }} />
+          <Zap size={24} style={{display: 'none'}} />
         </ActionButton>
       </ActionButtons>
 
