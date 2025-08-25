@@ -1,0 +1,24 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="superlikeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B5FBF;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#6B46C1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#553C9A;stop-opacity:1" />
+    </linearGradient>
+    <filter id="metallic">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="1"/>
+      <feOffset dx="0" dy="1" result="offset"/>
+      <feFlood flood-color="#000000" flood-opacity="0.3"/>
+      <feComposite in2="offset" operator="in"/>
+      <feMerge> 
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/> 
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- VIBES University logo (stylized V with crown) -->
+  <path d="M12 8 L20 28 L28 8" stroke="url(#superlikeGradient)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#metallic)"/>
+  <path d="M15 5 L20 10 L25 5 M18 3 L20 5 L22 3" stroke="url(#superlikeGradient)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#metallic)"/>
+  <circle cx="20" cy="32" r="2" fill="url(#superlikeGradient)" filter="url(#metallic)"/>
+</svg>

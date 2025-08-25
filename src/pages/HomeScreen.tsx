@@ -8,15 +8,15 @@ import { Button } from '../components/common/Button';
 import { useNavigate } from 'react-router-dom';
 
 // Import custom metallic icons
-import rewindIcon from '../assets/icons/rewind.png';
-import passIcon from '../assets/icons/pass.png';
-import superlikeIcon from '../assets/icons/superlike.png';
-import likeIcon from '../assets/icons/like.png';
-import boostIcon from '../assets/icons/boost.png';
+import rewindIcon from '../assets/icons/rewind.svg';
+import passIcon from '../assets/icons/pass.svg';
+import superlikeIcon from '../assets/icons/superlike.svg';
+import likeIcon from '../assets/icons/like.svg';
+import boostIcon from '../assets/icons/boost.svg';
 
 const HomeContainer = styled.div`
   padding: ${props => props.theme.common.spacing.lg};
-  min-height: calc(100vh - 120px); /* Updated for compressed top bar (50px) and bottom nav (70px) = 120px total */
+  height: 100vh; /* Use full viewport height */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,16 +24,20 @@ const HomeContainer = styled.div`
   width: 100%;
   max-width: 375px; /* Fixed mobile width */
   margin: 0 auto;
+  overflow: hidden; /* Prevent scrolling */
+  box-sizing: border-box; /* Include padding in height calculation */
 `;
 
 const SwipeArea = styled.div`
   position: relative;
   width: 100%;
   max-width: 340px; /* Fixed mobile width with padding */
-  height: 67vh; /* Further increased to use extra space from more compressed header */
-  min-height: 510px; /* Increased for larger cards */
-  max-height: 620px; /* Increased for more content */
-  margin-bottom: ${props => props.theme.common.spacing.lg};
+  flex: 1; /* Take up remaining space */
+  min-height: 400px; /* Minimum height for cards */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: ${props => props.theme.common.spacing.md};
 `;
 
 const ActionButtons = styled.div`
@@ -53,10 +57,11 @@ const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'supe
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #6B7280; /* Grey circular background for all buttons */
+  background: rgba(107, 114, 128, 0.3); /* Very transparent grey to let metallic icons shine */
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.1); /* Professional depth shadows */
   transition: all 0.2s ease;
   position: relative;
+  flex-shrink: 0; /* Prevent compression */
   
   /* Size hierarchy: Pass & Like buttons = 80px, Rewind/SuperLike/Boost = 60px */
   ${props => {
@@ -67,23 +72,29 @@ const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'supe
     return `
       width: ${size};
       height: ${size};
+      min-width: ${size}; /* Force exact dimensions */
+      min-height: ${size}; /* Force exact dimensions */
+      max-width: ${size}; /* Prevent stretching */
+      max-height: ${size}; /* Prevent stretching */
       
       img {
         width: ${iconSize};
         height: ${iconSize};
         object-fit: contain;
-        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3)) drop-shadow(0 0 8px rgba(255, 255, 255, 0.1));
+        /* Enhance metallic appearance */
+        opacity: 1;
       }
       
       &:hover {
-        background: #4B5563; /* Slightly darker grey on hover */
+        background: rgba(75, 85, 99, 0.9); /* Slightly darker semi-transparent grey on hover */
         box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25), 0 6px 12px rgba(0, 0, 0, 0.15);
         transform: translateY(-2px);
       }
       
       &:active {
         transform: translateY(0) scale(0.95);
-        background: #374151; /* Even darker grey when pressed */
+        background: rgba(55, 65, 81, 0.95); /* Even darker semi-transparent grey when pressed */
       }
     `;
   }}
