@@ -92,9 +92,50 @@ export const GlobalStyle = createGlobalStyle`
     }
   }
   
-  @media (min-width: 769px) {
+  @media (min-width: 769px) and (max-width: 1024px) {
+    html {
+      font-size: 15px;
+    }
+  }
+  
+  @media (min-width: 1025px) {
     html {
       font-size: 16px;
+    }
+  }
+  
+  /* Responsive container utilities */
+  .container {
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+    padding: 0 16px;
+    
+    @media (min-width: 768px) {
+      max-width: 600px;
+      padding: 0 24px;
+    }
+    
+    @media (min-width: 1024px) {
+      max-width: 1200px;
+      padding: 0 32px;
+    }
+  }
+  
+  /* Responsive grid utilities */
+  .responsive-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    
+    @media (min-width: 1024px) {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
     }
   }
 `;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../styles/themes/ThemeProvider';
@@ -7,6 +7,7 @@ import { Button } from '../components/common/Button';
 import type { VibeType } from '../styles/themes/types';
 import { useAppStore } from '../stores/appStore';
 import { mockProfiles, mockConversations } from '../data/mockData';
+import { media } from '../styles/responsive';
 
 const SplashContainer = styled.div`
   min-height: 100vh;
@@ -41,6 +42,14 @@ const ContentContainer = styled(motion.div)`
   text-align: center;
   max-width: 400px;
   width: 100%;
+  
+  ${media.tablet(css`
+    max-width: 500px;
+  `)}
+  
+  ${media.desktop(css`
+    max-width: 600px;
+  `)}
 `;
 
 const Logo = styled(motion.h1)`
@@ -55,6 +64,10 @@ const Logo = styled(motion.h1)`
   -webkit-text-fill-color: transparent;
   background-clip: text;
   
+  ${media.desktop(css`
+    font-size: 5rem;
+  `)}
+  
   @keyframes rainbow {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
@@ -67,6 +80,10 @@ const Tagline = styled(motion.p)`
   color: #FFFFFF;
   margin-bottom: ${props => props.theme.common.spacing.xl};
   opacity: 0.9;
+  
+  ${media.desktop(css`
+    font-size: ${props => props.theme.common.typography.fontSize.xl};
+  `)}
 `;
 
 const VibeSelector = styled(motion.div)`
@@ -75,6 +92,16 @@ const VibeSelector = styled(motion.div)`
   gap: ${props => props.theme.common.spacing.md};
   margin-bottom: ${props => props.theme.common.spacing.xl};
   width: 100%;
+  
+  ${media.tablet(css`
+    grid-template-columns: repeat(3, 1fr);
+    gap: ${props => props.theme.common.spacing.lg};
+  `)}
+  
+  ${media.desktop(css`
+    grid-template-columns: repeat(5, 1fr);
+    gap: ${props => props.theme.common.spacing.lg};
+  `)}
 `;
 
 const VibeCard = styled(motion.div)<{ $colors: { primary: string; secondary: string } }>`

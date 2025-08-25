@@ -109,6 +109,11 @@ export const theme: AppTheme = {
     },
   },
   common: {
+    breakpoints: {
+      mobile: '768px',
+      tablet: '1024px', 
+      desktop: '1024px',
+    },
     borderRadius: {
       small: '4px',
       medium: '8px',
