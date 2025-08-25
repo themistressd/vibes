@@ -238,9 +238,9 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
     }
   };
 
-  const handleCardTap = (e: React.MouseEvent) => {
-    // Only trigger expand if not interacting with image navigation
-    if (onTap && e.currentTarget === e.target) {
+  const handleCardTap = () => {
+    // Always trigger expand when card is tapped
+    if (onTap) {
       onTap();
     }
   };
@@ -305,7 +305,6 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
         <ImageCarouselContainer>
           <ProfileImage 
             $image={profile.images[currentImageIndex]}
-            onClick={handleCardTap}
           >
             {/* Image Carousel Dots */}
             {profile.images.length > 1 && (
@@ -334,6 +333,7 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
               <>
                 <TouchArea 
                   $side="left" 
+                  data-touch-area
                   onClick={(e) => {
                     e.stopPropagation();
                     handleImageNavigation('prev');
@@ -341,6 +341,7 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
                 />
                 <TouchArea 
                   $side="right" 
+                  data-touch-area
                   onClick={(e) => {
                     e.stopPropagation();
                     handleImageNavigation('next');
@@ -349,7 +350,7 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
               </>
             )}
             
-            <ProfileInfo>
+            <ProfileInfo onClick={handleCardTap}>
               <NameAge>
                 <Name>
                   {profile.name}
