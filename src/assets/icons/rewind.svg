@@ -1,0 +1,10 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="24" cy="24" r="20" fill="url(#rewindGradient)" />
+  <path d="M30 18L20 24L30 30V18Z" fill="white" />
+  <defs>
+    <linearGradient id="rewindGradient" x1="0" y1="0" x2="48" y2="48">
+      <stop offset="0%" stopColor="#FFD700" />
+      <stop offset="100%" stopColor="#FFA500" />
+    </linearGradient>
+  </defs>
+</svg>

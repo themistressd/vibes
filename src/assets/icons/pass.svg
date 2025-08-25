@@ -1,0 +1,10 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="24" cy="24" r="20" fill="url(#passGradient)" />
+  <path d="M18 18L30 30M18 30L30 18" stroke="white" strokeWidth="3" strokeLinecap="round" />
+  <defs>
+    <linearGradient id="passGradient" x1="0" y1="0" x2="48" y2="48">
+      <stop offset="0%" stopColor="#FF4444" />
+      <stop offset="100%" stopColor="#CC0000" />
+    </linearGradient>
+  </defs>
+</svg>

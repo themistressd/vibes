@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart, X, Star, RotateCcw, Zap } from 'lucide-react';
 import { useAppStore } from '../stores/appStore';
 import { SwipeCard } from '../components/cards/SwipeCard';
 import { ProfileModal } from '../components/modals/ProfileModal';
 import { Button } from '../components/common/Button';
 import { useNavigate } from 'react-router-dom';
+
+// Import custom icons
+import rewindIcon from '../assets/icons/rewind.svg';
+import passIcon from '../assets/icons/pass.svg';
+import superlikeIcon from '../assets/icons/superlike.svg';
+import likeIcon from '../assets/icons/like.svg';
+import boostIcon from '../assets/icons/boost.svg';
 
 const HomeContainer = styled.div`
   padding: ${props => props.theme.common.spacing.lg};
@@ -41,114 +47,39 @@ const ActionButtons = styled.div`
 `;
 
 const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'superlike' | 'like' | 'boost' }>`
-  width: 70px; /* Perfect 70px diameter circles for all buttons - exactly like Tinder */
-  height: 70px;
+  /* Size hierarchy: Pass & Like = 80px (LARGER), others = 60px (smaller) */
+  width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '80px' : '60px'};
+  height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '80px' : '60px'};
   border-radius: 50%;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.1); /* Professional depth shadows */
+  /* Professional depth shadows */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease;
   position: relative;
   
-  ${props => {
-    switch (props.$variant) {
-      case 'rewind':
-        return `
-          background: linear-gradient(135deg, #FF9500, #FFB347); /* Yellow/orange circular background */
-          svg { 
-            color: white;
-            width: 24px;
-            height: 24px;
-            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
-          }
-          &:hover { 
-            background: linear-gradient(135deg, #FF8500, #FF9500);
-            box-shadow: 0 12px 25px rgba(255, 149, 0, 0.3), 0 6px 12px rgba(255, 149, 0, 0.2);
-            transform: translateY(-2px);
-          }
-          &:active {
-            transform: translateY(0) scale(0.95);
-          }
-        `;
-      case 'pass':
-        return `
-          background: linear-gradient(135deg, #FF4458, #FF6B7D); /* Pink/red circular background */
-          svg { 
-            color: white;
-            width: 28px;
-            height: 28px;
-            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
-          }
-          &:hover { 
-            background: linear-gradient(135deg, #E63946, #FF4458);
-            box-shadow: 0 12px 25px rgba(255, 68, 88, 0.3), 0 6px 12px rgba(255, 68, 88, 0.2);
-            transform: translateY(-2px);
-          }
-          &:active {
-            transform: translateY(0) scale(0.95);
-          }
-        `;
-      case 'superlike':
-        return `
-          background: linear-gradient(135deg, #00A8FF, #0078D4); /* Blue circular background */
-          svg { 
-            color: white;
-            width: 24px;
-            height: 24px;
-            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
-          }
-          &:hover { 
-            background: linear-gradient(135deg, #0090E7, #00A8FF);
-            box-shadow: 0 12px 25px rgba(0, 168, 255, 0.3), 0 6px 12px rgba(0, 168, 255, 0.2);
-            transform: translateY(-2px);
-          }
-          &:active {
-            transform: translateY(0) scale(0.95);
-          }
-        `;
-      case 'like':
-        return `
-          background: linear-gradient(135deg, #00C851, #26C6DA); /* Green circular background */
-          svg { 
-            color: white;
-            width: 28px;
-            height: 28px;
-            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
-          }
-          &:hover { 
-            background: linear-gradient(135deg, #00A243, #00C851);
-            box-shadow: 0 12px 25px rgba(0, 200, 81, 0.3), 0 6px 12px rgba(0, 200, 81, 0.2);
-            transform: translateY(-2px);
-          }
-          &:active {
-            transform: translateY(0) scale(0.95);
-          }
-        `;
-      case 'boost':
-        return `
-          background: linear-gradient(135deg, #AA00FF, #BB33FF); /* Purple circular background */
-          svg { 
-            color: white;
-            width: 24px;
-            height: 24px;
-            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
-          }
-          &:hover { 
-            background: linear-gradient(135deg, #9900E6, #AA00FF);
-            box-shadow: 0 12px 25px rgba(170, 0, 255, 0.3), 0 6px 12px rgba(170, 0, 255, 0.2);
-            transform: translateY(-2px);
-          }
-          &:active {
-            transform: translateY(0) scale(0.95);
-          }
-        `;
-      default:
-        return '';
-    }
-  }}
+  /* Grey circular background for all buttons */
+  background: linear-gradient(135deg, #8E8E93, #6D6D70);
+  
+  /* Custom icon styling */
+  img {
+    width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '32px' : '24px'};
+    height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '32px' : '24px'};
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+  }
+  
+  &:hover { 
+    background: linear-gradient(135deg, #A8A8AA, #8E8E93);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2), 0 6px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+  }
+  
+  &:active {
+    transform: translateY(0) scale(0.95);
+  }
 `;
 
 const EmptyState = styled(motion.div)`
@@ -331,14 +262,14 @@ export const HomeScreen: React.FC = () => {
           $variant="rewind"
           onClick={() => handleManualAction('rewind')}
         >
-          <RotateCcw size={24} />
+          <img src={rewindIcon} alt="Rewind" />
         </ActionButton>
         
         <ActionButton
           $variant="pass"
           onClick={() => handleManualAction('pass')}
         >
-          <X size={28} />
+          <img src={passIcon} alt="Pass" />
         </ActionButton>
         
         <ActionButton
@@ -346,14 +277,14 @@ export const HomeScreen: React.FC = () => {
           onClick={() => handleManualAction('boots')}
           title="Super Like!"
         >
-          <Star size={24} />
+          <img src={superlikeIcon} alt="Super Like" />
         </ActionButton>
         
         <ActionButton
           $variant="like"
           onClick={() => handleManualAction('like')}
         >
-          <Heart size={28} />
+          <img src={likeIcon} alt="Like" />
         </ActionButton>
         
         <ActionButton
@@ -361,7 +292,7 @@ export const HomeScreen: React.FC = () => {
           onClick={() => handleManualAction('wig')}
           title="Boost!"
         >
-          <Zap size={24} />
+          <img src={boostIcon} alt="Boost" />
         </ActionButton>
       </ActionButtons>
 

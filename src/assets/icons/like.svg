@@ -1,0 +1,10 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="24" cy="24" r="20" fill="url(#likeGradient)" />
+  <path d="M24 34L21.5 31.7C16.9 27.6 14 25.1 14 22C14 19.4 16.1 17.3 18.7 17.3C20.1 17.3 21.5 17.9 22.4 18.9L24 20.6L25.6 18.9C26.5 17.9 27.9 17.3 29.3 17.3C31.9 17.3 34 19.4 34 22C34 25.1 31.1 27.6 26.5 31.7L24 34Z" fill="white" />
+  <defs>
+    <linearGradient id="likeGradient" x1="0" y1="0" x2="48" y2="48">
+      <stop offset="0%" stopColor="#00C851" />
+      <stop offset="100%" stopColor="#009624" />
+    </linearGradient>
+  </defs>
+</svg>

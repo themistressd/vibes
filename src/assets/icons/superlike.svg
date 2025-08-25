@@ -1,0 +1,10 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="24" cy="24" r="20" fill="url(#superlikeGradient)" />
+  <path d="M24 12L27.5 21.5H36L29 26.5L31.5 36L24 30L16.5 36L19 26.5L12 21.5H20.5L24 12Z" fill="white" />
+  <defs>
+    <linearGradient id="superlikeGradient" x1="0" y1="0" x2="48" y2="48">
+      <stop offset="0%" stopColor="#0078D4" />
+      <stop offset="100%" stopColor="#005A9B" />
+    </linearGradient>
+  </defs>
+</svg>

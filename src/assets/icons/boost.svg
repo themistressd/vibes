@@ -1,0 +1,10 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="24" cy="24" r="20" fill="url(#boostGradient)" />
+  <path d="M27 12L16 24H22V36L33 24H27V12Z" fill="white" />
+  <defs>
+    <linearGradient id="boostGradient" x1="0" y1="0" x2="48" y2="48">
+      <stop offset="0%" stopColor="#AA00FF" />
+      <stop offset="100%" stopColor="#7700BB" />
+    </linearGradient>
+  </defs>
+</svg>
