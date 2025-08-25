@@ -88,13 +88,13 @@ const NavButton = styled(motion.button)<{ $isActive: boolean }>`
 `;
 
 const TopBar = styled.header`
-  height: 60px;
+  height: 104px; /* Increased from 60px to accommodate safe area */
   background: ${props => props.theme.current.colors.surface};
   border-bottom: 1px solid ${props => props.theme.current.colors.primary}20;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 ${props => props.theme.common.spacing.md};
+  padding: 44px ${props => props.theme.common.spacing.md} 0 ${props => props.theme.common.spacing.md}; /* 44px top padding for safe area */
   position: sticky;
   top: 0;
   z-index: 50;

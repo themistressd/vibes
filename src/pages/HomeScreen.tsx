@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 const HomeContainer = styled.div`
   padding: ${props => props.theme.common.spacing.lg};
-  min-height: calc(100vh - 130px); /* Account for top bar and bottom nav */
+  min-height: calc(100vh - 174px); /* Account for larger top bar (104px) and bottom nav (70px) */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -32,15 +32,15 @@ const SwipeArea = styled.div`
 const ActionButtons = styled.div`
   display: flex;
   justify-content: center;
-  gap: ${props => props.theme.common.spacing.md};
+  gap: ${props => props.theme.common.spacing.lg}; /* Increased from md to lg for better button spacing */
   margin-bottom: ${props => props.theme.common.spacing.lg};
   width: 100%;
   max-width: 340px;
 `;
 
 const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'superlike' | 'like' | 'boost' }>`
-  width: ${props => props.$variant === 'like' || props.$variant === 'pass' ? '70px' : '56px'}; /* Larger for main actions */
-  height: ${props => props.$variant === 'like' || props.$variant === 'pass' ? '70px' : '56px'}; /* Larger for main actions */
+  width: ${props => props.$variant === 'like' || props.$variant === 'pass' ? '80px' : '56px'}; /* Increased main actions from 70px to 80px */
+  height: ${props => props.$variant === 'like' || props.$variant === 'pass' ? '80px' : '56px'}; /* Increased main actions from 70px to 80px */
   border-radius: 50%;
   border: none;
   cursor: pointer;
@@ -281,7 +281,7 @@ export const HomeScreen: React.FC = () => {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
         >
-          <X size={26} />
+          <X size={30} />
         </ActionButton>
         
         <ActionButton
@@ -300,7 +300,7 @@ export const HomeScreen: React.FC = () => {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
         >
-          <Heart size={24} />
+          <Heart size={28} />
         </ActionButton>
         
         <ActionButton
