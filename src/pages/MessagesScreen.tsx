@@ -12,6 +12,60 @@ const MessagesContainer = styled.div`
   min-height: calc(100vh - 130px);
 `;
 
+const NewMatchesSection = styled.div`
+  margin-bottom: ${props => props.theme.common.spacing.lg};
+`;
+
+const SectionTitle = styled.h2`
+  font-size: ${props => props.theme.common.typography.fontSize.lg};
+  font-weight: ${props => props.theme.common.typography.fontWeight.semibold};
+  color: ${props => props.theme.current.colors.text};
+  margin: 0 0 ${props => props.theme.common.spacing.md} 0;
+`;
+
+const MatchesScroll = styled.div`
+  display: flex;
+  gap: ${props => props.theme.common.spacing.md};
+  overflow-x: auto;
+  padding: ${props => props.theme.common.spacing.sm} 0;
+  
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+`;
+
+const MatchCard = styled(motion.div)`
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+`;
+
+const SquareAvatar = styled.div<{ $image: string }>`
+  width: 80px;
+  height: 80px;
+  border-radius: ${props => props.theme.common.borderRadius.medium};
+  background-image: url(${props => props.$image});
+  background-size: cover;
+  background-position: center;
+  margin-bottom: ${props => props.theme.common.spacing.xs};
+  border: 2px solid ${props => props.theme.current.colors.primary};
+`;
+
+const MatchName = styled.span`
+  font-size: ${props => props.theme.common.typography.fontSize.sm};
+  color: ${props => props.theme.current.colors.text};
+  text-align: center;
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
 const Header = styled.div`
   margin-bottom: ${props => props.theme.common.spacing.lg};
 `;
@@ -293,6 +347,24 @@ export const MessagesScreen: React.FC = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
         />
       </SearchContainer>
+      
+      {/* New Matches Section */}
+      <NewMatchesSection>
+        <SectionTitle>New Matches</SectionTitle>
+        <MatchesScroll>
+          {matches.slice(0, 6).map((match) => (
+            <MatchCard
+              key={`match-${match.id}`}
+              onClick={() => handleConversationClick(match.id)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <SquareAvatar $image={match.profile.images[0]} />
+              <MatchName>{match.profile.name}</MatchName>
+            </MatchCard>
+          ))}
+        </MatchesScroll>
+      </NewMatchesSection>
       
       <ConversationsList>
         {sortedMatches.map((match, index) => {
