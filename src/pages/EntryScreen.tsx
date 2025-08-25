@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/common/Button';
+import { useAppStore } from '../stores/appStore';
+import { mockProfiles, mockConversations } from '../data/mockData';
+import { useTheme } from '../styles/themes/ThemeProvider';
 
 const EntryContainer = styled.div`
   height: 100vh;
@@ -112,9 +115,48 @@ const FloatingBackground: React.FC = () => {
 
 export const EntryScreen: React.FC = () => {
   const navigate = useNavigate();
+  const { setVibe } = useTheme();
+  const { setCurrentVibe } = useAppStore();
+
+  // Initialize app data when component mounts
+  React.useEffect(() => {
+    const initializeApp = () => {
+      // Load profiles into the store
+      useAppStore.setState({ profiles: mockProfiles });
+      
+      // Add some existing matches for demo
+      const existingMatches = [
+        mockProfiles.find(p => p.id === 'spicy_1'),
+        mockProfiles.find(p => p.id === 'chill_2'),
+        mockProfiles.find(p => p.id === 'urban_1'),
+      ].filter(Boolean);
+      
+      existingMatches.forEach(profile => {
+        if (profile) {
+          const matchId = `match_${profile.id}`;
+          const conversations = mockConversations[profile.id] || [];
+          
+          useAppStore.setState(state => ({
+            matches: [...state.matches, {
+              id: matchId,
+              profile,
+              matchedAt: new Date(Date.now() - Math.random() * 86400000),
+              conversation: conversations,
+            }]
+          }));
+        }
+      });
+      
+      // Set default theme to spicy for mixed vibes approach
+      setVibe('spicy');
+      setCurrentVibe('spicy');
+    };
+    
+    initializeApp();
+  }, [setVibe, setCurrentVibe]);
 
   const handleEnterApp = () => {
-    navigate('/splash');
+    navigate('/home');
   };
 
   return (
