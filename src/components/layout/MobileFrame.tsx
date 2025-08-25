@@ -20,7 +20,7 @@ const FrameContainer = styled.div`
 `;
 
 const PhoneFrame = styled.div`
-  /* iPhone-like dimensions */
+  /* iPhone-like dimensions - Fixed and strict */
   width: 375px;
   height: 812px;
   max-width: 100vw;
@@ -53,6 +53,10 @@ const ScreenContent = styled.div`
   border-radius: 27px;
   overflow: hidden;
   position: relative;
+  
+  /* Ensure content fits within frame */
+  display: flex;
+  flex-direction: column;
   
   /* Remove border radius on actual mobile devices */
   @media (max-width: 430px) {

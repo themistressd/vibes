@@ -135,8 +135,8 @@ export const NavigationLayout: React.FC<NavigationLayoutProps> = ({ children }) 
   const { getVibeTheme } = useTheme();
   const vibeTheme = getVibeTheme();
   
-  // Don't show navigation on splash screen
-  if (location.pathname === '/splash') {
+  // Don't show navigation on entry and splash screens
+  if (location.pathname === '/entry' || location.pathname === '/splash') {
     return <>{children}</>;
   }
   

@@ -9,15 +9,19 @@ import { useAppStore } from '../stores/appStore';
 import { mockProfiles, mockConversations } from '../data/mockData';
 
 const SplashContainer = styled.div`
-  min-height: 100vh;
+  height: 100vh;
+  max-height: 812px; /* Mobile frame height limit */
+  width: 100%;
+  max-width: 375px; /* Mobile frame width limit */
   background: linear-gradient(135deg, #1a0a1a 0%, #2d1b2e 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: ${props => props.theme.common.spacing.lg};
+  justify-content: flex-start; /* Changed from center to start */
+  padding: 20px 16px 32px; /* Reduced padding for mobile frame */
   position: relative;
   overflow: hidden;
+  box-sizing: border-box;
 `;
 
 const BackgroundElements = styled.div`
@@ -39,16 +43,20 @@ const FloatingEmoji = styled(motion.div)`
 const ContentContainer = styled(motion.div)`
   z-index: 10;
   text-align: center;
-  max-width: 340px; /* Fixed mobile width */
+  max-width: 320px; /* Reduced mobile width for better fit */
   width: 100%;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px; /* Fixed gap instead of margins */
 `;
 
 const Logo = styled(motion.h1)`
   font-family: ${props => props.theme.common.typography.fontFamily.heading};
-  font-size: 3.5rem; /* Fixed mobile size */
+  font-size: 2.8rem; /* Reduced from 3.5rem for better fit */
   font-weight: ${props => props.theme.common.typography.fontWeight.bold};
-  margin: 0 0 ${props => props.theme.common.spacing.md};
+  margin: 0; /* Remove all margins */
   background: linear-gradient(45deg, #FF4500, #00D4AA, #FF1493, #FFD700, #40E0D0);
   background-size: 300% 300%;
   animation: rainbow 3s ease-in-out infinite;
@@ -64,19 +72,19 @@ const Logo = styled(motion.h1)`
 `;
 
 const Tagline = styled(motion.p)`
-  font-size: ${props => props.theme.common.typography.fontSize.lg};
+  font-size: ${props => props.theme.common.typography.fontSize.md}; /* Reduced from lg */
   color: #FFFFFF;
-  margin-bottom: ${props => props.theme.common.spacing.xl};
+  margin: 0; /* Remove margins */
   opacity: 0.9;
 `;
 
 const VibeSelector = styled(motion.div)`
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* Fixed 2 columns for mobile */
-  gap: ${props => props.theme.common.spacing.md};
-  margin-bottom: ${props => props.theme.common.spacing.xl};
+  gap: 12px; /* Reduced gap */
+  margin: 0; /* Remove margins */
   width: 100%;
-  max-width: 340px;
+  max-width: 300px; /* Reduced width */
   margin-left: auto;
   margin-right: auto;
 `;
@@ -85,7 +93,7 @@ const VibeCard = styled(motion.div)<{ $colors: { primary: string; secondary: str
   background: ${props => `linear-gradient(135deg, ${props.$colors.primary}20, ${props.$colors.secondary}20)`};
   border: 2px solid ${props => props.$colors.primary}40;
   border-radius: ${props => props.theme.common.borderRadius.large};
-  padding: ${props => props.theme.common.spacing.md};
+  padding: 12px; /* Reduced padding */
   cursor: pointer;
   text-align: center;
   transition: all 0.3s ease;
@@ -98,19 +106,19 @@ const VibeCard = styled(motion.div)<{ $colors: { primary: string; secondary: str
   }
   
   .emoji {
-    font-size: 2rem;
-    margin-bottom: ${props => props.theme.common.spacing.xs};
+    font-size: 1.8rem; /* Reduced from 2rem */
+    margin-bottom: 6px; /* Reduced margin */
   }
   
   .name {
-    font-size: ${props => props.theme.common.typography.fontSize.md};
+    font-size: ${props => props.theme.common.typography.fontSize.sm}; /* Reduced from md */
     font-weight: ${props => props.theme.common.typography.fontWeight.semibold};
     color: ${props => props.$colors.primary};
-    margin-bottom: ${props => props.theme.common.spacing.xs};
+    margin-bottom: 4px; /* Reduced margin */
   }
   
   .description {
-    font-size: ${props => props.theme.common.typography.fontSize.sm};
+    font-size: ${props => props.theme.common.typography.fontSize.xs}; /* Reduced from sm */
     color: #FFFFFF;
     opacity: 0.8;
   }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { EntryScreen } from './pages/EntryScreen';
 import { SplashScreen } from './pages/SplashScreen';
 import { HomeScreen } from './pages/HomeScreen';
 import { MatchScreen } from './pages/MatchScreen';
@@ -13,7 +14,10 @@ import { CommunitiesScreen } from './pages/CommunitiesScreen';
 export const AppRouter: React.FC = () => {
   return (
     <Routes>
-      {/* Splash/Login */}
+      {/* Entry Screen - First thing users see */}
+      <Route path="/entry" element={<EntryScreen />} />
+      
+      {/* Splash/Vibe Selection */}
       <Route path="/splash" element={<SplashScreen />} />
       
       {/* Main App Routes */}
@@ -27,8 +31,8 @@ export const AppRouter: React.FC = () => {
       <Route path="/communities" element={<CommunitiesScreen />} />
       
       {/* Default redirect */}
-      <Route path="/" element={<Navigate to="/splash" replace />} />
-      <Route path="*" element={<Navigate to="/splash" replace />} />
+      <Route path="/" element={<Navigate to="/entry" replace />} />
+      <Route path="*" element={<Navigate to="/entry" replace />} />
     </Routes>
   );
 };
