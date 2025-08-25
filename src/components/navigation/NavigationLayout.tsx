@@ -23,6 +23,7 @@ const LayoutContainer = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden; /* Prevent scrolling outside mobile frame */
+  position: relative; /* Added for absolute positioned bottom nav */
 `;
 
 const MainContent = styled.main`
@@ -34,7 +35,7 @@ const MainContent = styled.main`
 `;
 
 const BottomNavigation = styled.nav`
-  position: fixed;
+  position: absolute;
   bottom: 0;
   left: 0;
   right: 0;

@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, X, Star, RotateCcw, Zap } from 'lucide-react';
 import { useAppStore } from '../stores/appStore';
-import { useTheme } from '../styles/themes/ThemeProvider';
 import { SwipeCard } from '../components/cards/SwipeCard';
 import { Button } from '../components/common/Button';
 import { useNavigate } from 'react-router-dom';
@@ -40,8 +39,8 @@ const ActionButtons = styled.div`
 `;
 
 const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'superlike' | 'like' | 'boost' }>`
-  width: 56px; /* Optimized for mobile */
-  height: 56px; /* Ensure 44px+ touch target */
+  width: ${props => props.$variant === 'like' || props.$variant === 'pass' ? '70px' : '56px'}; /* Larger for main actions */
+  height: ${props => props.$variant === 'like' || props.$variant === 'pass' ? '70px' : '56px'}; /* Larger for main actions */
   border-radius: 50%;
   border: none;
   cursor: pointer;
@@ -53,6 +52,17 @@ const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'supe
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   transition: all 0.2s ease;
   
+  /* Enhanced styling for main actions */
+  ${props => (props.$variant === 'like' || props.$variant === 'pass') && `
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transform: scale(1);
+    
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+  `}
+  
   ${props => {
     switch (props.$variant) {
       case 'rewind':
@@ -61,7 +71,9 @@ const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'supe
         `;
       case 'pass':
         return `
-          svg { color: #FD5068; }
+          svg { color: #FD5068; font-size: 28px; }
+          background: linear-gradient(135deg, rgba(253, 80, 104, 0.2), rgba(253, 80, 104, 0.3));
+          border-color: #FD5068;
         `;
       case 'superlike':
         return `
@@ -69,7 +81,9 @@ const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'supe
         `;
       case 'like':
         return `
-          svg { color: #4CAF50; }
+          svg { color: #4CAF50; font-size: 28px; }
+          background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(76, 175, 80, 0.3));
+          border-color: #4CAF50;
         `;
       case 'boost':
         return `
@@ -79,7 +93,7 @@ const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'supe
         return '';
     }
   }}
-  
+
   &:hover {
     transform: scale(1.1);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
@@ -113,40 +127,6 @@ const EmptyStateSubtext = styled.p`
   opacity: 0.8;
 `;
 
-const VibeSwitch = styled.div`
-  display: flex;
-  gap: ${props => props.theme.common.spacing.xs};
-  margin-bottom: ${props => props.theme.common.spacing.lg};
-  overflow-x: auto;
-  padding: ${props => props.theme.common.spacing.sm} 0;
-  justify-content: flex-start; /* Mobile-optimized horizontal scroll */
-  width: 100%;
-  max-width: 340px;
-`;
-
-const VibeBadge = styled(motion.button)<{ $isActive: boolean; $colors: { primary: string; secondary: string } }>`
-  background: ${props => 
-    props.$isActive 
-      ? `linear-gradient(135deg, ${props.$colors.primary}, ${props.$colors.secondary})`
-      : 'transparent'
-  };
-  border: 2px solid ${props => props.$colors.primary};
-  color: ${props => props.$isActive ? 'white' : props.$colors.primary};
-  padding: ${props => props.theme.common.spacing.xs} ${props => props.theme.common.spacing.md};
-  border-radius: ${props => props.theme.common.borderRadius.full};
-  cursor: pointer;
-  white-space: nowrap;
-  font-size: ${props => props.theme.common.typography.fontSize.sm};
-  font-weight: ${props => props.theme.common.typography.fontWeight.medium};
-  min-height: 44px; /* Ensure touch target */
-  display: flex;
-  align-items: center;
-  
-  &:hover {
-    background: ${props => `linear-gradient(135deg, ${props.$colors.primary}30, ${props.$colors.secondary}30)`};
-  }
-`;
-
 const MatchNotification = styled(motion.div)`
   position: fixed;
   top: 50%;
@@ -176,28 +156,24 @@ export const HomeScreen: React.FC = () => {
   const { 
     profiles, 
     currentProfileIndex, 
-    currentVibe, 
-    setCurrentVibe, 
-    swipeProfile,
-    resetSwipeStack 
+    swipeProfile 
   } = useAppStore();
-  
-  const { getVibeTheme, theme } = useTheme();
   const navigate = useNavigate();
   
   const [showMatch, setShowMatch] = useState(false);
   const [matchedProfile, setMatchedProfile] = useState<typeof profiles[0] | null>(null);
   const [superLikeAnimation, setSuperLikeAnimation] = useState<string | null>(null);
   
-  // Filter profiles by current vibe
-  const vibeProfiles = profiles.filter(p => p.vibe === currentVibe);
-  const currentProfile = vibeProfiles[currentProfileIndex % vibeProfiles.length];
-  const nextProfile_card = vibeProfiles[(currentProfileIndex + 1) % vibeProfiles.length];
+  // Show all profiles in mixed vibes approach (no filtering by vibe)
+  const allProfiles = profiles; // Use all profiles instead of filtering
+  const currentProfile = allProfiles[currentProfileIndex % allProfiles.length];
+  const nextProfile_card = allProfiles[(currentProfileIndex + 1) % allProfiles.length];
   
-  useEffect(() => {
-    // Reset to start when vibe changes
-    resetSwipeStack();
-  }, [currentVibe, resetSwipeStack]);
+  // Remove vibe change effect since we're not filtering by vibe anymore
+  // useEffect(() => {
+  //   // Reset to start when vibe changes
+  //   resetSwipeStack();
+  // }, [currentVibe, resetSwipeStack]);
 
   const handleSwipe = (direction: 'left' | 'right' | 'boots' | 'wig') => {
     if (!currentProfile) return;
@@ -242,17 +218,13 @@ export const HomeScreen: React.FC = () => {
     handleSwipe(directionMap[action]);
   };
 
-  const handleVibeChange = (vibeKey: string) => {
-    setCurrentVibe(vibeKey as any);
-  };
-
   const handleViewMatch = () => {
     if (matchedProfile) {
       navigate(`/match/${matchedProfile.id}`);
     }
   };
 
-  if (vibeProfiles.length === 0) {
+  if (allProfiles.length === 0) {
     return (
       <HomeContainer>
         <EmptyState
@@ -260,21 +232,8 @@ export const HomeScreen: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
         >
           <EmptyStateIcon>🔍</EmptyStateIcon>
-          <EmptyStateText>No profiles found for {getVibeTheme().name} vibe</EmptyStateText>
-          <EmptyStateSubtext>Try switching to a different vibe to discover new queens!</EmptyStateSubtext>
-          
-          <VibeSwitch>
-            {Object.entries(theme.vibes).map(([vibeKey, vibeTheme]) => (
-              <VibeBadge
-                key={vibeKey}
-                $isActive={currentVibe === vibeKey}
-                $colors={{ primary: vibeTheme.colors.primary, secondary: vibeTheme.colors.secondary }}
-                onClick={() => handleVibeChange(vibeKey)}
-              >
-                {vibeTheme.emoji} {vibeTheme.name}
-              </VibeBadge>
-            ))}
-          </VibeSwitch>
+          <EmptyStateText>No profiles available</EmptyStateText>
+          <EmptyStateSubtext>Check back later for new people to meet!</EmptyStateSubtext>
         </EmptyState>
       </HomeContainer>
     );
@@ -282,22 +241,7 @@ export const HomeScreen: React.FC = () => {
 
   return (
     <HomeContainer>
-      {/* Vibe Switcher */}
-      <VibeSwitch>
-        {Object.entries(theme.vibes).map(([vibeKey, vibeTheme]) => (
-          <VibeBadge
-            key={vibeKey}
-            $isActive={currentVibe === vibeKey}
-            $colors={{ primary: vibeTheme.colors.primary, secondary: vibeTheme.colors.secondary }}
-            onClick={() => handleVibeChange(vibeKey)}
-            whileTap={{ scale: 0.95 }}
-          >
-            {vibeTheme.emoji} {vibeTheme.name}
-          </VibeBadge>
-        ))}
-      </VibeSwitch>
-
-      {/* Swipe Area */}
+      {/* Swipe Area - removed vibe switcher for mixed vibes approach */}
       <SwipeArea>
         <AnimatePresence mode="popLayout">
           {nextProfile_card && (
