@@ -39,19 +39,19 @@ const StyledButton = styled(motion.button)<{
   ${props => props.$size === 'sm' && css`
     padding: ${props.theme.common.spacing.xs} ${props.theme.common.spacing.sm};
     font-size: ${props.theme.common.typography.fontSize.sm};
-    min-height: 32px;
+    min-height: 44px; /* Ensure mobile touch target */
   `}
   
   ${props => props.$size === 'md' && css`
     padding: ${props.theme.common.spacing.sm} ${props.theme.common.spacing.md};
     font-size: ${props.theme.common.typography.fontSize.md};
-    min-height: 40px;
+    min-height: 48px; /* Good mobile touch target */
   `}
   
   ${props => props.$size === 'lg' && css`
     padding: ${props.theme.common.spacing.md} ${props.theme.common.spacing.lg};
     font-size: ${props.theme.common.typography.fontSize.lg};
-    min-height: 48px;
+    min-height: 52px; /* Large mobile touch target */
   `}
   
   /* Variant styles */

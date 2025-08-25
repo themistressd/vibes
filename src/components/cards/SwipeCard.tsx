@@ -14,9 +14,10 @@ interface SwipeCardProps {
 
 const CardContainer = styled(motion.div)<{ $isTop: boolean }>`
   width: 100%;
-  max-width: 400px;
-  height: 85vh;
-  max-height: 700px;
+  max-width: 340px; /* Fit within mobile frame with padding */
+  height: 60vh; /* Better mobile proportion */
+  min-height: 450px;
+  max-height: 550px; /* Fit mobile screen */
   position: absolute;
   cursor: grab;
   transform-origin: center;
