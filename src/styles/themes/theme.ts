@@ -6,21 +6,21 @@ export const theme: AppTheme = {
       name: 'Spicy',
       emoji: '🌶️',
       colors: {
-        primary: '#FF4500',
+        primary: '#FD5068', // Tinder red/pink
         secondary: '#FF6B35',
-        background: '#1A0B08',
-        surface: '#2D1810',
+        background: '#121212', // Dark theme
+        surface: '#1E1E1E', // Dark theme
         text: '#FFFFFF',
-        textSecondary: '#FFCCB3',
+        textSecondary: '#CCCCCC', // Gray text
         accent: '#FF8C42',
         success: '#4CAF50',
         warning: '#FF9800',
         error: '#F44336',
       },
       gradients: {
-        main: 'linear-gradient(135deg, #FF4500 0%, #FF6B35 100%)',
-        subtle: 'linear-gradient(135deg, rgba(255, 69, 0, 0.1) 0%, rgba(255, 107, 53, 0.1) 100%)',
-        card: 'linear-gradient(135deg, rgba(255, 69, 0, 0.05) 0%, rgba(255, 107, 53, 0.05) 100%)',
+        main: 'linear-gradient(135deg, #FD5068 0%, #FF6B35 100%)', // Tinder gradient
+        subtle: 'linear-gradient(135deg, rgba(253, 80, 104, 0.1) 0%, rgba(255, 107, 53, 0.1) 100%)',
+        card: 'linear-gradient(135deg, rgba(253, 80, 104, 0.05) 0%, rgba(255, 107, 53, 0.05) 100%)',
       },
     },
     chill: {
@@ -29,10 +29,10 @@ export const theme: AppTheme = {
       colors: {
         primary: '#00D4AA',
         secondary: '#7FFFD4',
-        background: '#0A1A17',
-        surface: '#142D28',
+        background: '#121212', // Dark theme
+        surface: '#1E1E1E', // Dark theme
         text: '#FFFFFF',
-        textSecondary: '#B3FFF0',
+        textSecondary: '#CCCCCC', // Gray text
         accent: '#40FFD1',
         success: '#4CAF50',
         warning: '#FF9800',
@@ -50,10 +50,10 @@ export const theme: AppTheme = {
       colors: {
         primary: '#FF1493',
         secondary: '#DA70D6',
-        background: '#1A0A17',
-        surface: '#2D1428',
+        background: '#121212', // Dark theme
+        surface: '#1E1E1E', // Dark theme
         text: '#FFFFFF',
-        textSecondary: '#FFB3E6',
+        textSecondary: '#CCCCCC', // Gray text
         accent: '#FF69B4',
         success: '#4CAF50',
         warning: '#FF9800',
@@ -71,10 +71,10 @@ export const theme: AppTheme = {
       colors: {
         primary: '#FFD700',
         secondary: '#FFA500',
-        background: '#1A1608',
-        surface: '#2D2410',
-        text: '#1A1608',
-        textSecondary: '#8B7500',
+        background: '#121212', // Dark theme
+        surface: '#1E1E1E', // Dark theme
+        text: '#FFFFFF', // White text for dark theme
+        textSecondary: '#CCCCCC', // Gray text
         accent: '#FFEB3B',
         success: '#4CAF50',
         warning: '#FF9800',
@@ -92,10 +92,10 @@ export const theme: AppTheme = {
       colors: {
         primary: '#40E0D0',
         secondary: '#00CED1',
-        background: '#0A1A1A',
-        surface: '#14292D',
+        background: '#121212', // Dark theme
+        surface: '#1E1E1E', // Dark theme
         text: '#FFFFFF',
-        textSecondary: '#B3F2F5',
+        textSecondary: '#CCCCCC', // Gray text
         accent: '#48D1CC',
         success: '#4CAF50',
         warning: '#FF9800',

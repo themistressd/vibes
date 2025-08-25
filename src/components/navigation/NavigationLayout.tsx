@@ -5,9 +5,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { 
   MessageCircle, 
   User, 
-  Coffee,
   Users,
-  Home
+  Star,
+  Flame
 } from 'lucide-react';
 import { useTheme } from '../../styles/themes/ThemeProvider';
 
@@ -116,9 +116,9 @@ const VibeIndicator = styled.div`
 `;
 
 const navigationItems = [
-  { path: '/home', icon: Home, label: 'Swipe' },
+  { path: '/home', icon: Flame, label: 'Discover' },
+  { path: '/tea-spill', icon: Star, label: 'Likes' },
   { path: '/messages', icon: MessageCircle, label: 'Messages' },
-  { path: '/tea-spill', icon: Coffee, label: 'Tea' },
   { path: '/communities', icon: Users, label: 'Groups' },
   { path: '/profile', icon: User, label: 'Profile' },
 ];

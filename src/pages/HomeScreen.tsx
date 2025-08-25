@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart, X } from 'lucide-react';
+import { Heart, X, Star, RotateCcw, Zap } from 'lucide-react';
 import { useAppStore } from '../stores/appStore';
 import { useTheme } from '../styles/themes/ThemeProvider';
 import { SwipeCard } from '../components/cards/SwipeCard';
@@ -27,18 +27,19 @@ const HomeContainer = styled.div`
 const SwipeArea = styled.div`
   position: relative;
   width: 100%;
-  max-width: 350px;
-  height: 600px;
-  margin-bottom: ${props => props.theme.common.spacing.xl};
+  max-width: 400px;
+  height: 85vh;
+  max-height: 700px;
+  margin-bottom: ${props => props.theme.common.spacing.lg};
   
   ${media.tablet(css`
-    max-width: 400px;
-    height: 650px;
+    max-width: 450px;
+    height: 85vh;
   `)}
   
   ${media.desktop(css`
-    max-width: 480px;
-    height: 700px;
+    max-width: 500px;
+    height: 85vh;
   `)}
 `;
 
@@ -54,7 +55,7 @@ const ActionButtons = styled.div`
   `)}
 `;
 
-const ActionButton = styled(motion.button)<{ $variant: 'pass' | 'like' | 'super' | 'boots' | 'wig' }>`
+const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'superlike' | 'like' | 'boost' }>`
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -63,41 +64,37 @@ const ActionButton = styled(motion.button)<{ $variant: 'pass' | 'like' | 'super'
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: ${props => props.theme.common.shadows.medium};
-  font-size: 1.5rem;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
   
   ${media.desktop(css`
     width: 70px;
     height: 70px;
-    font-size: 1.75rem;
   `)}
   
   ${props => {
     switch (props.$variant) {
+      case 'rewind':
+        return `
+          svg { color: #FF9800; }
+        `;
       case 'pass':
         return `
-          background: linear-gradient(135deg, #f44336, #d32f2f);
-          color: white;
+          svg { color: #FD5068; }
+        `;
+      case 'superlike':
+        return `
+          svg { color: #2196F3; }
         `;
       case 'like':
         return `
-          background: linear-gradient(135deg, #4caf50, #388e3c);
-          color: white;
+          svg { color: #4CAF50; }
         `;
-      case 'super':
+      case 'boost':
         return `
-          background: ${props.theme.current.gradients.main};
-          color: ${props.theme.current.colors.text};
-        `;
-      case 'boots':
-        return `
-          background: linear-gradient(135deg, #ff9800, #f57c00);
-          color: white;
-        `;
-      case 'wig':
-        return `
-          background: linear-gradient(135deg, #9c27b0, #7b1fa2);
-          color: white;
+          svg { color: #9C27B0; }
         `;
       default:
         return '';
@@ -105,12 +102,12 @@ const ActionButton = styled(motion.button)<{ $variant: 'pass' | 'like' | 'super'
   }}
   
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${props => props.theme.common.shadows.large};
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
   }
   
   &:active {
-    transform: translateY(0);
+    transform: scale(0.95);
   }
 `;
 
@@ -256,7 +253,13 @@ export const HomeScreen: React.FC = () => {
     });
   };
 
-  const handleManualAction = (action: 'pass' | 'like' | 'boots' | 'wig') => {
+  const handleManualAction = (action: 'rewind' | 'pass' | 'like' | 'boots' | 'wig') => {
+    if (action === 'rewind') {
+      // For now, just show a message - rewind could be implemented with state management
+      console.log('Rewind action - would undo last swipe');
+      return;
+    }
+    
     const directionMap = {
       pass: 'left' as const,
       like: 'right' as const,
@@ -347,22 +350,31 @@ export const HomeScreen: React.FC = () => {
       {/* Action Buttons */}
       <ActionButtons>
         <ActionButton
+          $variant="rewind"
+          onClick={() => handleManualAction('rewind')}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+        >
+          <RotateCcw size={22} />
+        </ActionButton>
+        
+        <ActionButton
           $variant="pass"
           onClick={() => handleManualAction('pass')}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
         >
-          <X size={24} />
+          <X size={26} />
         </ActionButton>
         
         <ActionButton
-          $variant="boots"
+          $variant="superlike"
           onClick={() => handleManualAction('boots')}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          title="Boots The House Down!"
+          title="Super Like!"
         >
-          👠
+          <Star size={24} />
         </ActionButton>
         
         <ActionButton
@@ -375,13 +387,13 @@ export const HomeScreen: React.FC = () => {
         </ActionButton>
         
         <ActionButton
-          $variant="wig"
+          $variant="boost"
           onClick={() => handleManualAction('wig')}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
-          title="Wig Snatch!"
+          title="Boost!"
         >
-          💇‍♀️
+          <Zap size={24} />
         </ActionButton>
       </ActionButtons>
 
