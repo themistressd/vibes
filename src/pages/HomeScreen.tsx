@@ -4,12 +4,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, X, Star, RotateCcw, Zap } from 'lucide-react';
 import { useAppStore } from '../stores/appStore';
 import { SwipeCard } from '../components/cards/SwipeCard';
+import { ProfileModal } from '../components/modals/ProfileModal';
 import { Button } from '../components/common/Button';
 import { useNavigate } from 'react-router-dom';
 
 const HomeContainer = styled.div`
   padding: ${props => props.theme.common.spacing.lg};
-  min-height: calc(100vh - 174px); /* Account for larger top bar (104px) and bottom nav (70px) */
+  min-height: calc(100vh - 125px); /* Updated for compressed top bar (55px) and bottom nav (70px) = 125px total */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -23,71 +24,107 @@ const SwipeArea = styled.div`
   position: relative;
   width: 100%;
   max-width: 340px; /* Fixed mobile width with padding */
-  height: 60vh; /* Better mobile proportion */
-  min-height: 450px;
-  max-height: 550px; /* Fit mobile screen better */
+  height: 65vh; /* Increased from 60vh to use extra space from compressed header */
+  min-height: 500px; /* Increased from 450px for larger cards */
+  max-height: 600px; /* Increased from 550px for more content */
   margin-bottom: ${props => props.theme.common.spacing.lg};
 `;
 
 const ActionButtons = styled.div`
   display: flex;
   justify-content: center;
-  gap: ${props => props.theme.common.spacing.lg}; /* Increased from md to lg for better button spacing */
+  gap: 25px; /* Perfect spacing between buttons (25px for professional look) */
   margin-bottom: ${props => props.theme.common.spacing.lg};
   width: 100%;
   max-width: 340px;
+  padding: 0 10px; /* Add padding to prevent edge cutoff */
 `;
 
 const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'superlike' | 'like' | 'boost' }>`
-  width: ${props => props.$variant === 'like' || props.$variant === 'pass' ? '80px' : '56px'}; /* Increased main actions from 70px to 80px */
-  height: ${props => props.$variant === 'like' || props.$variant === 'pass' ? '80px' : '56px'}; /* Increased main actions from 70px to 80px */
+  width: ${props => props.$variant === 'like' || props.$variant === 'pass' ? '75px' : '50px'}; /* Perfect circular buttons - main actions 75px, secondary 50px */
+  height: ${props => props.$variant === 'like' || props.$variant === 'pass' ? '75px' : '50px'}; /* Perfect circular buttons */
   border-radius: 50%;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25); /* Enhanced shadow for depth */
   transition: all 0.2s ease;
+  position: relative;
   
-  /* Enhanced styling for main actions */
-  ${props => (props.$variant === 'like' || props.$variant === 'pass') && `
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    transform: scale(1);
-    
-    &:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-    }
-  `}
+  /* Base styling for all buttons */
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
   
   ${props => {
     switch (props.$variant) {
       case 'rewind':
         return `
-          svg { color: #FF9800; }
+          svg { 
+            color: #FF9500; 
+            filter: drop-shadow(0 0 4px rgba(255, 149, 0, 0.3));
+          }
+          &:hover { 
+            background: rgba(255, 149, 0, 0.1); 
+            box-shadow: 0 8px 25px rgba(255, 149, 0, 0.4);
+          }
         `;
       case 'pass':
         return `
-          svg { color: #FD5068; font-size: 28px; }
-          background: linear-gradient(135deg, rgba(253, 80, 104, 0.2), rgba(253, 80, 104, 0.3));
-          border-color: #FD5068;
+          background: linear-gradient(135deg, #FF4458, #FF6B7D);
+          svg { 
+            color: white; 
+            font-size: 32px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+          }
+          &:hover { 
+            background: linear-gradient(135deg, #E63946, #FF4458);
+            box-shadow: 0 8px 30px rgba(255, 68, 88, 0.5);
+            transform: scale(1.05);
+          }
+          &:active {
+            transform: scale(0.95);
+          }
         `;
       case 'superlike':
         return `
-          svg { color: #2196F3; }
+          svg { 
+            color: #00A8FF; 
+            filter: drop-shadow(0 0 4px rgba(0, 168, 255, 0.4));
+          }
+          &:hover { 
+            background: rgba(0, 168, 255, 0.1); 
+            box-shadow: 0 8px 25px rgba(0, 168, 255, 0.4);
+          }
         `;
       case 'like':
         return `
-          svg { color: #4CAF50; font-size: 28px; }
-          background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(76, 175, 80, 0.3));
-          border-color: #4CAF50;
+          background: linear-gradient(135deg, #00C851, #26C6DA);
+          svg { 
+            color: white; 
+            font-size: 32px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+          }
+          &:hover { 
+            background: linear-gradient(135deg, #00A243, #00C851);
+            box-shadow: 0 8px 30px rgba(0, 200, 81, 0.5);
+            transform: scale(1.05);
+          }
+          &:active {
+            transform: scale(0.95);
+          }
         `;
       case 'boost':
         return `
-          svg { color: #9C27B0; }
+          svg { 
+            color: #AA00FF; 
+            filter: drop-shadow(0 0 4px rgba(170, 0, 255, 0.3));
+          }
+          &:hover { 
+            background: rgba(170, 0, 255, 0.1); 
+            box-shadow: 0 8px 25px rgba(170, 0, 255, 0.4);
+          }
         `;
       default:
         return '';
@@ -95,12 +132,26 @@ const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'supe
   }}
 
   &:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    transform: scale(1.08);
   }
   
   &:active {
     transform: scale(0.95);
+  }
+  
+  /* Add subtle glow effect */
+  &::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 50%;
+    background: inherit;
+    filter: blur(8px);
+    opacity: 0.3;
+    z-index: -1;
   }
 `;
 
@@ -163,6 +214,8 @@ export const HomeScreen: React.FC = () => {
   const [showMatch, setShowMatch] = useState(false);
   const [matchedProfile, setMatchedProfile] = useState<typeof profiles[0] | null>(null);
   const [superLikeAnimation, setSuperLikeAnimation] = useState<string | null>(null);
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [selectedProfile, setSelectedProfile] = useState<typeof profiles[0] | null>(null);
   
   // Show all profiles in mixed vibes approach (no filtering by vibe)
   const allProfiles = profiles; // Use all profiles instead of filtering
@@ -224,6 +277,16 @@ export const HomeScreen: React.FC = () => {
     }
   };
 
+  const handleProfileTap = (profile: typeof profiles[0]) => {
+    setSelectedProfile(profile);
+    setShowProfileModal(true);
+  };
+
+  const handleCloseProfileModal = () => {
+    setShowProfileModal(false);
+    setSelectedProfile(null);
+  };
+
   if (allProfiles.length === 0) {
     return (
       <HomeContainer>
@@ -249,6 +312,7 @@ export const HomeScreen: React.FC = () => {
               key={`${nextProfile_card.id}_back`}
               profile={nextProfile_card}
               onSwipe={() => {}}
+              onTap={() => handleProfileTap(nextProfile_card)}
               isTop={false}
             />
           )}
@@ -258,6 +322,7 @@ export const HomeScreen: React.FC = () => {
               key={`${currentProfile.id}_top`}
               profile={currentProfile}
               onSwipe={handleSwipe}
+              onTap={() => handleProfileTap(currentProfile)}
               isTop={true}
             />
           )}
@@ -269,48 +334,48 @@ export const HomeScreen: React.FC = () => {
         <ActionButton
           $variant="rewind"
           onClick={() => handleManualAction('rewind')}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.95 }}
         >
-          <RotateCcw size={22} />
+          <RotateCcw size={20} />
         </ActionButton>
         
         <ActionButton
           $variant="pass"
           onClick={() => handleManualAction('pass')}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.95 }}
         >
-          <X size={30} />
+          <X size={32} />
         </ActionButton>
         
         <ActionButton
           $variant="superlike"
           onClick={() => handleManualAction('boots')}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.95 }}
           title="Super Like!"
         >
-          <Star size={24} />
+          <Star size={20} />
         </ActionButton>
         
         <ActionButton
           $variant="like"
           onClick={() => handleManualAction('like')}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.95 }}
         >
-          <Heart size={28} />
+          <Heart size={32} />
         </ActionButton>
         
         <ActionButton
           $variant="boost"
           onClick={() => handleManualAction('wig')}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.95 }}
           title="Boost!"
         >
-          <Zap size={24} />
+          <Zap size={20} />
         </ActionButton>
       </ActionButtons>
 
@@ -349,6 +414,13 @@ export const HomeScreen: React.FC = () => {
           </MatchNotification>
         )}
       </AnimatePresence>
+
+      {/* Profile Modal */}
+      <ProfileModal
+        profile={selectedProfile}
+        isOpen={showProfileModal}
+        onClose={handleCloseProfileModal}
+      />
     </HomeContainer>
   );
 };

@@ -88,13 +88,13 @@ const NavButton = styled(motion.button)<{ $isActive: boolean }>`
 `;
 
 const TopBar = styled.header`
-  height: 104px; /* Increased from 60px to accommodate safe area */
+  height: 55px; /* Compressed from 104px - 47% reduction for more content space */
   background: ${props => props.theme.current.colors.surface};
   border-bottom: 1px solid ${props => props.theme.current.colors.primary}20;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 44px ${props => props.theme.common.spacing.md} 0 ${props => props.theme.common.spacing.md}; /* 44px top padding for safe area */
+  justify-content: space-between; /* Changed to space-between for better layout */
+  padding: 8px ${props => props.theme.common.spacing.md}; /* Reduced padding significantly */
   position: sticky;
   top: 0;
   z-index: 50;
@@ -103,23 +103,25 @@ const TopBar = styled.header`
 
 const Logo = styled.h1`
   font-family: ${props => props.theme.common.typography.fontFamily.heading};
-  font-size: ${props => props.theme.common.typography.fontSize.xl};
+  font-size: ${props => props.theme.common.typography.fontSize.lg}; /* Reduced from xl to lg */
   font-weight: ${props => props.theme.common.typography.fontWeight.bold};
   background: ${props => props.theme.current.gradients.main};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin: 0;
-  text-align: center;
+  flex: 1; /* Take available space */
 `;
 
 const VibeIndicator = styled.div`
-  position: absolute;
-  right: ${props => props.theme.common.spacing.md};
-  font-size: ${props => props.theme.common.typography.fontSize.lg};
+  font-size: ${props => props.theme.common.typography.fontSize.sm}; /* Reduced from lg to sm */
   display: flex;
   align-items: center;
   gap: ${props => props.theme.common.spacing.xs};
+  background: ${props => props.theme.current.colors.surface};
+  padding: 4px 8px; /* Added padding for better visual */
+  border-radius: ${props => props.theme.common.borderRadius.full};
+  border: 1px solid ${props => props.theme.current.colors.primary}30;
 `;
 
 const navigationItems = [
