@@ -14,8 +14,9 @@ interface SwipeCardProps {
 
 const CardContainer = styled(motion.div)<{ $isTop: boolean }>`
   width: 100%;
-  max-width: 350px;
-  height: 600px;
+  max-width: 400px;
+  height: 85vh;
+  max-height: 700px;
   position: absolute;
   cursor: grab;
   transform-origin: center;
@@ -38,11 +39,34 @@ const CardContent = styled.div`
 
 const ProfileImage = styled.div<{ $image: string }>`
   width: 100%;
-  height: 70%;
+  height: 80%;
   background-image: url(${props => props.$image});
   background-size: cover;
   background-position: center;
   position: relative;
+`;
+
+const StatusBadge = styled.div`
+  position: absolute;
+  top: ${props => props.theme.common.spacing.md};
+  left: ${props => props.theme.common.spacing.md};
+  background: #4CAF50;
+  color: white;
+  padding: ${props => props.theme.common.spacing.xs} ${props => props.theme.common.spacing.sm};
+  border-radius: ${props => props.theme.common.borderRadius.full};
+  font-size: ${props => props.theme.common.typography.fontSize.xs};
+  font-weight: ${props => props.theme.common.typography.fontWeight.semibold};
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  
+  &::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+  }
 `;
 
 const VibeIndicator = styled.div`
@@ -76,9 +100,17 @@ const NameAge = styled.div`
 `;
 
 const Name = styled.h2`
-  font-size: ${props => props.theme.common.typography.fontSize.xl};
+  font-size: 1.75rem;
   font-weight: ${props => props.theme.common.typography.fontWeight.bold};
   margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+const VerificationBadge = styled.span`
+  color: #2196F3;
+  font-size: 1.2rem;
 `;
 
 const Age = styled.span`
@@ -236,13 +268,20 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
     >
       <CardContent>
         <ProfileImage $image={profile.images[0]}>
+          <StatusBadge>
+            Active
+          </StatusBadge>
+          
           <VibeIndicator>
             {vibeTheme.emoji} {vibeTheme.name}
           </VibeIndicator>
           
           <ProfileInfo>
             <NameAge>
-              <Name>{profile.name}</Name>
+              <Name>
+                {profile.name}
+                <VerificationBadge>✓</VerificationBadge>
+              </Name>
               <Age>{profile.age}</Age>
             </NameAge>
             
