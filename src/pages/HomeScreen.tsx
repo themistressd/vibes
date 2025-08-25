@@ -8,15 +8,14 @@ import { Button } from '../components/common/Button';
 import { useNavigate } from 'react-router-dom';
 
 // Import custom metallic icons
-import rewindIcon from '../assets/icons/rewind.png';
-import passIcon from '../assets/icons/pass.png';
-import superlikeIcon from '../assets/icons/superlike.png';
-import likeIcon from '../assets/icons/like.png';
-import boostIcon from '../assets/icons/boost.png';
+import rewindIcon from '../assets/rewind.png';
+import passIcon from '../assets/pass.png';
+import superlikeIcon from '../assets/superlike.png';
+import likeIcon from '../assets/like.png';
+import boostIcon from '../assets/boost.png';
 
 const HomeContainer = styled.div`
-  padding: ${props => props.theme.common.spacing.lg};
-  min-height: calc(100vh - 120px); /* Updated for compressed top bar (50px) and bottom nav (70px) = 120px total */
+  height: 100vh; /* Full viewport height */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,29 +23,37 @@ const HomeContainer = styled.div`
   width: 100%;
   max-width: 375px; /* Fixed mobile width */
   margin: 0 auto;
+  overflow: hidden; /* Prevent scrolling */
+  padding: ${props => props.theme.common.spacing.sm} ${props => props.theme.common.spacing.md};
+  box-sizing: border-box;
 `;
 
 const SwipeArea = styled.div`
   position: relative;
   width: 100%;
   max-width: 340px; /* Fixed mobile width with padding */
-  height: 67vh; /* Further increased to use extra space from more compressed header */
-  min-height: 510px; /* Increased for larger cards */
-  max-height: 620px; /* Increased for more content */
-  margin-bottom: ${props => props.theme.common.spacing.lg};
+  flex: 1; /* Take all available space */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: ${props => props.theme.common.spacing.sm} 0;
+  min-height: 300px; /* Minimum height for very small screens */
 `;
 
 const ActionButtons = styled.div`
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 18px; /* Perfect 18px spacing between buttons - within Tinder's 15-20px range */
-  margin-bottom: ${props => props.theme.common.spacing.lg};
   width: 100%;
   max-width: 340px;
-  padding: 0 10px; /* Add padding to prevent edge cutoff */
+  padding: ${props => props.theme.common.spacing.sm} 10px ${props => props.theme.common.spacing.md} 10px;
+  flex-shrink: 0; /* Don't shrink buttons */
+  margin-bottom: 70px; /* Space for bottom navigation */
 `;
 
 const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'superlike' | 'like' | 'boost' }>`
+  /* Reset all inherited styles that could affect shape */
   border-radius: 50%;
   border: none;
   cursor: pointer;
@@ -57,6 +64,18 @@ const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'supe
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.1); /* Professional depth shadows */
   transition: all 0.2s ease;
   position: relative;
+  flex-shrink: 0; /* Prevent shrinking */
+  box-sizing: border-box; /* Include padding/border in size calculation */
+  padding: 0; /* Remove any default padding */
+  margin: 0; /* Remove any default margin */
+  
+  /* Critical: Override any inherited styles that could make buttons oval */
+  font-family: inherit;
+  font-size: 0; /* Remove any text spacing issues */
+  line-height: 1;
+  text-align: center;
+  vertical-align: top;
+  outline: none;
   
   /* Size hierarchy: Pass & Like buttons = 80px, Rewind/SuperLike/Boost = 60px */
   ${props => {
@@ -65,14 +84,23 @@ const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'supe
     const iconSize = isLarger ? '40px' : '32px';
     
     return `
-      width: ${size};
-      height: ${size};
+      width: ${size} !important; /* Force exact size */
+      height: ${size} !important; /* Force exact size */
+      min-width: ${size}; /* Ensure exact size */
+      min-height: ${size}; /* Ensure exact size */
+      max-width: ${size}; /* Prevent growing beyond size */
+      max-height: ${size}; /* Prevent growing beyond size */
+      
+      /* Ensure perfect circle with explicit border-radius */
+      border-radius: calc(${size} / 2) !important; /* Explicit circular radius */
       
       img {
         width: ${iconSize};
         height: ${iconSize};
         object-fit: contain;
         filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+        display: block; /* Remove any inline spacing */
+        pointer-events: none; /* Prevent any interaction issues */
       }
       
       &:hover {
