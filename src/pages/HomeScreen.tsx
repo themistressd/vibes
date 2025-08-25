@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, X, Star, RotateCcw, Zap } from 'lucide-react';
 import { useAppStore } from '../stores/appStore';
@@ -7,7 +7,6 @@ import { useTheme } from '../styles/themes/ThemeProvider';
 import { SwipeCard } from '../components/cards/SwipeCard';
 import { Button } from '../components/common/Button';
 import { useNavigate } from 'react-router-dom';
-import { media } from '../styles/responsive';
 
 const HomeContainer = styled.div`
   padding: ${props => props.theme.common.spacing.lg};
@@ -16,31 +15,19 @@ const HomeContainer = styled.div`
   flex-direction: column;
   align-items: center;
   position: relative;
-  
-  ${media.desktop(css`
-    padding: ${props => props.theme.common.spacing.xl};
-    max-width: 1200px;
-    margin: 0 auto;
-  `)}
+  width: 100%;
+  max-width: 375px; /* Fixed mobile width */
+  margin: 0 auto;
 `;
 
 const SwipeArea = styled.div`
   position: relative;
   width: 100%;
-  max-width: 400px;
-  height: 85vh;
-  max-height: 700px;
+  max-width: 340px; /* Fixed mobile width with padding */
+  height: 60vh; /* Better mobile proportion */
+  min-height: 450px;
+  max-height: 550px; /* Fit mobile screen better */
   margin-bottom: ${props => props.theme.common.spacing.lg};
-  
-  ${media.tablet(css`
-    max-width: 450px;
-    height: 85vh;
-  `)}
-  
-  ${media.desktop(css`
-    max-width: 500px;
-    height: 85vh;
-  `)}
 `;
 
 const ActionButtons = styled.div`
@@ -48,16 +35,13 @@ const ActionButtons = styled.div`
   justify-content: center;
   gap: ${props => props.theme.common.spacing.md};
   margin-bottom: ${props => props.theme.common.spacing.lg};
-  
-  ${media.desktop(css`
-    gap: ${props => props.theme.common.spacing.lg};
-    margin-bottom: ${props => props.theme.common.spacing.xl};
-  `)}
+  width: 100%;
+  max-width: 340px;
 `;
 
 const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'superlike' | 'like' | 'boost' }>`
-  width: 60px;
-  height: 60px;
+  width: 56px; /* Optimized for mobile */
+  height: 56px; /* Ensure 44px+ touch target */
   border-radius: 50%;
   border: none;
   cursor: pointer;
@@ -68,11 +52,6 @@ const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'supe
   color: white;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   transition: all 0.2s ease;
-  
-  ${media.desktop(css`
-    width: 70px;
-    height: 70px;
-  `)}
   
   ${props => {
     switch (props.$variant) {
@@ -140,13 +119,9 @@ const VibeSwitch = styled.div`
   margin-bottom: ${props => props.theme.common.spacing.lg};
   overflow-x: auto;
   padding: ${props => props.theme.common.spacing.sm} 0;
-  
-  ${media.desktop(css`
-    gap: ${props => props.theme.common.spacing.sm};
-    justify-content: center;
-    flex-wrap: wrap;
-    overflow-x: visible;
-  `)}
+  justify-content: flex-start; /* Mobile-optimized horizontal scroll */
+  width: 100%;
+  max-width: 340px;
 `;
 
 const VibeBadge = styled(motion.button)<{ $isActive: boolean; $colors: { primary: string; secondary: string } }>`
@@ -163,11 +138,9 @@ const VibeBadge = styled(motion.button)<{ $isActive: boolean; $colors: { primary
   white-space: nowrap;
   font-size: ${props => props.theme.common.typography.fontSize.sm};
   font-weight: ${props => props.theme.common.typography.fontWeight.medium};
-  
-  ${media.desktop(css`
-    padding: ${props => props.theme.common.spacing.sm} ${props => props.theme.common.spacing.lg};
-    font-size: ${props => props.theme.common.typography.fontSize.md};
-  `)}
+  min-height: 44px; /* Ensure touch target */
+  display: flex;
+  align-items: center;
   
   &:hover {
     background: ${props => `linear-gradient(135deg, ${props.$colors.primary}30, ${props.$colors.secondary}30)`};

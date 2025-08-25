@@ -1,6 +1,7 @@
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from './styles/themes/ThemeProvider';
 import { NavigationLayout } from './components/navigation/NavigationLayout';
+import { MobileFrame } from './components/layout/MobileFrame';
 import { AppRouter } from './router';
 import { GlobalStyle } from './styles/GlobalStyle';
 
@@ -9,9 +10,11 @@ function App() {
     <BrowserRouter>
       <ThemeProvider>
         <GlobalStyle />
-        <NavigationLayout>
-          <AppRouter />
-        </NavigationLayout>
+        <MobileFrame>
+          <NavigationLayout>
+            <AppRouter />
+          </NavigationLayout>
+        </MobileFrame>
       </ThemeProvider>
     </BrowserRouter>
   );

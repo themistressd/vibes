@@ -17,15 +17,20 @@ interface NavigationLayoutProps {
 
 const LayoutContainer = styled.div`
   min-height: 100vh;
+  height: 100vh; /* Fixed height for mobile frame */
+  width: 100%;
   background: ${props => props.theme.current.colors.background};
   display: flex;
   flex-direction: column;
+  overflow: hidden; /* Prevent scrolling outside mobile frame */
 `;
 
 const MainContent = styled.main`
   flex: 1;
-  padding-bottom: 80px; /* Space for bottom nav */
+  padding-bottom: 70px; /* Space for bottom nav */
   overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
 `;
 
 const BottomNavigation = styled.nav`
@@ -54,6 +59,7 @@ const NavButton = styled(motion.button)<{ $isActive: boolean }>`
   align-items: center;
   gap: 2px;
   min-width: 50px;
+  min-height: 44px; /* Ensure touch target size */
   
   color: ${props => 
     props.$isActive 

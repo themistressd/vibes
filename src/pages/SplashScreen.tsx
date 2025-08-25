@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../styles/themes/ThemeProvider';
@@ -7,7 +7,6 @@ import { Button } from '../components/common/Button';
 import type { VibeType } from '../styles/themes/types';
 import { useAppStore } from '../stores/appStore';
 import { mockProfiles, mockConversations } from '../data/mockData';
-import { media } from '../styles/responsive';
 
 const SplashContainer = styled.div`
   min-height: 100vh;
@@ -40,21 +39,14 @@ const FloatingEmoji = styled(motion.div)`
 const ContentContainer = styled(motion.div)`
   z-index: 10;
   text-align: center;
-  max-width: 400px;
+  max-width: 340px; /* Fixed mobile width */
   width: 100%;
-  
-  ${media.tablet(css`
-    max-width: 500px;
-  `)}
-  
-  ${media.desktop(css`
-    max-width: 600px;
-  `)}
+  margin: 0 auto;
 `;
 
 const Logo = styled(motion.h1)`
   font-family: ${props => props.theme.common.typography.fontFamily.heading};
-  font-size: 4rem;
+  font-size: 3.5rem; /* Fixed mobile size */
   font-weight: ${props => props.theme.common.typography.fontWeight.bold};
   margin: 0 0 ${props => props.theme.common.spacing.md};
   background: linear-gradient(45deg, #FF4500, #00D4AA, #FF1493, #FFD700, #40E0D0);
@@ -63,10 +55,6 @@ const Logo = styled(motion.h1)`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  
-  ${media.desktop(css`
-    font-size: 5rem;
-  `)}
   
   @keyframes rainbow {
     0% { background-position: 0% 50%; }
@@ -80,28 +68,17 @@ const Tagline = styled(motion.p)`
   color: #FFFFFF;
   margin-bottom: ${props => props.theme.common.spacing.xl};
   opacity: 0.9;
-  
-  ${media.desktop(css`
-    font-size: ${props => props.theme.common.typography.fontSize.xl};
-  `)}
 `;
 
 const VibeSelector = styled(motion.div)`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 1fr); /* Fixed 2 columns for mobile */
   gap: ${props => props.theme.common.spacing.md};
   margin-bottom: ${props => props.theme.common.spacing.xl};
   width: 100%;
-  
-  ${media.tablet(css`
-    grid-template-columns: repeat(3, 1fr);
-    gap: ${props => props.theme.common.spacing.lg};
-  `)}
-  
-  ${media.desktop(css`
-    grid-template-columns: repeat(5, 1fr);
-    gap: ${props => props.theme.common.spacing.lg};
-  `)}
+  max-width: 340px;
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 const VibeCard = styled(motion.div)<{ $colors: { primary: string; secondary: string } }>`

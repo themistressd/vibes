@@ -12,21 +12,27 @@ export const GlobalStyle = createGlobalStyle`
   html, body {
     height: 100%;
     overflow-x: hidden;
+    /* Fixed mobile font size - no responsive scaling */
+    font-size: 16px;
   }
   
   body {
     font-family: ${props => props.theme.common.typography.fontFamily.primary};
-    background: ${props => props.theme.current.colors.background};
+    background: #1a1a1a; /* Dark background for centering mobile frame */
     color: ${props => props.theme.current.colors.text};
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    padding: 0;
   }
   
   #root {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    /* Remove default centering for mobile frame */
+    width: 100%;
   }
   
   * {
@@ -67,6 +73,9 @@ export const GlobalStyle = createGlobalStyle`
   /* Make sure touch interactions feel responsive */
   button, [role="button"], input[type="submit"], input[type="button"] {
     touch-action: manipulation;
+    /* Ensure minimum 44px touch target size */
+    min-height: 44px;
+    min-width: 44px;
   }
   
   /* Improve focus visibility */
@@ -85,57 +94,19 @@ export const GlobalStyle = createGlobalStyle`
     scroll-behavior: smooth;
   }
   
-  /* Responsive text scaling */
-  @media (max-width: 768px) {
-    html {
-      font-size: 14px;
-    }
-  }
-  
-  @media (min-width: 769px) and (max-width: 1024px) {
-    html {
-      font-size: 15px;
-    }
-  }
-  
-  @media (min-width: 1025px) {
-    html {
-      font-size: 16px;
-    }
-  }
-  
-  /* Responsive container utilities */
+  /* Fixed mobile layout - no responsive scaling */
   .container {
     width: 100%;
-    max-width: 350px;
+    max-width: 375px; /* Fixed iPhone width */
     margin: 0 auto;
     padding: 0 16px;
-    
-    @media (min-width: 768px) {
-      max-width: 600px;
-      padding: 0 24px;
-    }
-    
-    @media (min-width: 1024px) {
-      max-width: 1200px;
-      padding: 0 32px;
-    }
+    box-sizing: border-box;
   }
   
-  /* Responsive grid utilities */
+  /* Fixed mobile grid - always 2 columns for mobile */
   .responsive-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-    
-    @media (min-width: 768px) {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-    
-    @media (min-width: 1024px) {
-      grid-template-columns: repeat(4, 1fr);
-      gap: 24px;
-    }
+    gap: 12px;
   }
 `;
