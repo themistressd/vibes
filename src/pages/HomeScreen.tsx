@@ -8,11 +8,11 @@ import { Button } from '../components/common/Button';
 import { useNavigate } from 'react-router-dom';
 
 // Import custom metallic icons
-import rewindIcon from '../assets/icons/rewind.png';
-import passIcon from '../assets/icons/pass.png';
-import superlikeIcon from '../assets/icons/superlike.png';
-import likeIcon from '../assets/icons/like.png';
-import boostIcon from '../assets/icons/boost.png';
+import rewindIcon from '../assets/rewind.png';
+import passIcon from '../assets/pass.png';
+import superlikeIcon from '../assets/superlike.png';
+import likeIcon from '../assets/like.png';
+import boostIcon from '../assets/boost.png';
 
 const HomeContainer = styled.div`
   padding: ${props => props.theme.common.spacing.lg};
