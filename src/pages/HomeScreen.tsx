@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 const HomeContainer = styled.div`
   padding: ${props => props.theme.common.spacing.lg};
-  min-height: calc(100vh - 125px); /* Updated for compressed top bar (55px) and bottom nav (70px) = 125px total */
+  min-height: calc(100vh - 120px); /* Updated for compressed top bar (50px) and bottom nav (70px) = 120px total */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,16 +24,16 @@ const SwipeArea = styled.div`
   position: relative;
   width: 100%;
   max-width: 340px; /* Fixed mobile width with padding */
-  height: 65vh; /* Increased from 60vh to use extra space from compressed header */
-  min-height: 500px; /* Increased from 450px for larger cards */
-  max-height: 600px; /* Increased from 550px for more content */
+  height: 67vh; /* Further increased to use extra space from more compressed header */
+  min-height: 510px; /* Increased for larger cards */
+  max-height: 620px; /* Increased for more content */
   margin-bottom: ${props => props.theme.common.spacing.lg};
 `;
 
 const ActionButtons = styled.div`
   display: flex;
   justify-content: center;
-  gap: 25px; /* Perfect spacing between buttons (25px for professional look) */
+  gap: 18px; /* Perfect 18px spacing between buttons - within Tinder's 15-20px range */
   margin-bottom: ${props => props.theme.common.spacing.lg};
   width: 100%;
   max-width: 340px;
@@ -41,118 +41,114 @@ const ActionButtons = styled.div`
 `;
 
 const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'superlike' | 'like' | 'boost' }>`
-  width: ${props => props.$variant === 'like' || props.$variant === 'pass' ? '75px' : '50px'}; /* Perfect circular buttons - main actions 75px, secondary 50px */
-  height: ${props => props.$variant === 'like' || props.$variant === 'pass' ? '75px' : '50px'}; /* Perfect circular buttons */
+  width: 70px; /* Perfect 70px diameter circles for all buttons - exactly like Tinder */
+  height: 70px;
   border-radius: 50%;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25); /* Enhanced shadow for depth */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.1); /* Professional depth shadows */
   transition: all 0.2s ease;
   position: relative;
-  
-  /* Base styling for all buttons */
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
   
   ${props => {
     switch (props.$variant) {
       case 'rewind':
         return `
+          background: linear-gradient(135deg, #FF9500, #FFB347); /* Yellow/orange circular background */
           svg { 
-            color: #FF9500; 
-            filter: drop-shadow(0 0 4px rgba(255, 149, 0, 0.3));
+            color: white;
+            width: 24px;
+            height: 24px;
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
           }
           &:hover { 
-            background: rgba(255, 149, 0, 0.1); 
-            box-shadow: 0 8px 25px rgba(255, 149, 0, 0.4);
+            background: linear-gradient(135deg, #FF8500, #FF9500);
+            box-shadow: 0 12px 25px rgba(255, 149, 0, 0.3), 0 6px 12px rgba(255, 149, 0, 0.2);
+            transform: translateY(-2px);
+          }
+          &:active {
+            transform: translateY(0) scale(0.95);
           }
         `;
       case 'pass':
         return `
-          background: linear-gradient(135deg, #FF4458, #FF6B7D);
+          background: linear-gradient(135deg, #FF4458, #FF6B7D); /* Pink/red circular background */
           svg { 
-            color: white; 
-            font-size: 32px;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            color: white;
+            width: 28px;
+            height: 28px;
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
           }
           &:hover { 
             background: linear-gradient(135deg, #E63946, #FF4458);
-            box-shadow: 0 8px 30px rgba(255, 68, 88, 0.5);
-            transform: scale(1.05);
+            box-shadow: 0 12px 25px rgba(255, 68, 88, 0.3), 0 6px 12px rgba(255, 68, 88, 0.2);
+            transform: translateY(-2px);
           }
           &:active {
-            transform: scale(0.95);
+            transform: translateY(0) scale(0.95);
           }
         `;
       case 'superlike':
         return `
+          background: linear-gradient(135deg, #00A8FF, #0078D4); /* Blue circular background */
           svg { 
-            color: #00A8FF; 
-            filter: drop-shadow(0 0 4px rgba(0, 168, 255, 0.4));
+            color: white;
+            width: 24px;
+            height: 24px;
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
           }
           &:hover { 
-            background: rgba(0, 168, 255, 0.1); 
-            box-shadow: 0 8px 25px rgba(0, 168, 255, 0.4);
+            background: linear-gradient(135deg, #0090E7, #00A8FF);
+            box-shadow: 0 12px 25px rgba(0, 168, 255, 0.3), 0 6px 12px rgba(0, 168, 255, 0.2);
+            transform: translateY(-2px);
+          }
+          &:active {
+            transform: translateY(0) scale(0.95);
           }
         `;
       case 'like':
         return `
-          background: linear-gradient(135deg, #00C851, #26C6DA);
+          background: linear-gradient(135deg, #00C851, #26C6DA); /* Green circular background */
           svg { 
-            color: white; 
-            font-size: 32px;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            color: white;
+            width: 28px;
+            height: 28px;
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
           }
           &:hover { 
             background: linear-gradient(135deg, #00A243, #00C851);
-            box-shadow: 0 8px 30px rgba(0, 200, 81, 0.5);
-            transform: scale(1.05);
+            box-shadow: 0 12px 25px rgba(0, 200, 81, 0.3), 0 6px 12px rgba(0, 200, 81, 0.2);
+            transform: translateY(-2px);
           }
           &:active {
-            transform: scale(0.95);
+            transform: translateY(0) scale(0.95);
           }
         `;
       case 'boost':
         return `
+          background: linear-gradient(135deg, #AA00FF, #BB33FF); /* Purple circular background */
           svg { 
-            color: #AA00FF; 
-            filter: drop-shadow(0 0 4px rgba(170, 0, 255, 0.3));
+            color: white;
+            width: 24px;
+            height: 24px;
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
           }
           &:hover { 
-            background: rgba(170, 0, 255, 0.1); 
-            box-shadow: 0 8px 25px rgba(170, 0, 255, 0.4);
+            background: linear-gradient(135deg, #9900E6, #AA00FF);
+            box-shadow: 0 12px 25px rgba(170, 0, 255, 0.3), 0 6px 12px rgba(170, 0, 255, 0.2);
+            transform: translateY(-2px);
+          }
+          &:active {
+            transform: translateY(0) scale(0.95);
           }
         `;
       default:
         return '';
     }
   }}
-
-  &:hover {
-    transform: scale(1.08);
-  }
-  
-  &:active {
-    transform: scale(0.95);
-  }
-  
-  /* Add subtle glow effect */
-  &::before {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    border-radius: 50%;
-    background: inherit;
-    filter: blur(8px);
-    opacity: 0.3;
-    z-index: -1;
-  }
 `;
 
 const EmptyState = styled(motion.div)`
@@ -334,48 +330,38 @@ export const HomeScreen: React.FC = () => {
         <ActionButton
           $variant="rewind"
           onClick={() => handleManualAction('rewind')}
-          whileHover={{ scale: 1.08 }}
-          whileTap={{ scale: 0.95 }}
         >
-          <RotateCcw size={20} />
+          <RotateCcw size={24} />
         </ActionButton>
         
         <ActionButton
           $variant="pass"
           onClick={() => handleManualAction('pass')}
-          whileHover={{ scale: 1.08 }}
-          whileTap={{ scale: 0.95 }}
         >
-          <X size={32} />
+          <X size={28} />
         </ActionButton>
         
         <ActionButton
           $variant="superlike"
           onClick={() => handleManualAction('boots')}
-          whileHover={{ scale: 1.08 }}
-          whileTap={{ scale: 0.95 }}
           title="Super Like!"
         >
-          <Star size={20} />
+          <Star size={24} />
         </ActionButton>
         
         <ActionButton
           $variant="like"
           onClick={() => handleManualAction('like')}
-          whileHover={{ scale: 1.08 }}
-          whileTap={{ scale: 0.95 }}
         >
-          <Heart size={32} />
+          <Heart size={28} />
         </ActionButton>
         
         <ActionButton
           $variant="boost"
           onClick={() => handleManualAction('wig')}
-          whileHover={{ scale: 1.08 }}
-          whileTap={{ scale: 0.95 }}
           title="Boost!"
         >
-          <Zap size={20} />
+          <Zap size={24} />
         </ActionButton>
       </ActionButtons>
 
