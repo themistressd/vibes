@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, X } from 'lucide-react';
 import { useAppStore } from '../stores/appStore';
@@ -7,6 +7,7 @@ import { useTheme } from '../styles/themes/ThemeProvider';
 import { SwipeCard } from '../components/cards/SwipeCard';
 import { Button } from '../components/common/Button';
 import { useNavigate } from 'react-router-dom';
+import { media } from '../styles/responsive';
 
 const HomeContainer = styled.div`
   padding: ${props => props.theme.common.spacing.lg};
@@ -15,6 +16,12 @@ const HomeContainer = styled.div`
   flex-direction: column;
   align-items: center;
   position: relative;
+  
+  ${media.desktop(css`
+    padding: ${props => props.theme.common.spacing.xl};
+    max-width: 1200px;
+    margin: 0 auto;
+  `)}
 `;
 
 const SwipeArea = styled.div`
@@ -23,6 +30,16 @@ const SwipeArea = styled.div`
   max-width: 350px;
   height: 600px;
   margin-bottom: ${props => props.theme.common.spacing.xl};
+  
+  ${media.tablet(css`
+    max-width: 400px;
+    height: 650px;
+  `)}
+  
+  ${media.desktop(css`
+    max-width: 480px;
+    height: 700px;
+  `)}
 `;
 
 const ActionButtons = styled.div`
@@ -30,6 +47,11 @@ const ActionButtons = styled.div`
   justify-content: center;
   gap: ${props => props.theme.common.spacing.md};
   margin-bottom: ${props => props.theme.common.spacing.lg};
+  
+  ${media.desktop(css`
+    gap: ${props => props.theme.common.spacing.lg};
+    margin-bottom: ${props => props.theme.common.spacing.xl};
+  `)}
 `;
 
 const ActionButton = styled(motion.button)<{ $variant: 'pass' | 'like' | 'super' | 'boots' | 'wig' }>`
@@ -43,6 +65,12 @@ const ActionButton = styled(motion.button)<{ $variant: 'pass' | 'like' | 'super'
   justify-content: center;
   box-shadow: ${props => props.theme.common.shadows.medium};
   font-size: 1.5rem;
+  
+  ${media.desktop(css`
+    width: 70px;
+    height: 70px;
+    font-size: 1.75rem;
+  `)}
   
   ${props => {
     switch (props.$variant) {
@@ -115,6 +143,13 @@ const VibeSwitch = styled.div`
   margin-bottom: ${props => props.theme.common.spacing.lg};
   overflow-x: auto;
   padding: ${props => props.theme.common.spacing.sm} 0;
+  
+  ${media.desktop(css`
+    gap: ${props => props.theme.common.spacing.sm};
+    justify-content: center;
+    flex-wrap: wrap;
+    overflow-x: visible;
+  `)}
 `;
 
 const VibeBadge = styled(motion.button)<{ $isActive: boolean; $colors: { primary: string; secondary: string } }>`
@@ -131,6 +166,11 @@ const VibeBadge = styled(motion.button)<{ $isActive: boolean; $colors: { primary
   white-space: nowrap;
   font-size: ${props => props.theme.common.typography.fontSize.sm};
   font-weight: ${props => props.theme.common.typography.fontWeight.medium};
+  
+  ${media.desktop(css`
+    padding: ${props => props.theme.common.spacing.sm} ${props => props.theme.common.spacing.lg};
+    font-size: ${props => props.theme.common.typography.fontSize.md};
+  `)}
   
   &:hover {
     background: ${props => `linear-gradient(135deg, ${props.$colors.primary}30, ${props.$colors.secondary}30)`};

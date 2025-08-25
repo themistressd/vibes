@@ -27,6 +27,11 @@ export interface VibeTheme {
 export interface AppTheme {
   vibes: Record<VibeType, VibeTheme>;
   common: {
+    breakpoints: {
+      mobile: string;
+      tablet: string;
+      desktop: string;
+    };
     borderRadius: {
       small: string;
       medium: string;
