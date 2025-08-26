@@ -16,34 +16,65 @@ import boostIcon from '../assets/boost.png';
 
 const HomeContainer = styled.div`
   padding: ${props => props.theme.common.spacing.lg};
-  min-height: calc(100vh - 120px); /* Updated for compressed top bar (50px) and bottom nav (70px) = 120px total */
+  min-height: calc(100vh - 120px);
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
   width: 100%;
-  max-width: 375px; /* Fixed mobile width */
   margin: 0 auto;
+  
+  /* Only constrain width on desktop when in frame */
+  @media (min-width: 1024px) {
+    max-width: 375px;
+  }
 `;
 
 const SwipeArea = styled.div`
   position: relative;
   width: 100%;
-  max-width: 340px; /* Fixed mobile width with padding */
-  height: 67vh; /* Further increased to use extra space from more compressed header */
-  min-height: 510px; /* Increased for larger cards */
-  max-height: 620px; /* Increased for more content */
+  height: 67vh;
+  min-height: 510px;
+  max-height: 620px;
   margin-bottom: ${props => props.theme.common.spacing.lg};
+  
+  /* Responsive width constraints */
+  @media (max-width: 430px) {
+    max-width: calc(100vw - 32px);
+  }
+  
+  @media (max-width: 576px) {
+    max-width: calc(100vw - 48px);
+  }
+  
+  @media (min-width: 1024px) {
+    max-width: 340px;
+  }
 `;
 
 const ActionButtons = styled.div`
   display: flex;
   justify-content: center;
-  gap: 18px; /* Perfect 18px spacing between buttons - within Tinder's 15-20px range */
+  gap: 18px;
   margin-bottom: ${props => props.theme.common.spacing.lg};
   width: 100%;
-  max-width: 340px;
-  padding: 0 10px; /* Add padding to prevent edge cutoff */
+  padding: 0 10px;
+  
+  /* Responsive spacing and sizing */
+  @media (max-width: 430px) {
+    gap: 16px;
+    padding: 0 16px;
+  }
+  
+  @media (min-width: 576px) {
+    gap: 20px;
+    padding: 0 20px;
+  }
+  
+  @media (min-width: 1024px) {
+    max-width: 340px;
+    gap: 18px;
+  }
 `;
 
 const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'superlike' | 'like' | 'boost' }>`
@@ -53,40 +84,54 @@ const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'supe
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #6B7280; /* Grey circular background for all buttons */
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.1); /* Professional depth shadows */
+  background: #6B7280;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease;
   position: relative;
   
-  /* Size hierarchy: Pass & Like buttons = 80px, Rewind/SuperLike/Boost = 60px */
-  ${props => {
-    const isLarger = props.$variant === 'pass' || props.$variant === 'like';
-    const size = isLarger ? '80px' : '60px';
-    const iconSize = isLarger ? '40px' : '32px';
+  /* Base mobile sizes - smaller buttons for mobile screens */
+  width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '72px' : '56px'};
+  height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '72px' : '56px'};
+  
+  img {
+    width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '36px' : '28px'};
+    height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '36px' : '28px'};
+    object-fit: contain;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+  }
+  
+  /* Larger sizes for bigger mobile screens */
+  @media (min-width: 576px) {
+    width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '76px' : '60px'};
+    height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '76px' : '60px'};
     
-    return `
-      width: ${size};
-      height: ${size};
-      
-      img {
-        width: ${iconSize};
-        height: ${iconSize};
-        object-fit: contain;
-        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
-      }
-      
-      &:hover {
-        background: #4B5563; /* Slightly darker grey on hover */
-        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25), 0 6px 12px rgba(0, 0, 0, 0.15);
-        transform: translateY(-2px);
-      }
-      
-      &:active {
-        transform: translateY(0) scale(0.95);
-        background: #374151; /* Even darker grey when pressed */
-      }
-    `;
-  }}
+    img {
+      width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '38px' : '30px'};
+      height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '38px' : '30px'};
+    }
+  }
+  
+  /* Original desktop frame sizes */
+  @media (min-width: 1024px) {
+    width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '80px' : '60px'};
+    height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '80px' : '60px'};
+    
+    img {
+      width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '40px' : '32px'};
+      height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '40px' : '32px'};
+    }
+  }
+  
+  &:hover {
+    background: #4B5563;
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25), 0 6px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+  }
+  
+  &:active {
+    transform: translateY(0) scale(0.95);
+    background: #374151;
+  }
 `;
 
 const EmptyState = styled(motion.div)`

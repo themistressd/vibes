@@ -18,13 +18,20 @@ export const GlobalStyle = createGlobalStyle`
   
   body {
     font-family: ${props => props.theme.common.typography.fontFamily.primary};
-    background: #1a1a1a; /* Dark background for centering mobile frame */
+    background: #1a1a1a; /* Dark background for desktop frame demo */
     color: ${props => props.theme.current.colors.text};
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     margin: 0;
     padding: 0;
+  }
+  
+  /* Use app background on mobile */
+  @media (max-width: 430px) {
+    body {
+      background: ${props => props.theme.current.colors.background};
+    }
   }
   
   #root {
@@ -94,19 +101,38 @@ export const GlobalStyle = createGlobalStyle`
     scroll-behavior: smooth;
   }
   
-  /* Fixed mobile layout - no responsive scaling */
+  /* Responsive layout utilities */
   .container {
     width: 100%;
-    max-width: 375px; /* Fixed iPhone width */
     margin: 0 auto;
     padding: 0 16px;
     box-sizing: border-box;
   }
   
-  /* Fixed mobile grid - always 2 columns for mobile */
+  /* Only constrain width on desktop */
+  @media (min-width: 1024px) {
+    .container {
+      max-width: 375px;
+    }
+  }
+  
+  /* Responsive grid */
   .responsive-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
+  }
+  
+  /* More columns on larger screens */
+  @media (max-width: 768px) {
+    .responsive-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .responsive-grid {
+      grid-template-columns: repeat(2, 1fr); /* Back to 2 columns in desktop frame */
+    }
   }
 `;
