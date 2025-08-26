@@ -15,40 +15,37 @@ import likeIcon from '../assets/like.png';
 import boostIcon from '../assets/boost.png';
 
 const HomeContainer = styled.div`
-  padding: ${props => props.theme.common.spacing.lg};
+  padding: 0; /* Remove all padding for true edge-to-edge */
   min-height: calc(100vh - 120px);
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
-  width: 100%;
-  margin: 0 auto;
-  
-  /* Full width utilization - remove desktop constraints */
-  max-width: 100vw;
+  width: 100vw; /* Full viewport width */
+  margin: 0;
   
   /* Mobile-first responsive design */
   @media (max-width: 768px) {
-    padding: ${props => props.theme.common.spacing.md} ${props => props.theme.common.spacing.sm};
+    padding: 0;
     min-height: calc(100vh - 120px);
+    width: 100vw;
   }
 `;
 
 const SwipeArea = styled.div`
   position: relative;
-  width: 100%;
+  width: 100vw; /* Full viewport width */
   height: 67vh;
   min-height: 510px;
   max-height: 620px;
   margin-bottom: ${props => props.theme.common.spacing.lg};
-  
-  /* Full width utilization - remove constraints */
-  max-width: 100%;
+  padding: 0 16px; /* Internal padding for card positioning */
+  box-sizing: border-box;
   
   /* Mobile optimization */
   @media (max-width: 768px) {
-    width: calc(100vw - 32px);
-    max-width: calc(100vw - 32px);
+    width: 100vw;
+    padding: 0 12px;
   }
 `;
 
@@ -57,20 +54,23 @@ const ActionButtons = styled.div`
   justify-content: center;
   gap: 18px;
   margin-bottom: ${props => props.theme.common.spacing.lg};
-  width: 100%;
-  padding: 0 10px;
+  width: 100vw; /* Full viewport width */
+  padding: 0 24px; /* Ensure buttons fit within screen */
+  box-sizing: border-box;
   
-  /* Full width utilization - remove constraints */
-  max-width: 100%;
+  /* Prevent buttons from going off-screen */
+  max-width: 100vw;
+  overflow: visible;
   
   /* Mobile responsive spacing */
   @media (max-width: 768px) {
-    gap: 16px;
+    gap: 14px;
     padding: 0 16px;
   }
   
-  @media (min-width: 576px) {
-    gap: 20px;
+  /* Larger mobile screens */
+  @media (min-width: 576px) and (max-width: 768px) {
+    gap: 16px;
     padding: 0 20px;
   }
 `;
@@ -87,11 +87,19 @@ const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'supe
   transition: all 0.2s ease;
   position: relative;
   
-  /* Perfect circular buttons - enhanced for mobile touch */
+  /* PERFECT CIRCULAR BUTTONS - Guaranteed geometry */
   width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '76px' : '60px'};
   height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '76px' : '60px'};
   min-width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '76px' : '60px'};
   min-height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '76px' : '60px'};
+  max-width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '76px' : '60px'};
+  max-height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '76px' : '60px'};
+  
+  /* Perfect circle guarantee - multiple approaches */
+  border-radius: 50% !important;
+  aspect-ratio: 1 / 1; /* CSS aspect ratio for perfect circle */
+  overflow: hidden;
+  flex-shrink: 0; /* Prevent shrinking that could cause oval shape */
   
   /* Touch optimization */
   touch-action: manipulation;
@@ -102,14 +110,17 @@ const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'supe
     height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '38px' : '30px'};
     object-fit: contain;
     filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+    flex-shrink: 0; /* Prevent image distortion */
   }
   
-  /* Larger sizes for bigger mobile screens */
+  /* Responsive sizing for larger screens - maintain perfect circles */
   @media (min-width: 576px) {
     width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '80px' : '64px'};
     height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '80px' : '64px'};
     min-width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '80px' : '64px'};
     min-height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '80px' : '64px'};
+    max-width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '80px' : '64px'};
+    max-height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '80px' : '64px'};
     
     img {
       width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '40px' : '32px'};
@@ -117,7 +128,7 @@ const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'supe
     }
   }
   
-  /* Ensure perfect circularity and touch interaction */
+  /* Enhanced hover/touch states */
   &:hover {
     background: #4B5563;
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25), 0 6px 12px rgba(0, 0, 0, 0.15);
@@ -128,10 +139,6 @@ const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'supe
     transform: translateY(0) scale(0.95);
     background: #374151;
   }
-  
-  /* Perfect circle guarantee */
-  border-radius: 50% !important;
-  overflow: hidden;
 `;
 
 const EmptyState = styled(motion.div)`
@@ -169,7 +176,20 @@ const MatchNotification = styled(motion.div)`
   box-shadow: ${props => props.theme.common.shadows.large};
   text-align: center;
   z-index: 1000;
-  min-width: 250px;
+  min-width: 280px;
+  max-width: 90vw; /* Prevent overflow on small screens */
+  
+  /* Perfect centering - additional safety measures */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+  /* Ensure notification stays centered on all screen sizes */
+  @media (max-width: 350px) {
+    min-width: 260px;
+    padding: ${props => props.theme.common.spacing.md};
+  }
 `;
 
 const SuperLikeAnimation = styled(motion.div)`
@@ -180,6 +200,16 @@ const SuperLikeAnimation = styled(motion.div)`
   font-size: 6rem;
   z-index: 1000;
   pointer-events: none;
+  
+  /* Perfect centering - additional safety */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Responsive sizing */
+  @media (max-width: 350px) {
+    font-size: 5rem;
+  }
 `;
 
 export const HomeScreen: React.FC = () => {

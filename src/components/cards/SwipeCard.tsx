@@ -180,6 +180,18 @@ const TouchArea = styled.div<{ $side: 'left' | 'right' }>`
   ${props => props.$side === 'left' ? 'left: 0;' : 'right: 0;'}
   z-index: 5;
   cursor: pointer;
+  
+  /* Add subtle visual feedback for touch areas (development/debugging) */
+  @media (hover: hover) {
+    &:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+  }
+  
+  /* Active state for touch feedback */
+  &:active {
+    background: rgba(255, 255, 255, 0.1);
+  }
 `;
 
 const SwipeIndicator = styled(motion.div)<{ $direction: 'left' | 'right' }>`

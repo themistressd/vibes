@@ -31,10 +31,15 @@ const LayoutContainer = styled.div`
 
 const MainContent = styled.main`
   flex: 1;
-  padding-bottom: 70px; /* Space for bottom nav */
+  padding-bottom: calc(70px + env(safe-area-inset-bottom)); /* Adjust for safe area */
   overflow-y: auto;
   overflow-x: hidden;
   width: 100%;
+  
+  /* Mobile responsive adjustment */
+  @media (max-width: 768px) {
+    padding-bottom: calc(80px + max(16px, env(safe-area-inset-bottom)));
+  }
 `;
 
 const BottomNavigation = styled.nav`
@@ -50,6 +55,16 @@ const BottomNavigation = styled.nav`
   justify-content: space-around;
   backdrop-filter: blur(10px);
   z-index: 100;
+  
+  /* iOS Safe Area Support */
+  padding-bottom: env(safe-area-inset-bottom);
+  height: calc(70px + env(safe-area-inset-bottom));
+  
+  /* Ensure proper touch interaction on mobile */
+  @media (max-width: 768px) {
+    height: calc(80px + env(safe-area-inset-bottom));
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+  }
 `;
 
 const NavButton = styled(motion.button)<{ $isActive: boolean }>`

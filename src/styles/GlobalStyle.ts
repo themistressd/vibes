@@ -11,9 +11,13 @@ export const GlobalStyle = createGlobalStyle`
   
   html, body {
     height: 100%;
+    width: 100%;
     overflow-x: hidden;
+    overflow-y: hidden; /* Prevent any scrolling for edge-to-edge */
     /* Fixed mobile font size - no responsive scaling */
     font-size: 16px;
+    margin: 0;
+    padding: 0;
   }
   
   body {
@@ -23,8 +27,6 @@ export const GlobalStyle = createGlobalStyle`
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    margin: 0;
-    padding: 0;
   }
   
   /* Use app background on mobile */
@@ -36,19 +38,24 @@ export const GlobalStyle = createGlobalStyle`
   
   #root {
     min-height: 100vh;
+    height: 100vh;
+    width: 100vw;
     display: flex;
     flex-direction: column;
-    /* Remove default centering for mobile frame */
-    width: 100%;
+    margin: 0;
+    padding: 0;
   }
   
+  /* Hide all scrollbars for true mobile app feel */
   * {
-    scrollbar-width: thin;
-    scrollbar-color: ${props => props.theme.current.colors.primary}60 transparent;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
   }
   
   *::-webkit-scrollbar {
-    width: 6px;
+    display: none; /* Webkit browsers */
+    width: 0;
+    height: 0;
   }
   
   *::-webkit-scrollbar-track {
@@ -56,12 +63,11 @@ export const GlobalStyle = createGlobalStyle`
   }
   
   *::-webkit-scrollbar-thumb {
-    background: ${props => props.theme.current.colors.primary}60;
-    border-radius: 3px;
+    background: transparent;
   }
   
   *::-webkit-scrollbar-thumb:hover {
-    background: ${props => props.theme.current.colors.primary}80;
+    background: transparent;
   }
   
   button {
