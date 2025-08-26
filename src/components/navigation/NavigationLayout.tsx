@@ -7,9 +7,12 @@ import {
   User, 
   Users,
   Star,
-  Flame
+  Flame,
+  Maximize2,
+  Minimize2
 } from 'lucide-react';
 import { useTheme } from '../../styles/themes/ThemeProvider';
+import { useFullscreen } from '../../hooks/useFullscreen';
 
 interface NavigationLayoutProps {
   children: React.ReactNode;
@@ -124,6 +127,36 @@ const VibeIndicator = styled.div`
   border: 1px solid ${props => props.theme.current.colors.primary}30;
 `;
 
+const FullscreenButton = styled(motion.button)`
+  background: transparent;
+  border: none;
+  padding: 4px;
+  border-radius: ${props => props.theme.common.borderRadius.medium};
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${props => props.theme.current.colors.textSecondary};
+  
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+  
+  &:hover {
+    color: ${props => props.theme.current.colors.primary};
+    background: ${props => props.theme.current.colors.primary}10;
+  }
+`;
+
+const TopBarContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: ${props => props.theme.common.spacing.sm};
+`;
+
 const navigationItems = [
   { path: '/home', icon: Flame, label: 'Discover' },
   { path: '/tea-spill', icon: Star, label: 'Likes' },
@@ -137,6 +170,7 @@ export const NavigationLayout: React.FC<NavigationLayoutProps> = ({ children }) 
   const navigate = useNavigate();
   const { getVibeTheme } = useTheme();
   const vibeTheme = getVibeTheme();
+  const { isFullscreen, toggleFullscreen, isSupported } = useFullscreen();
   
   // Don't show navigation on entry and splash screens
   if (location.pathname === '/entry' || location.pathname === '/splash') {
@@ -150,17 +184,30 @@ export const NavigationLayout: React.FC<NavigationLayoutProps> = ({ children }) 
   return (
     <LayoutContainer>
       <TopBar>
-        <Logo>VIBES</Logo>
-        <VibeIndicator>
-          <span>{vibeTheme.emoji}</span>
-          <span style={{ 
-            color: vibeTheme.colors.primary,
-            fontWeight: 600,
-            fontSize: '0.9rem'
-          }}>
-            {vibeTheme.name}
-          </span>
-        </VibeIndicator>
+        <TopBarContent>
+          <Logo>VIBES</Logo>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <VibeIndicator>
+              <span>{vibeTheme.emoji}</span>
+              <span style={{ 
+                color: vibeTheme.colors.primary,
+                fontWeight: 600,
+                fontSize: '0.9rem'
+              }}>
+                {vibeTheme.name}
+              </span>
+            </VibeIndicator>
+            {isSupported && (
+              <FullscreenButton
+                onClick={toggleFullscreen}
+                whileTap={{ scale: 0.9 }}
+                title={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
+              >
+                {isFullscreen ? <Minimize2 /> : <Maximize2 />}
+              </FullscreenButton>
+            )}
+          </div>
+        </TopBarContent>
       </TopBar>
       
       <MainContent>

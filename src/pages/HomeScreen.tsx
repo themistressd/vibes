@@ -24,9 +24,13 @@ const HomeContainer = styled.div`
   width: 100%;
   margin: 0 auto;
   
-  /* Only constrain width on desktop when in frame */
-  @media (min-width: 1024px) {
-    max-width: 375px;
+  /* Full width utilization - remove desktop constraints */
+  max-width: 100vw;
+  
+  /* Mobile-first responsive design */
+  @media (max-width: 768px) {
+    padding: ${props => props.theme.common.spacing.md} ${props => props.theme.common.spacing.sm};
+    min-height: calc(100vh - 120px);
   }
 `;
 
@@ -38,17 +42,13 @@ const SwipeArea = styled.div`
   max-height: 620px;
   margin-bottom: ${props => props.theme.common.spacing.lg};
   
-  /* Responsive width constraints */
-  @media (max-width: 430px) {
+  /* Full width utilization - remove constraints */
+  max-width: 100%;
+  
+  /* Mobile optimization */
+  @media (max-width: 768px) {
+    width: calc(100vw - 32px);
     max-width: calc(100vw - 32px);
-  }
-  
-  @media (max-width: 576px) {
-    max-width: calc(100vw - 48px);
-  }
-  
-  @media (min-width: 1024px) {
-    max-width: 340px;
   }
 `;
 
@@ -60,8 +60,11 @@ const ActionButtons = styled.div`
   width: 100%;
   padding: 0 10px;
   
-  /* Responsive spacing and sizing */
-  @media (max-width: 430px) {
+  /* Full width utilization - remove constraints */
+  max-width: 100%;
+  
+  /* Mobile responsive spacing */
+  @media (max-width: 768px) {
     gap: 16px;
     padding: 0 16px;
   }
@@ -69,11 +72,6 @@ const ActionButtons = styled.div`
   @media (min-width: 576px) {
     gap: 20px;
     padding: 0 20px;
-  }
-  
-  @media (min-width: 1024px) {
-    max-width: 340px;
-    gap: 18px;
   }
 `;
 
@@ -89,32 +87,29 @@ const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'supe
   transition: all 0.2s ease;
   position: relative;
   
-  /* Base mobile sizes - smaller buttons for mobile screens */
-  width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '72px' : '56px'};
-  height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '72px' : '56px'};
+  /* Perfect circular buttons - enhanced for mobile touch */
+  width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '76px' : '60px'};
+  height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '76px' : '60px'};
+  min-width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '76px' : '60px'};
+  min-height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '76px' : '60px'};
+  
+  /* Touch optimization */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   
   img {
-    width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '36px' : '28px'};
-    height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '36px' : '28px'};
+    width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '38px' : '30px'};
+    height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '38px' : '30px'};
     object-fit: contain;
     filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
   }
   
   /* Larger sizes for bigger mobile screens */
   @media (min-width: 576px) {
-    width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '76px' : '60px'};
-    height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '76px' : '60px'};
-    
-    img {
-      width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '38px' : '30px'};
-      height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '38px' : '30px'};
-    }
-  }
-  
-  /* Original desktop frame sizes */
-  @media (min-width: 1024px) {
-    width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '80px' : '60px'};
-    height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '80px' : '60px'};
+    width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '80px' : '64px'};
+    height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '80px' : '64px'};
+    min-width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '80px' : '64px'};
+    min-height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '80px' : '64px'};
     
     img {
       width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '40px' : '32px'};
@@ -122,6 +117,7 @@ const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'supe
     }
   }
   
+  /* Ensure perfect circularity and touch interaction */
   &:hover {
     background: #4B5563;
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25), 0 6px 12px rgba(0, 0, 0, 0.15);
@@ -132,6 +128,10 @@ const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'supe
     transform: translateY(0) scale(0.95);
     background: #374151;
   }
+  
+  /* Perfect circle guarantee */
+  border-radius: 50% !important;
+  overflow: hidden;
 `;
 
 const EmptyState = styled(motion.div)`
