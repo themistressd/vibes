@@ -1,0 +1,35 @@
+{
+  "name": "VIBES - Dating App",
+  "short_name": "VIBES",
+  "description": "The Ultimate Trash Pop Fantasy Dating App",
+  "start_url": "/",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "theme_color": "#FF4500",
+  "background_color": "#121212",
+  "icons": [
+    {
+      "src": "/vite.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["social", "lifestyle"],
+  "shortcuts": [
+    {
+      "name": "Discover",
+      "short_name": "Discover",
+      "description": "Find new matches",
+      "url": "/home",
+      "icons": [{ "src": "/vite.svg", "sizes": "96x96" }]
+    },
+    {
+      "name": "Messages",
+      "short_name": "Messages", 
+      "description": "Chat with matches",
+      "url": "/messages",
+      "icons": [{ "src": "/vite.svg", "sizes": "96x96" }]
+    }
+  ]
+}
