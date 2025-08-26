@@ -63,15 +63,25 @@ const CarouselDots = styled.div`
   display: flex;
   gap: 4px;
   z-index: 20;
+  
+  /* Enhanced visibility with backdrop */
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
 `;
 
 const Dot = styled.div<{ $active: boolean; $total: number }>`
-  width: ${props => `calc((100vw - 120px) / ${props.$total})`}; /* Dynamic width based on number of images */
-  max-width: 60px;
+  width: ${props => `calc((100vw - 160px) / ${props.$total})`}; /* Adjusted for backdrop padding */
+  max-width: 50px;
+  min-width: 20px;
   height: 3px;
-  background: ${props => props.$active ? 'white' : 'rgba(255, 255, 255, 0.4)'};
+  background: ${props => props.$active ? 'white' : 'rgba(255, 255, 255, 0.5)'};
   border-radius: 2px;
   transition: all 0.3s ease;
+  
+  /* Enhanced visibility */
+  box-shadow: ${props => props.$active ? '0 0 4px rgba(255, 255, 255, 0.6)' : 'none'};
 `;
 
 const StatusBadge = styled.div`
@@ -87,6 +97,11 @@ const StatusBadge = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
+  z-index: 15;
+  
+  /* Enhanced visibility */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   
   &::before {
     content: '';
@@ -94,6 +109,7 @@ const StatusBadge = styled.div`
     height: 8px;
     background: white;
     border-radius: 50%;
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.6);
   }
 `;
 
@@ -112,6 +128,10 @@ const VibeIndicator = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
+  
+  /* Enhanced visibility */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 `;
 
 const ProfileInfo = styled.div`
@@ -180,6 +200,18 @@ const TouchArea = styled.div<{ $side: 'left' | 'right' }>`
   ${props => props.$side === 'left' ? 'left: 0;' : 'right: 0;'}
   z-index: 5;
   cursor: pointer;
+  
+  /* Add subtle visual feedback for touch areas (development/debugging) */
+  @media (hover: hover) {
+    &:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+  }
+  
+  /* Active state for touch feedback */
+  &:active {
+    background: rgba(255, 255, 255, 0.1);
+  }
 `;
 
 const SwipeIndicator = styled(motion.div)<{ $direction: 'left' | 'right' }>`

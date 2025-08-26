@@ -116,17 +116,37 @@ const BackButton = styled(motion.button)`
   position: absolute;
   top: ${props => props.theme.common.spacing.lg};
   left: ${props => props.theme.common.spacing.lg};
-  background: rgba(255, 255, 255, 0.2);
-  border: none;
+  background: rgba(0, 0, 0, 0.6); /* Enhanced contrast - dark background */
+  border: 2px solid rgba(255, 255, 255, 0.8); /* White border for visibility */
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 48px; /* Larger for better touch target */
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   color: white;
   backdrop-filter: blur(10px);
+  z-index: 20; /* Higher z-index for visibility */
+  
+  /* Enhanced visibility and contrast */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.2);
+  
+  &:hover {
+    background: rgba(0, 0, 0, 0.8);
+    border-color: rgba(255, 255, 255, 1);
+    transform: scale(1.05);
+  }
+  
+  &:active {
+    transform: scale(0.95);
+  }
+  
+  svg {
+    width: 22px;
+    height: 22px;
+    stroke-width: 2.5; /* Thicker stroke for better visibility */
+  }
 `;
 
 const MatchContent = styled(motion.div)`
