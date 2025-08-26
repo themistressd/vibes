@@ -15,7 +15,7 @@ import likeIcon from '../assets/like.png';
 import boostIcon from '../assets/boost.png';
 
 const HomeContainer = styled.div`
-  padding: 0; /* Remove all padding for true edge-to-edge */
+  padding: 16px 0 0 0; /* Minimal top padding, zero sides for edge-to-edge */
   min-height: calc(100vh - 120px);
   display: flex;
   flex-direction: column;
@@ -23,10 +23,14 @@ const HomeContainer = styled.div`
   position: relative;
   width: 100vw; /* Full viewport width */
   margin: 0;
+  box-sizing: border-box;
+  
+  /* Perfect alignment and geometry */
+  justify-content: flex-start;
   
   /* Mobile-first responsive design */
   @media (max-width: 768px) {
-    padding: 0;
+    padding: 12px 0 0 0;
     min-height: calc(100vh - 120px);
     width: 100vw;
   }
