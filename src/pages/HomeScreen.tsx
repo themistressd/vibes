@@ -24,11 +24,8 @@ const HomeContainer = styled.div`
   width: 100vw; /* Full viewport width */
   margin: 0;
   box-sizing: border-box;
-  
-  /* Perfect alignment and geometry */
   justify-content: flex-start;
   
-  /* Mobile-first responsive design */
   @media (max-width: 768px) {
     padding: 12px 0 0 0;
     min-height: calc(100vh - 120px);
@@ -43,10 +40,9 @@ const SwipeArea = styled.div`
   min-height: 510px;
   max-height: 620px;
   margin-bottom: ${props => props.theme.common.spacing.lg};
-  padding: 0 16px; /* Internal padding for card positioning */
+  padding: 0 16px;
   box-sizing: border-box;
   
-  /* Mobile optimization */
   @media (max-width: 768px) {
     width: 100vw;
     padding: 0 12px;
@@ -58,21 +54,16 @@ const ActionButtons = styled.div`
   justify-content: center;
   gap: 18px;
   margin-bottom: ${props => props.theme.common.spacing.lg};
-  width: 100vw; /* Full viewport width */
-  padding: 0 24px; /* Ensure buttons fit within screen */
+  width: 100vw;
+  padding: 0 24px;
   box-sizing: border-box;
-  
-  /* Prevent buttons from going off-screen */
   max-width: 100vw;
   overflow: visible;
   
-  /* Mobile responsive spacing */
   @media (max-width: 768px) {
     gap: 14px;
     padding: 0 16px;
   }
-  
-  /* Larger mobile screens */
   @media (min-width: 576px) and (max-width: 768px) {
     gap: 16px;
     padding: 0 20px;
@@ -90,41 +81,30 @@ const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'supe
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease;
   position: relative;
-  
-  /* PERFECT CIRCULAR BUTTONS - Guaranteed geometry */
   width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '76px' : '60px'};
   height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '76px' : '60px'};
   min-width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '76px' : '60px'};
   min-height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '76px' : '60px'};
   max-width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '76px' : '60px'};
   max-height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '76px' : '60px'};
-  
-  /* Perfect circle guarantee - multiple approaches */
   border-radius: 50% !important;
-  aspect-ratio: 1 / 1; /* CSS aspect ratio for perfect circle */
+  aspect-ratio: 1 / 1;
   overflow: hidden;
-  flex-shrink: 0; /* Prevent shrinking that could cause oval shape */
-  
-  /* Touch optimization for smartphones */
+  flex-shrink: 0;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
-  
-  /* Enhanced touch feedback for mobile */
   @media (max-width: 768px) {
     &:active {
-      transform: translateY(0) scale(0.92); /* Slightly more pronounced feedback on mobile */
+      transform: translateY(0) scale(0.92);
     }
   }
-  
   img {
     width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '38px' : '30px'};
     height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '38px' : '30px'};
     object-fit: contain;
     filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
-    flex-shrink: 0; /* Prevent image distortion */
+    flex-shrink: 0;
   }
-  
-  /* Responsive sizing for larger screens - maintain perfect circles */
   @media (min-width: 576px) {
     width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '80px' : '64px'};
     height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '80px' : '64px'};
@@ -132,20 +112,16 @@ const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'supe
     min-height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '80px' : '64px'};
     max-width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '80px' : '64px'};
     max-height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '80px' : '64px'};
-    
     img {
       width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '40px' : '32px'};
       height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '40px' : '32px'};
     }
   }
-  
-  /* Enhanced hover/touch states */
   &:hover {
     background: #4B5563;
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.25), 0 6px 12px rgba(0, 0, 0, 0.15);
     transform: translateY(-2px);
   }
-  
   &:active {
     transform: translateY(0) scale(0.95);
     background: #374151;
@@ -175,38 +151,30 @@ const EmptyStateSubtext = styled.p`
   opacity: 0.8;
 `;
 
+// 👇 CAMBIO PRINCIPAL: La notificación ahora es absolute y va dentro de SwipeArea
 const MatchNotification = styled(motion.div)`
-  position: fixed;
-  top: 50%;
+  position: absolute;
   left: 50%;
-  transform: translate(-50%, -50%);
+  top: 24px; /* Offset desde el top de SwipeArea, puedes ajustar este valor */
+  transform: translateX(-50%);
   background: ${props => props.theme.current.gradients.main};
   color: ${props => props.theme.current.colors.text};
   padding: ${props => props.theme.common.spacing.lg};
   border-radius: ${props => props.theme.common.borderRadius.large};
   box-shadow: ${props => props.theme.common.shadows.large};
   text-align: center;
-  z-index: 1000;
+  z-index: 100;
   min-width: 280px;
-  max-width: 90vw; /* Prevent overflow on small screens */
-  
-  /* Perfect centering - additional safety measures */
+  max-width: 90vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  
-  /* Safe area compliance for smartphones */
-  margin: max(env(safe-area-inset-top), 20px) max(env(safe-area-inset-right), 20px) max(env(safe-area-inset-bottom), 20px) max(env(safe-area-inset-left), 20px);
-  
-  /* Ensure notification stays centered on all screen sizes */
+  margin: 0;
   @media (max-width: 350px) {
     min-width: 260px;
     padding: ${props => props.theme.common.spacing.md};
-    margin: 16px;
   }
-  
-  /* Enhanced mobile positioning */
   @media (max-width: 375px) {
     max-width: calc(100vw - 32px);
   }
@@ -220,22 +188,15 @@ const SuperLikeAnimation = styled(motion.div)`
   font-size: 6rem;
   z-index: 1000;
   pointer-events: none;
-  
-  /* Perfect centering - additional safety */
   display: flex;
   align-items: center;
   justify-content: center;
-  
-  /* Responsive sizing for different smartphone screens */
   @media (max-width: 350px) {
     font-size: 5rem;
   }
-  
   @media (min-width: 351px) and (max-width: 414px) {
     font-size: 6rem;
   }
-  
-  /* Safe area compliance for smartphones with notches */
   @media (max-width: 375px) {
     top: calc(50% - env(safe-area-inset-top) / 2);
   }
@@ -255,37 +216,24 @@ export const HomeScreen: React.FC = () => {
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState<typeof profiles[0] | null>(null);
   
-  // Show all profiles in mixed vibes approach (no filtering by vibe)
-  const allProfiles = profiles; // Use all profiles instead of filtering
+  const allProfiles = profiles;
   const currentProfile = allProfiles[currentProfileIndex % allProfiles.length];
   const nextProfile_card = allProfiles[(currentProfileIndex + 1) % allProfiles.length];
-  
-  // Remove vibe change effect since we're not filtering by vibe anymore
-  // useEffect(() => {
-  //   // Reset to start when vibe changes
-  //   resetSwipeStack();
-  // }, [currentVibe, resetSwipeStack]);
 
   const handleSwipe = (direction: 'left' | 'right' | 'boots' | 'wig') => {
     if (!currentProfile) return;
-    
-    // Show super like animation
     if (direction === 'boots' || direction === 'wig') {
       setSuperLikeAnimation(direction === 'boots' ? '👠' : '💇‍♀️');
       setTimeout(() => setSuperLikeAnimation(null), 1500);
     }
-    
-    // Simulate match for likes and super likes (30% chance)
     if ((direction === 'right' || direction === 'boots' || direction === 'wig') && Math.random() > 0.7) {
       setMatchedProfile(currentProfile);
       setShowMatch(true);
-      
       setTimeout(() => {
         setShowMatch(false);
         setMatchedProfile(null);
       }, 3000);
     }
-    
     swipeProfile({
       type: direction === 'left' ? 'pass' : direction === 'right' ? 'like' : direction,
       profileId: currentProfile.id,
@@ -295,11 +243,9 @@ export const HomeScreen: React.FC = () => {
 
   const handleManualAction = (action: 'rewind' | 'pass' | 'like' | 'boots' | 'wig') => {
     if (action === 'rewind') {
-      // For now, just show a message - rewind could be implemented with state management
       console.log('Rewind action - would undo last swipe');
       return;
     }
-    
     const directionMap = {
       pass: 'left' as const,
       like: 'right' as const,
@@ -342,7 +288,7 @@ export const HomeScreen: React.FC = () => {
 
   return (
     <HomeContainer>
-      {/* Swipe Area - removed vibe switcher for mixed vibes approach */}
+      {/* Swipe Area */}
       <SwipeArea>
         <AnimatePresence mode="popLayout">
           {nextProfile_card && (
@@ -354,7 +300,6 @@ export const HomeScreen: React.FC = () => {
               isTop={false}
             />
           )}
-          
           {currentProfile && (
             <SwipeCard
               key={`${currentProfile.id}_top`}
@@ -363,6 +308,28 @@ export const HomeScreen: React.FC = () => {
               onTap={() => handleProfileTap(currentProfile)}
               isTop={true}
             />
+          )}
+        </AnimatePresence>
+
+        {/* 👇 Notificación AHORA sobre el card, centrada horizontalmente */}
+        <AnimatePresence>
+          {showMatch && matchedProfile && (
+            <MatchNotification
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            >
+              <h3 style={{ margin: '0 0 16px 0', fontSize: '1.5rem' }}>
+                🎉 IT'S A MATCH! 🎉
+              </h3>
+              <p style={{ margin: '0 0 16px 0' }}>
+                You matched with <strong>{matchedProfile.name}</strong>!
+              </p>
+              <Button onClick={handleViewMatch} size="sm">
+                Start Chatting
+              </Button>
+            </MatchNotification>
           )}
         </AnimatePresence>
       </SwipeArea>
@@ -375,14 +342,12 @@ export const HomeScreen: React.FC = () => {
         >
           <img src={rewindIcon} alt="Rewind" />
         </ActionButton>
-        
         <ActionButton
           $variant="pass"
           onClick={() => handleManualAction('pass')}
         >
           <img src={passIcon} alt="Pass" />
         </ActionButton>
-        
         <ActionButton
           $variant="superlike"
           onClick={() => handleManualAction('boots')}
@@ -390,14 +355,12 @@ export const HomeScreen: React.FC = () => {
         >
           <img src={superlikeIcon} alt="Super Like" />
         </ActionButton>
-        
         <ActionButton
           $variant="like"
           onClick={() => handleManualAction('like')}
         >
           <img src={likeIcon} alt="Like" />
         </ActionButton>
-        
         <ActionButton
           $variant="boost"
           onClick={() => handleManualAction('wig')}
@@ -418,28 +381,6 @@ export const HomeScreen: React.FC = () => {
           >
             {superLikeAnimation}
           </SuperLikeAnimation>
-        )}
-      </AnimatePresence>
-
-      {/* Match Notification */}
-      <AnimatePresence>
-        {showMatch && matchedProfile && (
-          <MatchNotification
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 300, damping: 25 }}
-          >
-            <h3 style={{ margin: '0 0 16px 0', fontSize: '1.5rem' }}>
-              🎉 IT'S A MATCH! 🎉
-            </h3>
-            <p style={{ margin: '0 0 16px 0' }}>
-              You matched with <strong>{matchedProfile.name}</strong>!
-            </p>
-            <Button onClick={handleViewMatch} size="sm">
-              Start Chatting
-            </Button>
-          </MatchNotification>
         )}
       </AnimatePresence>
 
