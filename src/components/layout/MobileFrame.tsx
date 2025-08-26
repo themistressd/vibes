@@ -11,22 +11,24 @@ const FrameContainer = styled.div`
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: #1a1a1a; /* Dark background for demo */
+  background: #1a1a1a; /* Dark background for desktop frame demo */
   padding: 20px;
   
+  /* Remove frame padding on mobile - full screen */
   @media (max-width: 430px) {
     padding: 0;
+    background: transparent;
   }
 `;
 
 const PhoneFrame = styled.div`
-  /* iPhone-like dimensions - Fixed and strict */
+  /* iPhone-like dimensions on desktop */
   width: 375px;
   height: 812px;
   max-width: 100vw;
   max-height: 100vh;
   
-  /* Mobile device styling */
+  /* Mobile device styling for desktop frame */
   background: #000;
   border-radius: 35px;
   padding: 8px;
@@ -36,7 +38,7 @@ const PhoneFrame = styled.div`
     0 20px 60px rgba(0, 0, 0, 0.3),
     0 40px 100px rgba(0, 0, 0, 0.2);
   
-  /* Remove frame styling on actual mobile devices */
+  /* Full screen on mobile - remove frame styling */
   @media (max-width: 430px) {
     border-radius: 0;
     padding: 0;
@@ -58,7 +60,7 @@ const ScreenContent = styled.div`
   display: flex;
   flex-direction: column;
   
-  /* Remove border radius on actual mobile devices */
+  /* Remove border radius on mobile for full screen */
   @media (max-width: 430px) {
     border-radius: 0;
   }
@@ -71,7 +73,7 @@ const NotchContainer = styled.div`
   transform: translateX(-50%);
   z-index: 1000;
   
-  /* Hide notch on actual mobile devices */
+  /* Hide notch on mobile devices */
   @media (max-width: 430px) {
     display: none;
   }

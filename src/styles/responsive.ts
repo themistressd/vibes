@@ -1,30 +1,48 @@
 import { css } from 'styled-components';
 
-// Fixed mobile dimensions - no responsive behavior
-export const MOBILE_WIDTH = 375;
-export const MOBILE_HEIGHT = 812;
-
-// Media query helpers - simplified to mobile-only
+// Responsive breakpoints for mobile-first design
 export const breakpoints = {
-  mobile: '430px', // Only used to hide mobile frame on actual devices
+  mobile: '430px',      // Mobile phones in portrait
+  mobileLg: '576px',    // Large mobile phones
+  tablet: '768px',      // Tablets
+  desktop: '1024px',    // Desktop screens
 };
 
-// Remove all responsive media queries - mobile-first only
+// Mobile-first responsive media queries
 export const media = {
-  // Only keep this for hiding mobile frame on actual mobile devices
-  actualMobile: (styles: ReturnType<typeof css>) => css`
+  mobile: (styles: ReturnType<typeof css>) => css`
     @media (max-width: ${breakpoints.mobile}) {
+      ${styles}
+    }
+  `,
+  mobileLg: (styles: ReturnType<typeof css>) => css`
+    @media (max-width: ${breakpoints.mobileLg}) {
+      ${styles}
+    }
+  `,
+  tablet: (styles: ReturnType<typeof css>) => css`
+    @media (max-width: ${breakpoints.tablet}) {
+      ${styles}
+    }
+  `,
+  desktop: (styles: ReturnType<typeof css>) => css`
+    @media (min-width: ${breakpoints.desktop}) {
       ${styles}
     }
   `,
 };
 
-// Fixed mobile spacing - no responsive variations
+// Responsive spacing and layout utilities
 export const responsiveSpacing = {
   container: css`
     padding: 16px;
-    max-width: ${MOBILE_WIDTH}px;
+    width: 100%;
+    max-width: 100%;
     margin: 0 auto;
+    
+    ${media.desktop(css`
+      max-width: 375px; /* Only constrain on desktop */
+    `)}
   `,
   
   section: css`
@@ -32,22 +50,29 @@ export const responsiveSpacing = {
   `,
 };
 
-// Fixed mobile layout utilities
+// Responsive layout utilities
 export const responsiveLayout = {
   centerContent: css`
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    max-width: ${MOBILE_WIDTH}px;
     margin: 0 auto;
+    
+    ${media.desktop(css`
+      max-width: 375px; /* Only constrain on desktop */
+    `)}
   `,
   
   flexGrid: css`
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
-    max-width: ${MOBILE_WIDTH}px;
+    width: 100%;
     margin: 0 auto;
+    
+    ${media.desktop(css`
+      max-width: 375px; /* Only constrain on desktop */
+    `)}
   `,
 };
