@@ -39,11 +39,11 @@ const CloseButton = styled(motion.button)`
   position: absolute;
   top: 20px;
   right: 20px;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.8); /* Increased opacity for better contrast */
   color: white;
   border: none;
-  width: 40px;
-  height: 40px;
+  width: 48px; /* Increased from 40px for better touch target */
+  height: 48px; /* Increased from 40px for better touch target */
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -51,6 +51,7 @@ const CloseButton = styled(motion.button)`
   cursor: pointer;
   z-index: 10;
   backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); /* Added shadow for better visibility */
 `;
 
 const PhotoGallery = styled.div`
@@ -95,11 +96,11 @@ const NavButton = styled(motion.button)`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.8); /* Increased opacity for better contrast */
   color: white;
   border: none;
-  width: 40px;
-  height: 40px;
+  width: 48px; /* Increased from 40px for better touch target */
+  height: 48px; /* Increased from 40px for better touch target */
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -107,6 +108,7 @@ const NavButton = styled(motion.button)`
   cursor: pointer;
   backdrop-filter: blur(10px);
   z-index: 5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); /* Added shadow for better visibility */
   
   &.prev {
     left: 20px;
@@ -274,7 +276,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ profile, isOpen, onC
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
             >
-              <X size={20} />
+              <X size={28} /> {/* Increased from 20 to 28 for better mobile visibility */}
             </CloseButton>
 
             <PhotoGallery>
@@ -289,7 +291,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ profile, isOpen, onC
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
                     >
-                      <ChevronLeft size={20} />
+                      <ChevronLeft size={28} /> {/* Increased from 20 to 28 for better mobile visibility */}
                     </NavButton>
                   )}
                   
@@ -300,7 +302,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ profile, isOpen, onC
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
                     >
-                      <ChevronRight size={20} />
+                      <ChevronRight size={28} /> {/* Increased from 20 to 28 for better mobile visibility */}
                     </NavButton>
                   )}
 

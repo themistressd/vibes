@@ -93,9 +93,9 @@ const NavButton = styled(motion.button)<{ $isActive: boolean }>`
   `}
   
   svg {
-    width: 20px;
-    height: 20px;
-    stroke-width: 2; /* Slightly thicker for better visibility */
+    width: 28px; /* Increased by 40% from 20px for smartphone visibility */
+    height: 28px; /* Increased by 40% from 20px for smartphone visibility */
+    stroke-width: 2.5; /* Thicker strokes for better mobile contrast */
   }
   
   span {
@@ -171,8 +171,8 @@ const FullscreenButton = styled(motion.button)`
   color: ${props => props.theme.current.colors.textSecondary};
   
   svg {
-    width: 18px;
-    height: 18px;
+    width: 24px; /* Increased by 33% from 18px for better mobile visibility */
+    height: 24px; /* Increased by 33% from 18px for better mobile visibility */
   }
   
   &:hover {

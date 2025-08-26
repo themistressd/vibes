@@ -105,9 +105,16 @@ const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'supe
   overflow: hidden;
   flex-shrink: 0; /* Prevent shrinking that could cause oval shape */
   
-  /* Touch optimization */
+  /* Touch optimization for smartphones */
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+  
+  /* Enhanced touch feedback for mobile */
+  @media (max-width: 768px) {
+    &:active {
+      transform: translateY(0) scale(0.92); /* Slightly more pronounced feedback on mobile */
+    }
+  }
   
   img {
     width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '38px' : '30px'};
@@ -189,10 +196,19 @@ const MatchNotification = styled(motion.div)`
   align-items: center;
   justify-content: center;
   
+  /* Safe area compliance for smartphones */
+  margin: max(env(safe-area-inset-top), 20px) max(env(safe-area-inset-right), 20px) max(env(safe-area-inset-bottom), 20px) max(env(safe-area-inset-left), 20px);
+  
   /* Ensure notification stays centered on all screen sizes */
   @media (max-width: 350px) {
     min-width: 260px;
     padding: ${props => props.theme.common.spacing.md};
+    margin: 16px;
+  }
+  
+  /* Enhanced mobile positioning */
+  @media (max-width: 375px) {
+    max-width: calc(100vw - 32px);
   }
 `;
 
@@ -210,9 +226,18 @@ const SuperLikeAnimation = styled(motion.div)`
   align-items: center;
   justify-content: center;
   
-  /* Responsive sizing */
+  /* Responsive sizing for different smartphone screens */
   @media (max-width: 350px) {
     font-size: 5rem;
+  }
+  
+  @media (min-width: 351px) and (max-width: 414px) {
+    font-size: 6rem;
+  }
+  
+  /* Safe area compliance for smartphones with notches */
+  @media (max-width: 375px) {
+    top: calc(50% - env(safe-area-inset-top) / 2);
   }
 `;
 
