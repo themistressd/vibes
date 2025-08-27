@@ -29,6 +29,8 @@ export const GlobalStyle = createGlobalStyle`
     -moz-osx-font-smoothing: grayscale;
     display: flex;
     justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
   }
   
   /* Use app background on mobile */
@@ -47,6 +49,11 @@ export const GlobalStyle = createGlobalStyle`
     flex-direction: column;
     margin: 0 auto;
     padding: 0;
+  }
+
+  /* Optional wrapper to add spacing above the app when the viewport is taller than the mobile frame */
+  .frame-wrapper {
+    padding-top: 24px;
   }
   
   /* Hide all scrollbars for true mobile app feel */
