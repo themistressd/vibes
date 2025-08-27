@@ -1,5 +1,23 @@
 import { useState, useEffect, useCallback } from 'react';
 
+interface FullscreenDocument extends Document {
+  webkitFullscreenEnabled?: boolean;
+  mozFullScreenEnabled?: boolean;
+  msFullscreenEnabled?: boolean;
+  webkitFullscreenElement?: Element;
+  mozFullScreenElement?: Element;
+  msFullscreenElement?: Element;
+  webkitExitFullscreen?: () => Promise<void>;
+  mozCancelFullScreen?: () => Promise<void>;
+  msExitFullscreen?: () => Promise<void>;
+}
+
+interface FullscreenElement extends HTMLElement {
+  webkitRequestFullscreen?: () => Promise<void>;
+  mozRequestFullScreen?: () => Promise<void>;
+  msRequestFullscreen?: () => Promise<void>;
+}
+
 export interface FullscreenHook {
   isFullscreen: boolean;
   toggleFullscreen: () => Promise<void>;
@@ -9,24 +27,27 @@ export interface FullscreenHook {
 }
 
 export const useFullscreen = (): FullscreenHook => {
-  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const doc = document as FullscreenDocument;
+  const elem = document.documentElement as FullscreenElement;
 
   // Check if fullscreen is supported
-  const isSupported = !!(
+  const isSupported = Boolean(
     document.fullscreenEnabled ||
-    (document as any).webkitFullscreenEnabled ||
-    (document as any).mozFullScreenEnabled ||
-    (document as any).msFullscreenEnabled
+    doc.webkitFullscreenEnabled ||
+    doc.mozFullScreenEnabled ||
+    doc.msFullscreenEnabled
   );
 
   // Update fullscreen state when it changes
   useEffect(() => {
-    const handleFullscreenChange = () => {
-      const isCurrentlyFullscreen = !!(
+    const handleFullscreenChange = (): void => {
+      const isCurrentlyFullscreen = Boolean(
         document.fullscreenElement ||
-        (document as any).webkitFullscreenElement ||
-        (document as any).mozFullScreenElement ||
-        (document as any).msFullscreenElement
+        doc.webkitFullscreenElement ||
+        doc.mozFullScreenElement ||
+        doc.msFullscreenElement
       );
       setIsFullscreen(isCurrentlyFullscreen);
     };
@@ -43,27 +64,25 @@ export const useFullscreen = (): FullscreenHook => {
       document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
       document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
     };
-  }, []);
+  }, [doc]);
 
   const requestFullscreen = useCallback(async (): Promise<void> => {
     if (!isSupported) return;
 
-    const element = document.documentElement;
-
     try {
-      if (element.requestFullscreen) {
-        await element.requestFullscreen();
-      } else if ((element as any).webkitRequestFullscreen) {
-        await (element as any).webkitRequestFullscreen();
-      } else if ((element as any).mozRequestFullScreen) {
-        await (element as any).mozRequestFullScreen();
-      } else if ((element as any).msRequestFullscreen) {
-        await (element as any).msRequestFullscreen();
+      if (elem.requestFullscreen) {
+        await elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) {
+        await elem.webkitRequestFullscreen();
+      } else if (elem.mozRequestFullScreen) {
+        await elem.mozRequestFullScreen();
+      } else if (elem.msRequestFullscreen) {
+        await elem.msRequestFullscreen();
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.warn('Failed to request fullscreen:', error);
     }
-  }, [isSupported]);
+  }, [isSupported, elem]);
 
   const exitFullscreen = useCallback(async (): Promise<void> => {
     if (!isSupported) return;
@@ -71,17 +90,17 @@ export const useFullscreen = (): FullscreenHook => {
     try {
       if (document.exitFullscreen) {
         await document.exitFullscreen();
-      } else if ((document as any).webkitExitFullscreen) {
-        await (document as any).webkitExitFullscreen();
-      } else if ((document as any).mozCancelFullScreen) {
-        await (document as any).mozCancelFullScreen();
-      } else if ((document as any).msExitFullscreen) {
-        await (document as any).msExitFullscreen();
+      } else if (doc.webkitExitFullscreen) {
+        await doc.webkitExitFullscreen();
+      } else if (doc.mozCancelFullScreen) {
+        await doc.mozCancelFullScreen();
+      } else if (doc.msExitFullscreen) {
+        await doc.msExitFullscreen();
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.warn('Failed to exit fullscreen:', error);
     }
-  }, [isSupported]);
+  }, [isSupported, doc]);
 
   const toggleFullscreen = useCallback(async (): Promise<void> => {
     if (isFullscreen) {
