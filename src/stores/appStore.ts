@@ -63,7 +63,8 @@ interface AppState {
   profiles: Profile[];
   matches: Match[];
   currentProfileIndex: number;
-  likesByVibe: Record<VibeType, number>;
+  likesGivenByVibe: Record<VibeType, number>;
+  likesReceivedByVibe: Record<VibeType, number>;
 
   // Actions
   setCurrentVibe: (vibe: VibeType) => void;
@@ -72,7 +73,8 @@ interface AppState {
   sendMessage: (matchId: string, message: Omit<Message, 'id' | 'timestamp'>) => void;
   nextProfile: () => void;
   resetSwipeStack: () => void;
-  addLike: (vibe: VibeType) => void;
+  addLikeGiven: (vibe: VibeType) => void;
+  receiveLike: (vibe: VibeType) => void;
   resetLikes: () => void;
   hasBingo: () => boolean;
 }
@@ -92,7 +94,8 @@ export const useAppStore = create<AppState>((set, get) => ({
   profiles: [],
   matches: [],
   currentProfileIndex: 0,
-  likesByVibe: { ...emptyLikes },
+  likesGivenByVibe: { ...emptyLikes },
+  likesReceivedByVibe: { ...emptyLikes },
 
   // Actions
   setCurrentVibe: (vibe: VibeType) => set({ currentVibe: vibe }),
@@ -150,18 +153,29 @@ export const useAppStore = create<AppState>((set, get) => ({
   })),
 
   resetSwipeStack: () => set({ currentProfileIndex: 0 }),
-  addLike: (vibe: VibeType) =>
+  addLikeGiven: (vibe: VibeType) =>
     set((state) => ({
-      likesByVibe: {
-        ...state.likesByVibe,
-        [vibe]: state.likesByVibe[vibe] + 1,
+      likesGivenByVibe: {
+        ...state.likesGivenByVibe,
+        [vibe]: state.likesGivenByVibe[vibe] + 1,
+      },
+    })),
+  receiveLike: (vibe: VibeType) =>
+    set((state) => ({
+      likesReceivedByVibe: {
+        ...state.likesReceivedByVibe,
+        [vibe]: state.likesReceivedByVibe[vibe] + 1,
       },
     })),
 
-  resetLikes: () => set({ likesByVibe: { ...emptyLikes } }),
+  resetLikes: () =>
+    set({
+      likesGivenByVibe: { ...emptyLikes },
+      likesReceivedByVibe: { ...emptyLikes },
+    }),
 
   hasBingo: () => {
-    const likes = get().likesByVibe;
+    const likes = get().likesGivenByVibe;
     return Object.values(likes).every((count) => count > 0);
   },
 }));
