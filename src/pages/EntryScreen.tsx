@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/common/Button';
 import { useAppStore } from '../stores/appStore';
 import { mockProfiles, mockConversations } from '../data/mockData';
-import { useTheme } from '../styles/themes/ThemeProvider';
 
 const EntryContainer = styled.div`
   height: 100vh;
@@ -115,8 +114,6 @@ const FloatingBackground: React.FC = () => {
 
 export const EntryScreen: React.FC = () => {
   const navigate = useNavigate();
-  const { setVibe } = useTheme();
-  const { setCurrentVibe } = useAppStore();
 
   // Initialize app data when component mounts
   React.useEffect(() => {
@@ -135,7 +132,7 @@ export const EntryScreen: React.FC = () => {
         if (profile) {
           const matchId = `match_${profile.id}`;
           const conversations = mockConversations[profile.id] || [];
-          
+
           useAppStore.setState(state => ({
             matches: [...state.matches, {
               id: matchId,
@@ -146,17 +143,13 @@ export const EntryScreen: React.FC = () => {
           }));
         }
       });
-      
-      // Set default theme to spicy for mixed vibes approach
-      setVibe('spicy');
-      setCurrentVibe('spicy');
     };
-    
+
     initializeApp();
-  }, [setVibe, setCurrentVibe]);
+  }, []);
 
   const handleEnterApp = () => {
-    navigate('/home');
+    navigate('/splash');
   };
 
   return (

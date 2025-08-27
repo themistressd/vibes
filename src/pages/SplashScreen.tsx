@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../styles/themes/ThemeProvider';
-import { Button } from '../components/common/Button';
 import type { VibeType } from '../styles/themes/types';
 import { useAppStore } from '../stores/appStore';
 import { mockProfiles, mockConversations } from '../data/mockData';
@@ -124,10 +123,6 @@ const VibeCard = styled(motion.div)<{ $colors: { primary: string; secondary: str
   }
 `;
 
-const StartButton = styled(motion.div)`
-  width: 100%;
-`;
-
 const FloatingBackground: React.FC = () => {
   const emojis = ['🔥', '💎', '🌶️', '🎨', '🏙️', '😌', '💅', '✨', '👑', '🦄'];
   
@@ -203,10 +198,11 @@ export const SplashScreen: React.FC = () => {
     artsy: 'Creative souls and artistic hearts',
     dluxe: 'Luxury lifestyle and high-class sass',
   };
-  
-  const handleEnterApp = () => {
-    setVibe(selectedVibe);
-    setCurrentVibe(selectedVibe);
+
+  const handleVibeSelect = (vibe: VibeType) => {
+    setSelectedVibe(vibe);
+    setVibe(vibe);
+    setCurrentVibe(vibe);
     navigate('/home');
   };
   
@@ -244,12 +240,12 @@ export const SplashScreen: React.FC = () => {
             <VibeCard
               key={vibeKey}
               $colors={{ primary: vibeTheme.colors.primary, secondary: vibeTheme.colors.secondary }}
-              onClick={() => setSelectedVibe(vibeKey as VibeType)}
+              onClick={() => handleVibeSelect(vibeKey as VibeType)}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               style={{
                 borderColor: selectedVibe === vibeKey ? vibeTheme.colors.primary : undefined,
-                background: selectedVibe === vibeKey 
+                background: selectedVibe === vibeKey
                   ? `linear-gradient(135deg, ${vibeTheme.colors.primary}40, ${vibeTheme.colors.secondary}40)`
                   : undefined,
               }}
@@ -262,20 +258,6 @@ export const SplashScreen: React.FC = () => {
             </VibeCard>
           ))}
         </VibeSelector>
-        
-        <StartButton
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2, duration: 0.6 }}
-        >
-          <Button
-            size="lg"
-            fullWidth
-            onClick={handleEnterApp}
-          >
-            Enter the VIBES Universe ✨
-          </Button>
-        </StartButton>
       </ContentContainer>
     </SplashContainer>
   );
