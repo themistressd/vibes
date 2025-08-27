@@ -215,10 +215,14 @@ export const HomeScreen: React.FC = () => {
   const [superLikeAnimation, setSuperLikeAnimation] = useState<string | null>(null);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState<typeof profiles[0] | null>(null);
-  
   const allProfiles = profiles;
-  const currentProfile = allProfiles[currentProfileIndex % allProfiles.length];
-  const nextProfile_card = allProfiles[(currentProfileIndex + 1) % allProfiles.length];
+  const hasProfiles = allProfiles.length > 0;
+  const currentProfile = hasProfiles
+    ? allProfiles[currentProfileIndex % allProfiles.length]
+    : null;
+  const nextProfile_card = hasProfiles
+    ? allProfiles[(currentProfileIndex + 1) % allProfiles.length]
+    : null;
 
   const handleSwipe = (direction: 'left' | 'right' | 'boots' | 'wig') => {
     if (!currentProfile) return;
