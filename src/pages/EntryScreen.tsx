@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/common/Button';
 import { useAppStore } from '../stores/appStore';
 import { mockProfiles, mockConversations } from '../data/mockData';
+import { useFullscreen } from '../hooks/useFullscreen';
+import { Maximize2, Minimize2 } from 'lucide-react';
 
 const EntryContainer = styled.div`
   width: 100vw;
@@ -82,6 +84,35 @@ const CTAButton = styled(motion.div)`
   margin-bottom: calc(60px + env(safe-area-inset-bottom)); /* Space from bottom for mobile frame */
 `;
 
+const TopControls = styled.div`
+  position: absolute;
+  top: calc(16px + env(safe-area-inset-top));
+  right: calc(16px + env(safe-area-inset-right));
+  z-index: 20;
+`;
+
+const FullscreenButton = styled(motion.button)`
+  background: transparent;
+  border: none;
+  padding: 4px;
+  border-radius: ${props => props.theme.common.borderRadius.medium};
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${props => props.theme.current.colors.textSecondary};
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  &:hover {
+    color: ${props => props.theme.current.colors.primary};
+    background: ${props => props.theme.current.colors.primary}10;
+  }
+`;
+
 const FloatingBackground: React.FC = () => {
   const emojis = ['💎', '✨', '🔥', '💅', '🦄', '👑', '🌶️', '💖'];
   
@@ -115,6 +146,7 @@ const FloatingBackground: React.FC = () => {
 
 export const EntryScreen: React.FC = () => {
   const navigate = useNavigate();
+  const { isFullscreen, toggleFullscreen, isSupported } = useFullscreen();
 
   // Initialize app data when component mounts
   React.useEffect(() => {
@@ -155,8 +187,20 @@ export const EntryScreen: React.FC = () => {
 
   return (
     <EntryContainer>
+      {isSupported && (
+        <TopControls>
+          <FullscreenButton
+            onClick={toggleFullscreen}
+            whileTap={{ scale: 0.9 }}
+            title={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
+          >
+            {isFullscreen ? <Minimize2 /> : <Maximize2 />}
+          </FullscreenButton>
+        </TopControls>
+      )}
+
       <FloatingBackground />
-      
+
       <ContentWrapper
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
