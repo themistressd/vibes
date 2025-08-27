@@ -65,6 +65,7 @@ interface AppState {
   currentProfileIndex: number;
   likesGivenByVibe: Record<VibeType, number>;
   likesReceivedByVibe: Record<VibeType, number>;
+  bingoBadgeUnlocked: boolean;
 
   // Actions
   setCurrentVibe: (vibe: VibeType) => void;
@@ -76,6 +77,7 @@ interface AppState {
   addLikeGiven: (vibe: VibeType) => void;
   receiveLike: (vibe: VibeType) => void;
   resetLikes: () => void;
+  unlockBingoBadge: () => void;
   hasBingo: () => boolean;
 }
 
@@ -96,6 +98,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   currentProfileIndex: 0,
   likesGivenByVibe: { ...emptyLikes },
   likesReceivedByVibe: { ...emptyLikes },
+  bingoBadgeUnlocked: false,
 
   // Actions
   setCurrentVibe: (vibe: VibeType) => set({ currentVibe: vibe }),
@@ -172,7 +175,10 @@ export const useAppStore = create<AppState>((set, get) => ({
     set({
       likesGivenByVibe: { ...emptyLikes },
       likesReceivedByVibe: { ...emptyLikes },
+      bingoBadgeUnlocked: false,
     }),
+
+  unlockBingoBadge: () => set({ bingoBadgeUnlocked: true }),
 
   hasBingo: () => {
     const likes = get().likesGivenByVibe;

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { motion } from 'framer-motion';
 import { useAppStore } from '../stores/appStore';
 import type { VibeType } from '../styles/themes/types';
 import { Button } from '../components/common/Button';
+import BingoRewardModal from '../components/modals/BingoRewardModal';
 
 const LikesContainer = styled.div`
   padding: ${props => props.theme.common.spacing.lg};
@@ -55,14 +56,27 @@ const Counts = styled.span`
 `;
 
 export const LikesScreen: React.FC = () => {
-  const { likesGivenByVibe, likesReceivedByVibe, resetLikes } = useAppStore();
+  const {
+    likesGivenByVibe,
+    likesReceivedByVibe,
+    resetLikes,
+    hasBingo,
+    bingoBadgeUnlocked,
+  } = useAppStore();
   const vibes: VibeType[] = ['spicy', 'chill', 'urban', 'artsy', 'dluxe'];
+  const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    if (hasBingo() && !bingoBadgeUnlocked) {
+      setShowModal(true);
+    }
+  }, [likesGivenByVibe, hasBingo, bingoBadgeUnlocked]);
 
   return (
     <LikesContainer>
       <Title>Likes</Title>
       <VibeList>
-        {vibes.map(vibe => {
+        {vibes.map((vibe) => {
           const given = likesGivenByVibe[vibe];
           const received = likesReceivedByVibe[vibe];
           const total = given + received;
@@ -88,6 +102,7 @@ export const LikesScreen: React.FC = () => {
       <Button variant="secondary" onClick={resetLikes}>
         Reset Likes
       </Button>
+      <BingoRewardModal isOpen={showModal} onClose={() => setShowModal(false)} />
     </LikesContainer>
   );
 };
