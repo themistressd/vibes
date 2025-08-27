@@ -108,10 +108,7 @@ export const useAppStore = create<AppState>((set, get) => ({
     const profile = state.profiles[state.currentProfileIndex];
     
     if (action.type === 'boots' || action.type === 'wig' || action.type === 'like') {
-      // Simulate match (for demo purposes, let's say 30% match rate)
-      if (Math.random() > 0.7) {
-        get().addMatch(profile);
-      }
+      get().addMatch(profile);
     }
     
     get().nextProfile();

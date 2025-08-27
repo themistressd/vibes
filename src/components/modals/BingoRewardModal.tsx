@@ -55,7 +55,7 @@ const Message = styled.p`
 
 export const BingoRewardModal: React.FC<BingoRewardModalProps> = ({ isOpen, onClose }) => {
   const unlockBingoBadge = useAppStore((state) => state.unlockBingoBadge);
-  const [Confetti, setConfetti] = useState<React.ComponentType<any> | null>(null);
+  const [Confetti, setConfetti] = useState<React.ComponentType<unknown> | null>(null);
 
   useEffect(() => {
     let interval: number | undefined;

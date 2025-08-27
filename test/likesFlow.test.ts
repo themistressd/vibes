@@ -18,7 +18,7 @@ test('receiveLike increments count', () => {
   assert.equal(useAppStore.getState().likesReceivedByVibe.chill, 1);
 });
 
-test('match flow adds given and received like when random allows match', () => {
+test('match flow always adds given and received like and creates a match', () => {
   const empty = { spicy: 0, chill: 0, urban: 0, artsy: 0, dluxe: 0 };
   useAppStore.setState({
     profiles: [{
@@ -31,22 +31,18 @@ test('match flow adds given and received like when random allows match', () => {
       personality: { style: '', catchphrase: '', interests: [], signature_move: '' }
     }],
     currentProfileIndex: 0,
+    matches: [],
     likesGivenByVibe: { ...empty },
     likesReceivedByVibe: { ...empty }
   });
 
-  const { addLikeGiven, receiveLike } = useAppStore.getState();
-  const originalRandom = Math.random;
-  Math.random = () => 0.9;
-
+  const { addLikeGiven, receiveLike, swipeProfile } = useAppStore.getState();
   const profile = useAppStore.getState().profiles[0];
   addLikeGiven(profile.vibe);
-  if (Math.random() > 0.7) {
-    receiveLike(profile.vibe);
-  }
+  receiveLike(profile.vibe);
+  swipeProfile({ type: 'like', profileId: profile.id, timestamp: new Date() });
 
   assert.equal(useAppStore.getState().likesGivenByVibe.urban, 1);
   assert.equal(useAppStore.getState().likesReceivedByVibe.urban, 1);
-
-  Math.random = originalRandom;
+  assert.equal(useAppStore.getState().matches.length, 1);
 });
