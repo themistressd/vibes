@@ -1,6 +1,14 @@
 import { create } from 'zustand';
 import type { VibeType } from '../styles/themes/types';
 
+const emptyLikes: Record<VibeType, number> = {
+  spicy: 0,
+  chill: 0,
+  urban: 0,
+  artsy: 0,
+  dluxe: 0,
+};
+
 export interface Profile {
   id: string;
   name: string;
@@ -55,7 +63,9 @@ interface AppState {
   profiles: Profile[];
   matches: Match[];
   currentProfileIndex: number;
-  
+  likesGivenByVibe: Record<VibeType, number>;
+  likesReceivedByVibe: Record<VibeType, number>;
+
   // Actions
   setCurrentVibe: (vibe: VibeType) => void;
   swipeProfile: (action: SwipeAction) => void;
@@ -63,6 +73,10 @@ interface AppState {
   sendMessage: (matchId: string, message: Omit<Message, 'id' | 'timestamp'>) => void;
   nextProfile: () => void;
   resetSwipeStack: () => void;
+  addLikeGiven: (vibe: VibeType) => void;
+  addLikeReceived: (vibe: VibeType) => void;
+  totalLikesByVibe: () => Record<VibeType, number>;
+  hasBingo: () => boolean;
 }
 
 export const useAppStore = create<AppState>((set, get) => ({
@@ -80,7 +94,9 @@ export const useAppStore = create<AppState>((set, get) => ({
   profiles: [],
   matches: [],
   currentProfileIndex: 0,
-  
+  likesGivenByVibe: { ...emptyLikes },
+  likesReceivedByVibe: { ...emptyLikes },
+
   // Actions
   setCurrentVibe: (vibe: VibeType) => set({ currentVibe: vibe }),
   
@@ -135,6 +151,36 @@ export const useAppStore = create<AppState>((set, get) => ({
   nextProfile: () => set((state) => ({
     currentProfileIndex: (state.currentProfileIndex + 1) % Math.max(state.profiles.length, 1),
   })),
-  
+
   resetSwipeStack: () => set({ currentProfileIndex: 0 }),
+
+  addLikeGiven: (vibe: VibeType) =>
+    set((state) => ({
+      likesGivenByVibe: {
+        ...state.likesGivenByVibe,
+        [vibe]: state.likesGivenByVibe[vibe] + 1,
+      },
+    })),
+
+  addLikeReceived: (vibe: VibeType) =>
+    set((state) => ({
+      likesReceivedByVibe: {
+        ...state.likesReceivedByVibe,
+        [vibe]: state.likesReceivedByVibe[vibe] + 1,
+      },
+    })),
+
+  totalLikesByVibe: () => {
+    const { likesGivenByVibe, likesReceivedByVibe } = get();
+    return (Object.keys(likesGivenByVibe) as VibeType[]).reduce(
+      (acc, vibe) => {
+        acc[vibe] = likesGivenByVibe[vibe] + likesReceivedByVibe[vibe];
+        return acc;
+      },
+      {} as Record<VibeType, number>
+    );
+  },
+
+  hasBingo: () =>
+    Object.values(get().totalLikesByVibe()).every((count) => count >= 1),
 }));
