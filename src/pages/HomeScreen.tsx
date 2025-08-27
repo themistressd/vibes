@@ -154,14 +154,14 @@ const EmptyStateSubtext = styled.p`
 // 👇 CAMBIO PRINCIPAL: La notificación ahora es absolute y va dentro de SwipeArea
 const MatchNotification = styled(motion.div)`
   position: absolute;
+  top: 50%;
   left: 50%;
-  top: 24px; /* Offset desde el top de SwipeArea, puedes ajustar este valor */
-  transform: translateX(-50%);
-  background: ${props => props.theme.current.gradients.main};
-  color: ${props => props.theme.current.colors.text};
+  transform: translate(-50%, -50%);
+  background: linear-gradient(135deg, #ff00cc 0%, #3333ff 100%);
+  color: #fff;
   padding: ${props => props.theme.common.spacing.lg};
   border-radius: ${props => props.theme.common.borderRadius.large};
-  box-shadow: ${props => props.theme.common.shadows.large};
+  box-shadow: 0 0 20px rgba(255, 0, 204, 0.7), 0 0 40px rgba(51, 51, 255, 0.7);
   text-align: center;
   z-index: 100;
   min-width: 280px;
@@ -171,6 +171,7 @@ const MatchNotification = styled(motion.div)`
   align-items: center;
   justify-content: center;
   margin: 0;
+  text-shadow: 0 0 5px #fff, 0 0 10px #ff00cc, 0 0 20px #ff00cc;
   @media (max-width: 350px) {
     min-width: 260px;
     padding: ${props => props.theme.common.spacing.md};
@@ -217,6 +218,7 @@ export const HomeScreen: React.FC = () => {
   const [superLikeAnimation, setSuperLikeAnimation] = useState<string | null>(null);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState<typeof profiles[0] | null>(null);
+  const [notificationType, setNotificationType] = useState<'like' | 'superlike' | null>(null);
   const allProfiles = profiles;
   const hasProfiles = allProfiles.length > 0;
   const currentProfile = hasProfiles
@@ -237,9 +239,11 @@ export const HomeScreen: React.FC = () => {
       setMatchedProfile(currentProfile);
       setShowMatch(true);
       receiveLike(currentProfile.vibe);
+      setNotificationType(direction === 'right' ? 'like' : 'superlike');
       setTimeout(() => {
         setShowMatch(false);
         setMatchedProfile(null);
+        setNotificationType(null);
       }, 3000);
     }
     swipeProfile({
@@ -319,21 +323,34 @@ export const HomeScreen: React.FC = () => {
           )}
         </AnimatePresence>
 
-        {/* 👇 Notificación AHORA sobre el card, centrada horizontalmente */}
+        {/* 👇 Notificación AHORA sobre el card, centrada */}
         <AnimatePresence>
           {showMatch && matchedProfile && (
             <MatchNotification
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              initial={{ scale: 0, rotate: -180, opacity: 0 }}
+              animate={{ scale: 1, rotate: 360, opacity: 1 }}
+              exit={{ scale: 0, rotate: -180, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 25 }}
             >
-              <h3 style={{ margin: '0 0 16px 0', fontSize: '1.5rem' }}>
-                🎉 IT'S A MATCH! 🎉
-              </h3>
-              <p style={{ margin: '0 0 16px 0' }}>
-                You matched with <strong>{matchedProfile.name}</strong>!
-              </p>
+              {notificationType === 'superlike' ? (
+                <>
+                  <h3 style={{ margin: '0 0 16px 0', fontSize: '1.5rem' }}>
+                    💅 Yasss, super like!
+                  </h3>
+                  <p style={{ margin: '0 0 16px 0' }}>
+                    You super liked <strong>{matchedProfile.name}</strong>!
+                  </p>
+                </>
+              ) : (
+                <>
+                  <h3 style={{ margin: '0 0 16px 0', fontSize: '1.5rem' }}>
+                    🎉 IT'S A MATCH! 🎉
+                  </h3>
+                  <p style={{ margin: '0 0 16px 0' }}>
+                    You matched with <strong>{matchedProfile.name}</strong>!
+                  </p>
+                </>
+              )}
               <Button onClick={handleViewMatch} size="sm">
                 Start Chatting
               </Button>
