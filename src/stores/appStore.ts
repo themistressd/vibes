@@ -55,7 +55,8 @@ interface AppState {
   profiles: Profile[];
   matches: Match[];
   currentProfileIndex: number;
-  
+  likesByVibe: Record<VibeType, number>;
+
   // Actions
   setCurrentVibe: (vibe: VibeType) => void;
   swipeProfile: (action: SwipeAction) => void;
@@ -80,6 +81,13 @@ export const useAppStore = create<AppState>((set, get) => ({
   profiles: [],
   matches: [],
   currentProfileIndex: 0,
+  likesByVibe: {
+    spicy: 0,
+    chill: 0,
+    urban: 0,
+    artsy: 0,
+    dluxe: 0,
+  },
   
   // Actions
   setCurrentVibe: (vibe: VibeType) => set({ currentVibe: vibe }),
@@ -87,14 +95,22 @@ export const useAppStore = create<AppState>((set, get) => ({
   swipeProfile: (action: SwipeAction) => {
     const state = get();
     const profile = state.profiles[state.currentProfileIndex];
-    
+    if (action.type === 'like' && profile) {
+      set((s) => ({
+        likesByVibe: {
+          ...s.likesByVibe,
+          [profile.vibe]: s.likesByVibe[profile.vibe] + 1,
+        },
+      }));
+    }
+
     if (action.type === 'boots' || action.type === 'wig' || action.type === 'like') {
       // Simulate match (for demo purposes, let's say 30% match rate)
       if (Math.random() > 0.7) {
         get().addMatch(profile);
       }
     }
-    
+
     get().nextProfile();
   },
   
