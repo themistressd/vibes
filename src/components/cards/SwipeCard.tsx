@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import type { PanInfo } from 'framer-motion';
-import { MapPin, Heart, X } from 'lucide-react';
+import { MapPin } from 'lucide-react';
 import type { Profile } from '../../stores/appStore';
 import { useVibeTheme } from '../../styles/themes/ThemeProvider';
 
@@ -214,23 +214,44 @@ const TouchArea = styled.div<{ $side: 'left' | 'right' }>`
   }
 `;
 
-const SwipeIndicator = styled(motion.div)<{ $direction: 'left' | 'right' }>`
+const SwipeMessage = styled(motion.div)<{ $direction: 'left' | 'right' | 'boots' }>`
   position: absolute;
-  top: 50%;
-  ${props => props.$direction === 'left' ? 'left: 20px;' : 'right: 20px;'}
-  transform: translateY(-50%) rotate(${props => props.$direction === 'left' ? '-' : ''}15deg);
-  width: 80px;
-  height: 80px;
-  border: 3px solid ${props => props.$direction === 'left' ? '#FF4458' : '#00C851'};
+  padding: 12px 20px;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: white;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
   border-radius: ${props => props.theme.common.borderRadius.large};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: ${props => props.$direction === 'left' ? 'rgba(255, 68, 88, 0.15)' : 'rgba(0, 200, 81, 0.15)'};
-  color: ${props => props.$direction === 'left' ? '#FF4458' : '#00C851'};
-  backdrop-filter: blur(10px);
   pointer-events: none;
+  white-space: nowrap;
   opacity: 0;
+
+  ${props => {
+    switch (props.$direction) {
+      case 'left':
+        return `
+          top: 12px;
+          right: 12px;
+          transform: rotate(12deg);
+          background: linear-gradient(45deg, #ff0057, #ff8a00);
+        `;
+      case 'right':
+        return `
+          top: 12px;
+          left: 12px;
+          transform: rotate(-12deg);
+          background: linear-gradient(45deg, #39ff14, #00e0ff);
+        `;
+      case 'boots':
+      default:
+        return `
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%) rotate(-5deg);
+          background: linear-gradient(45deg, #a100ff, #ff00aa);
+        `;
+    }
+  }}
 `;
 
 const SWIPE_THRESHOLD = 50;
@@ -256,10 +277,16 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
     [-SUPER_SWIPE_THRESHOLD, -SWIPE_THRESHOLD, 0],
     [1, 0.7, 0]
   );
-  
+
   const rightIndicatorOpacity = useTransform(
     x,
     [0, SWIPE_THRESHOLD, SUPER_SWIPE_THRESHOLD],
+    [0, 0.7, 1]
+  );
+
+  const upIndicatorOpacity = useTransform(
+    y,
+    [0, -SWIPE_THRESHOLD, -SUPER_SWIPE_THRESHOLD],
     [0, 0.7, 1]
   );
 
@@ -411,19 +438,26 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
         </ImageCarouselContainer>
       </CardContent>
       
-      <SwipeIndicator
+      <SwipeMessage
         $direction="left"
         style={{ opacity: leftIndicatorOpacity }}
       >
-        <X size={36} />
-      </SwipeIndicator>
-      
-      <SwipeIndicator
+        Not Today Satan!
+      </SwipeMessage>
+
+      <SwipeMessage
         $direction="right"
         style={{ opacity: rightIndicatorOpacity }}
       >
-        <Heart size={36} />
-      </SwipeIndicator>
+        Yass Queen!
+      </SwipeMessage>
+
+      <SwipeMessage
+        $direction="boots"
+        style={{ opacity: upIndicatorOpacity }}
+      >
+        Boots the House Down!
+      </SwipeMessage>
     </CardContainer>
   );
 };
