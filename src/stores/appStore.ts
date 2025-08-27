@@ -65,6 +65,7 @@ interface AppState {
   currentProfileIndex: number;
   likesGivenByVibe: Record<VibeType, number>;
   likesReceivedByVibe: Record<VibeType, number>;
+  likesByVibe: Record<VibeType, number>;
 
   // Actions
   setCurrentVibe: (vibe: VibeType) => void;
@@ -75,6 +76,8 @@ interface AppState {
   resetSwipeStack: () => void;
   addLikeGiven: (vibe: VibeType) => void;
   addLikeReceived: (vibe: VibeType) => void;
+  addLike: (vibe: VibeType) => void;
+  resetLikes: () => void;
   totalLikesByVibe: () => Record<VibeType, number>;
   hasBingo: () => boolean;
 }
@@ -96,6 +99,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   currentProfileIndex: 0,
   likesGivenByVibe: { ...emptyLikes },
   likesReceivedByVibe: { ...emptyLikes },
+  likesByVibe: { ...emptyLikes },
 
   // Actions
   setCurrentVibe: (vibe: VibeType) => set({ currentVibe: vibe }),
@@ -170,6 +174,16 @@ export const useAppStore = create<AppState>((set, get) => ({
       },
     })),
 
+  addLike: (vibe: VibeType) =>
+    set((state) => ({
+      likesByVibe: {
+        ...state.likesByVibe,
+        [vibe]: state.likesByVibe[vibe] + 1,
+      },
+    })),
+
+  resetLikes: () => set({ likesByVibe: { ...emptyLikes } }),
+
   totalLikesByVibe: () => {
     const { likesGivenByVibe, likesReceivedByVibe } = get();
     return (Object.keys(likesGivenByVibe) as VibeType[]).reduce(
@@ -182,5 +196,5 @@ export const useAppStore = create<AppState>((set, get) => ({
   },
 
   hasBingo: () =>
-    Object.values(get().totalLikesByVibe()).every((count) => count >= 1),
+    Object.values(get().likesByVibe).every((count) => count >= 1),
 }));
