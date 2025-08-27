@@ -55,12 +55,49 @@ const Message = styled.p`
 
 export const BingoRewardModal: React.FC<BingoRewardModalProps> = ({ isOpen, onClose }) => {
   const unlockBingoBadge = useAppStore((state) => state.unlockBingoBadge);
-  const [Confetti, setConfetti] = useState<React.ComponentType | null>(null);
+  const [Confetti, setConfetti] = useState<React.ComponentType<any> | null>(null);
 
   useEffect(() => {
+    let interval: number | undefined;
     if (isOpen && typeof window !== 'undefined') {
       import('react-confetti').then((mod) => setConfetti(() => mod.default));
+      import('canvas-confetti').then((mod) => {
+        const duration = 3 * 1000;
+        const animationEnd = Date.now() + duration;
+        const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 2000 };
+
+        function randomInRange(min: number, max: number) {
+          return Math.random() * (max - min) + min;
+        }
+
+        interval = window.setInterval(() => {
+          const timeLeft = animationEnd - Date.now();
+
+          if (timeLeft <= 0 && interval) {
+            window.clearInterval(interval);
+            return;
+          }
+
+          const particleCount = 50 * (timeLeft / duration);
+          mod.default({
+            ...defaults,
+            particleCount,
+            origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+          });
+          mod.default({
+            ...defaults,
+            particleCount,
+            origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+          });
+        }, 250);
+      });
     }
+
+    return () => {
+      if (interval) {
+        window.clearInterval(interval);
+      }
+    };
   }, [isOpen]);
 
   const handleClose = () => {
@@ -77,7 +114,9 @@ export const BingoRewardModal: React.FC<BingoRewardModalProps> = ({ isOpen, onCl
           exit={{ opacity: 0 }}
           onClick={handleClose}
         >
-          {Confetti && <Confetti recycle={false} numberOfPieces={300} />}
+          {Confetti && (
+            <Confetti recycle={false} numberOfPieces={800} gravity={0.3} />
+          )}
           <ModalContent
             initial={{ scale: 0.8 }}
             animate={{ scale: 1 }}
