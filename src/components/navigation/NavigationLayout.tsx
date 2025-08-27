@@ -20,7 +20,8 @@ interface NavigationLayoutProps {
 
 const LayoutContainer = styled.div`
   min-height: 100vh;
-  height: 100vh; /* Fixed height for mobile frame */
+  height: 100vh; /* Fallback for browsers without dvh support */
+  height: 100dvh; /* Use dynamic viewport height to cover full screen on modern mobile browsers */
   width: 100%;
   background: ${props => props.theme.current.colors.background};
   display: flex;
