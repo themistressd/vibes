@@ -234,15 +234,13 @@ export const HomeScreen: React.FC = () => {
     }
     if (direction === 'right' || direction === 'boots' || direction === 'wig') {
       addLikeGiven(currentProfile.vibe);
-      if (Math.random() > 0.7) {
-        setMatchedProfile(currentProfile);
-        setShowMatch(true);
-        receiveLike(currentProfile.vibe);
-        setTimeout(() => {
-          setShowMatch(false);
-          setMatchedProfile(null);
-        }, 3000);
-      }
+      setMatchedProfile(currentProfile);
+      setShowMatch(true);
+      receiveLike(currentProfile.vibe);
+      setTimeout(() => {
+        setShowMatch(false);
+        setMatchedProfile(null);
+      }, 3000);
     }
     swipeProfile({
       type: direction === 'left' ? 'pass' : direction === 'right' ? 'like' : direction,
