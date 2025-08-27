@@ -7,16 +7,17 @@ import { useAppStore } from '../stores/appStore';
 import { mockProfiles, mockConversations } from '../data/mockData';
 
 const EntryContainer = styled.div`
+  width: 100vw;
   height: 100vh;
-  max-height: 812px; /* Mobile frame height limit */
-  width: 100%;
-  max-width: 375px; /* Mobile frame width limit */
   background: linear-gradient(135deg, #1a0a1a 0%, #2d1b2e 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 32px 24px;
+  padding: calc(32px + env(safe-area-inset-top))
+    calc(24px + env(safe-area-inset-right))
+    calc(32px + env(safe-area-inset-bottom))
+    calc(24px + env(safe-area-inset-left));
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
@@ -78,7 +79,7 @@ const CTAButton = styled(motion.div)`
   width: 100%;
   max-width: 280px;
   margin-top: auto;
-  margin-bottom: 60px; /* Space from bottom for mobile frame */
+  margin-bottom: calc(60px + env(safe-area-inset-bottom)); /* Space from bottom for mobile frame */
 `;
 
 const FloatingBackground: React.FC = () => {
