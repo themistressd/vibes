@@ -55,7 +55,9 @@ interface AppState {
   profiles: Profile[];
   matches: Match[];
   currentProfileIndex: number;
-  
+  likesGiven: Record<VibeType, number>;
+  likesReceived: Record<VibeType, number>;
+
   // Actions
   setCurrentVibe: (vibe: VibeType) => void;
   swipeProfile: (action: SwipeAction) => void;
@@ -63,6 +65,9 @@ interface AppState {
   sendMessage: (matchId: string, message: Omit<Message, 'id' | 'timestamp'>) => void;
   nextProfile: () => void;
   resetSwipeStack: () => void;
+  addLikeGiven: (vibe: VibeType) => void;
+  addLikeReceived: (vibe: VibeType) => void;
+  receiveLike: (vibe: VibeType) => void;
 }
 
 export const useAppStore = create<AppState>((set, get) => ({
@@ -80,22 +85,48 @@ export const useAppStore = create<AppState>((set, get) => ({
   profiles: [],
   matches: [],
   currentProfileIndex: 0,
-  
+  likesGiven: { spicy: 0, chill: 0, urban: 0, artsy: 0, dluxe: 0 },
+  likesReceived: { spicy: 0, chill: 0, urban: 0, artsy: 0, dluxe: 0 },
+
   // Actions
   setCurrentVibe: (vibe: VibeType) => set({ currentVibe: vibe }),
-  
+
   swipeProfile: (action: SwipeAction) => {
     const state = get();
     const profile = state.profiles[state.currentProfileIndex];
-    
+
     if (action.type === 'boots' || action.type === 'wig' || action.type === 'like') {
       // Simulate match (for demo purposes, let's say 30% match rate)
       if (Math.random() > 0.7) {
         get().addMatch(profile);
       }
     }
-    
+
+    if (action.type === 'like') {
+      get().addLikeGiven(profile.vibe);
+    }
+
     get().nextProfile();
+  },
+
+  addLikeGiven: (vibe: VibeType) =>
+    set((state) => ({
+      likesGiven: {
+        ...state.likesGiven,
+        [vibe]: (state.likesGiven[vibe] ?? 0) + 1,
+      },
+    })),
+
+  addLikeReceived: (vibe: VibeType) =>
+    set((state) => ({
+      likesReceived: {
+        ...state.likesReceived,
+        [vibe]: (state.likesReceived[vibe] ?? 0) + 1,
+      },
+    })),
+
+  receiveLike: (vibe: VibeType) => {
+    get().addLikeReceived(vibe);
   },
   
   addMatch: (profile: Profile) => {

@@ -203,10 +203,11 @@ const SuperLikeAnimation = styled(motion.div)`
 `;
 
 export const HomeScreen: React.FC = () => {
-  const { 
-    profiles, 
-    currentProfileIndex, 
-    swipeProfile 
+  const {
+    profiles,
+    currentProfileIndex,
+    swipeProfile,
+    receiveLike
   } = useAppStore();
   const navigate = useNavigate();
   
@@ -233,6 +234,7 @@ export const HomeScreen: React.FC = () => {
     if ((direction === 'right' || direction === 'boots' || direction === 'wig') && Math.random() > 0.7) {
       setMatchedProfile(currentProfile);
       setShowMatch(true);
+      receiveLike(currentProfile.vibe);
       setTimeout(() => {
         setShowMatch(false);
         setMatchedProfile(null);
