@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -174,8 +174,9 @@ const Actions = styled.div`
 export const MatchScreen: React.FC = () => {
   const { profileId } = useParams<{ profileId: string }>();
   const navigate = useNavigate();
-  const { profiles, matches } = useAppStore();
-  
+  const { profiles, matches, currentUser, sendMessage } = useAppStore();
+  const [inputValue, setInputValue] = useState('');
+
   const profile = profiles.find(p => p.id === profileId);
   const match = matches.find(m => m.profile.id === profileId);
   
@@ -185,11 +186,22 @@ export const MatchScreen: React.FC = () => {
   }
   
   const handleStartChat = () => {
-    if (match) {
-      navigate(`/chat/${match.id}`);
-    } else {
+    if (!match) {
       navigate('/messages');
+      return;
     }
+
+    const trimmed = inputValue.trim();
+    if (trimmed) {
+      sendMessage(match.id, {
+        senderId: currentUser.id,
+        content: trimmed,
+        type: 'text',
+      });
+    }
+
+    setInputValue('');
+    navigate(`/chat/${match.id}`);
   };
   
   const handleKeepSwiping = () => {
@@ -201,8 +213,13 @@ export const MatchScreen: React.FC = () => {
   };
   
   const handleEmojiClick = (emoji: string) => {
-    // In a real app, this would send the emoji as a message
-    console.log('Sent emoji:', emoji);
+    if (!match) return;
+    sendMessage(match.id, {
+      senderId: currentUser.id,
+      content: emoji,
+      type: 'text',
+    });
+    navigate(`/chat/${match.id}`);
   };
   
   return (
@@ -238,9 +255,17 @@ export const MatchScreen: React.FC = () => {
         </ProfilePhotos>
         
         <MessageSection>
-          <MessageInput 
-            type="text" 
+          <MessageInput
+            type="text"
             placeholder="Say something nice..."
+            value={inputValue}
+            onChange={e => setInputValue(e.target.value)}
+            onKeyDown={e => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                handleStartChat();
+              }
+            }}
           />
           
           <EmojiReactions>
