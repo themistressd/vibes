@@ -27,6 +27,8 @@ export const GlobalStyle = createGlobalStyle`
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    display: flex;
+    justify-content: center;
   }
   
   /* Use app background on mobile */
@@ -39,10 +41,11 @@ export const GlobalStyle = createGlobalStyle`
   #root {
     min-height: 100vh;
     height: 100vh;
-    width: 100vw;
+    width: 100%;
+    max-width: 430px;
     display: flex;
     flex-direction: column;
-    margin: 0;
+    margin: 0 auto;
     padding: 0;
   }
   

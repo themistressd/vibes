@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Search } from 'lucide-react';
-import { useAppStore } from '../stores/appStore';
+import { useAppStore, type Match } from '../stores/appStore';
 import { useVibeTheme } from '../styles/themes/ThemeProvider';
 import { Button } from '../components/common/Button';
 
@@ -275,6 +275,79 @@ const formatTime = (date: Date): string => {
   }
 };
 
+interface ConversationListItemProps {
+  match: Match;
+  index: number;
+  onClick: (id: string) => void;
+}
+
+const ConversationListItem: React.FC<ConversationListItemProps> = ({
+  match,
+  index,
+  onClick,
+}) => {
+  const vibeTheme = useVibeTheme(match.profile.vibe);
+  const lastMessage =
+    match.conversation.length > 0
+      ? match.conversation[match.conversation.length - 1]
+      : null;
+  const unreadCount = match.conversation.filter(
+    (msg) =>
+      msg.senderId !== 'themistressd' &&
+      new Date().getTime() - msg.timestamp.getTime() < 3600000
+  ).length;
+
+  return (
+    <ConversationCard
+      onClick={() => onClick(match.id)}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.1 }}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+    >
+      <ConversationHeader>
+        <Avatar
+          $image={match.profile.images[0]}
+          $vibeColor={vibeTheme.colors.primary}
+        >
+          <OnlineIndicator />
+        </Avatar>
+
+        <ConversationInfo>
+          <NameTime>
+            <Name>{match.profile.name}</Name>
+            <Timestamp>
+              {lastMessage
+                ? formatTime(lastMessage.timestamp)
+                : formatTime(match.matchedAt)}
+            </Timestamp>
+          </NameTime>
+
+          <LastMessage>
+            <MessagePreview>
+              {lastMessage
+                ? lastMessage.content
+                : 'You matched! Start the conversation...'}
+            </MessagePreview>
+
+            {unreadCount > 0 && (
+              <UnreadBadge>{unreadCount}</UnreadBadge>
+            )}
+          </LastMessage>
+        </ConversationInfo>
+      </ConversationHeader>
+
+      <VibeIndicator
+        $vibeColor={vibeTheme.colors.primary}
+        $vibeEmoji={vibeTheme.emoji}
+      >
+        {vibeTheme.name}
+      </VibeIndicator>
+    </ConversationCard>
+  );
+};
+
 export const MessagesScreen: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const { matches } = useAppStore();
@@ -367,69 +440,14 @@ export const MessagesScreen: React.FC = () => {
       </NewMatchesSection>
       
       <ConversationsList>
-        {sortedMatches.map((match, index) => {
-          const vibeTheme = useVibeTheme(match.profile.vibe);
-          const lastMessage = match.conversation.length > 0 
-            ? match.conversation[match.conversation.length - 1]
-            : null;
-          const unreadCount = match.conversation.filter(msg => 
-            msg.senderId !== 'themistressd' && 
-            new Date().getTime() - msg.timestamp.getTime() < 3600000 // Last hour
-          ).length;
-          
-          return (
-            <ConversationCard
-              key={match.id}
-              onClick={() => handleConversationClick(match.id)}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <ConversationHeader>
-                <Avatar 
-                  $image={match.profile.images[0]} 
-                  $vibeColor={vibeTheme.colors.primary}
-                >
-                  <OnlineIndicator />
-                </Avatar>
-                
-                <ConversationInfo>
-                  <NameTime>
-                    <Name>{match.profile.name}</Name>
-                    <Timestamp>
-                      {lastMessage 
-                        ? formatTime(lastMessage.timestamp)
-                        : formatTime(match.matchedAt)
-                      }
-                    </Timestamp>
-                  </NameTime>
-                  
-                  <LastMessage>
-                    <MessagePreview>
-                      {lastMessage 
-                        ? lastMessage.content
-                        : "You matched! Start the conversation..."
-                      }
-                    </MessagePreview>
-                    
-                    {unreadCount > 0 && (
-                      <UnreadBadge>{unreadCount}</UnreadBadge>
-                    )}
-                  </LastMessage>
-                </ConversationInfo>
-              </ConversationHeader>
-              
-              <VibeIndicator 
-                $vibeColor={vibeTheme.colors.primary}
-                $vibeEmoji={vibeTheme.emoji}
-              >
-                {vibeTheme.name}
-              </VibeIndicator>
-            </ConversationCard>
-          );
-        })}
+        {sortedMatches.map((match, index) => (
+          <ConversationListItem
+            key={match.id}
+            match={match}
+            index={index}
+            onClick={handleConversationClick}
+          />
+        ))}
       </ConversationsList>
       
       {filteredMatches.length === 0 && searchQuery && (
