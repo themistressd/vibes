@@ -203,10 +203,12 @@ const SuperLikeAnimation = styled(motion.div)`
 `;
 
 export const HomeScreen: React.FC = () => {
-  const { 
-    profiles, 
-    currentProfileIndex, 
-    swipeProfile 
+  const {
+    profiles,
+    currentProfileIndex,
+    swipeProfile,
+    addLikeGiven,
+    receiveLike
   } = useAppStore();
   const navigate = useNavigate();
   
@@ -230,13 +232,17 @@ export const HomeScreen: React.FC = () => {
       setSuperLikeAnimation(direction === 'boots' ? '👠' : '💇‍♀️');
       setTimeout(() => setSuperLikeAnimation(null), 1500);
     }
-    if ((direction === 'right' || direction === 'boots' || direction === 'wig') && Math.random() > 0.7) {
-      setMatchedProfile(currentProfile);
-      setShowMatch(true);
-      setTimeout(() => {
-        setShowMatch(false);
-        setMatchedProfile(null);
-      }, 3000);
+    if (direction === 'right' || direction === 'boots' || direction === 'wig') {
+      addLikeGiven(currentProfile.vibe);
+      if (Math.random() > 0.7) {
+        setMatchedProfile(currentProfile);
+        setShowMatch(true);
+        receiveLike(currentProfile.vibe);
+        setTimeout(() => {
+          setShowMatch(false);
+          setMatchedProfile(null);
+        }, 3000);
+      }
     }
     swipeProfile({
       type: direction === 'left' ? 'pass' : direction === 'right' ? 'like' : direction,
