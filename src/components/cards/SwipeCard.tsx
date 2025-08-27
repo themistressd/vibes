@@ -233,7 +233,8 @@ const SwipeIndicator = styled(motion.div)<{ $direction: 'left' | 'right' }>`
   opacity: 0;
 `;
 
-const SWIPE_THRESHOLD = 100;
+const SWIPE_THRESHOLD = 50;
+const VELOCITY_THRESHOLD = 500;
 const SUPER_SWIPE_THRESHOLD = 200;
 
 export const SwipeCard: React.FC<SwipeCardProps> = ({ 
@@ -299,7 +300,7 @@ export const SwipeCard: React.FC<SwipeCardProps> = ({
     }
     
     // Regular horizontal swipes
-    if (Math.abs(xOffset) > SWIPE_THRESHOLD) {
+    if (Math.abs(xOffset) > SWIPE_THRESHOLD || Math.abs(info.velocity.x) > VELOCITY_THRESHOLD) {
       onSwipe(xOffset > 0 ? 'right' : 'left');
     }
   };
