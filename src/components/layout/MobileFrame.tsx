@@ -8,7 +8,9 @@ interface MobileFrameProps {
 // Completely frameless container - no phone mockup styling
 const FullScreenContainer = styled.div`
   /* Full viewport dimensions - edge to edge */
-  width: 100vw;
+  width: 100%;
+  max-width: 430px;
+  margin: 0 auto;
   height: 100vh;
   min-height: 100vh;
   position: relative;
@@ -20,7 +22,6 @@ const FullScreenContainer = styled.div`
   
   /* Remove any background or padding */
   background: transparent;
-  margin: 0;
   padding: 0;
 `;
 
