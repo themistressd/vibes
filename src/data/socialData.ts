@@ -7,6 +7,7 @@ export interface TeaSpillPost {
   content: string;
   timestamp: Date;
   likes: number;
+  reactions?: Record<string, number>;
   comments: TeaComment[];
   image?: string;
   isHot: boolean; // Featured/trending posts
