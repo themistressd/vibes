@@ -5,8 +5,9 @@ import { useAppStore } from '../stores/appStore';
 import type { VibeType } from '../styles/themes/types';
 import { Button } from '../components/common/Button';
 import BingoRewardModal from '../components/modals/BingoRewardModal';
+import { TeaSpillFeed } from '../components/TeaSpillFeed';
 
-const LikesContainer = styled.div`
+const TeaSpillContainer = styled.div`
   padding: ${props => props.theme.common.spacing.lg};
   min-height: calc(100vh - 130px);
   display: flex;
@@ -55,7 +56,7 @@ const Counts = styled.span`
   font-size: ${props => props.theme.common.typography.fontSize.sm};
 `;
 
-export const LikesScreen: React.FC = () => {
+export const TeaSpillScreen: React.FC = () => {
   const {
     likesGivenByVibe,
     likesReceivedByVibe,
@@ -73,8 +74,9 @@ export const LikesScreen: React.FC = () => {
   }, [likesGivenByVibe, hasBingo, bingoBadgeUnlocked]);
 
   return (
-    <LikesContainer>
-      <Title>Likes</Title>
+    <TeaSpillContainer>
+      <TeaSpillFeed />
+      <Title>Tea Spill</Title>
       <VibeList>
         {vibes.map((vibe) => {
           const given = likesGivenByVibe[vibe];
@@ -103,7 +105,7 @@ export const LikesScreen: React.FC = () => {
         Reset Likes
       </Button>
       <BingoRewardModal isOpen={showModal} onClose={() => setShowModal(false)} />
-    </LikesContainer>
+    </TeaSpillContainer>
   );
 };
 
