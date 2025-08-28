@@ -56,6 +56,10 @@ const Counts = styled.span`
   font-size: ${props => props.theme.common.typography.fontSize.sm};
 `;
 
+const BingoStatus = styled.p`
+  margin: 0;
+`;
+
 export const TeaSpillScreen: React.FC = () => {
   const {
     likesGivenByVibe,
@@ -71,12 +75,13 @@ export const TeaSpillScreen: React.FC = () => {
     if (hasBingo() && !bingoBadgeUnlocked) {
       setShowModal(true);
     }
-  }, [likesGivenByVibe, hasBingo, bingoBadgeUnlocked]);
+  }, [likesGivenByVibe, likesReceivedByVibe, hasBingo, bingoBadgeUnlocked]);
 
   return (
     <TeaSpillContainer>
       <TeaSpillFeed />
       <Title>Tea Spill</Title>
+      <BingoStatus>{hasBingo() ? 'Bingo!' : 'No Bingo yet'}</BingoStatus>
       <VibeList>
         {vibes.map((vibe) => {
           const given = likesGivenByVibe[vibe];

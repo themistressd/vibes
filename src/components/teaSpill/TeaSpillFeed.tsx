@@ -7,6 +7,8 @@ import {
 import { TeaSpillPost } from './TeaSpillPost';
 import { TeaSpillComposer } from './TeaSpillComposer';
 import { TeaSpillModeration } from './TeaSpillModeration';
+import { useAppStore } from '../../stores/appStore';
+import type { VibeType } from '../../styles/themes/types';
 
 const FeedContainer = styled.div`
   width: 100%;
@@ -18,6 +20,7 @@ const FeedContainer = styled.div`
 export const TeaSpillFeed: React.FC = () => {
   const [posts, setPosts] = useState<TeaSpillPostType[]>(mockTeaPosts);
   const [filter, setFilter] = useState('');
+  const { addLikeGiven, receiveLike, hasBingo } = useAppStore();
 
   const handlePost = (content: string, author: string) => {
     const newPost: TeaSpillPostType = {
@@ -37,6 +40,12 @@ export const TeaSpillFeed: React.FC = () => {
     p.content.toLowerCase().includes(filter.toLowerCase())
   );
 
+  const handleReaction = (vibe: VibeType) => {
+    addLikeGiven(vibe);
+    receiveLike(vibe);
+    hasBingo();
+  };
+
   return (
     <FeedContainer>
       <TeaSpillComposer onPost={handlePost} />
@@ -46,7 +55,7 @@ export const TeaSpillFeed: React.FC = () => {
         onReport={() => alert('Reported')}
       />
       {filtered.map(post => (
-        <TeaSpillPost key={post.id} post={post} />
+        <TeaSpillPost key={post.id} post={post} onReact={handleReaction} />
       ))}
     </FeedContainer>
   );

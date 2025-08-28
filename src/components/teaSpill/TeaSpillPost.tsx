@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import type { TeaSpillPost as TeaSpillPostType } from '../../data/socialData';
+import type { VibeType } from '../../styles/themes/types';
 import { TeaSpillComments } from './TeaSpillComments';
 import { submitReport } from './moderationUtils';
 
@@ -68,11 +69,16 @@ const ReportButton = styled.button`
 
 interface TeaSpillPostProps {
   post: TeaSpillPostType;
+  /**
+   * Callback fired whenever a reaction is added so parent components can
+   * update global like counters.
+   */
+  onReact?: (vibe: VibeType) => void;
 }
 
 const defaultReactions = ['👍', '😂', '🔥', '❤️'];
 
-export const TeaSpillPost: React.FC<TeaSpillPostProps> = ({ post }) => {
+export const TeaSpillPost: React.FC<TeaSpillPostProps> = ({ post, onReact }) => {
   const [reactions, setReactions] = useState<Record<string, number>>({
     '👍': post.likes,
     ...(post.reactions || {}),
@@ -80,6 +86,7 @@ export const TeaSpillPost: React.FC<TeaSpillPostProps> = ({ post }) => {
 
   const addReaction = (key: string) => {
     setReactions(prev => ({ ...prev, [key]: (prev[key] || 0) + 1 }));
+    onReact?.(post.vibe);
   };
 
   const addGifReaction = () => {
