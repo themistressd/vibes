@@ -72,7 +72,7 @@ const CarouselDots = styled.div`
 `;
 
 const Dot = styled.div<{ $active: boolean; $total: number }>`
-  width: ${props => `calc((100vw - 160px) / ${props.$total})`}; /* Adjusted for backdrop padding */
+  width: ${props => `calc((100% - 160px) / ${props.$total})`}; /* Adjusted for backdrop padding */
   max-width: 50px;
   min-width: 20px;
   height: 3px;

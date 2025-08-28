@@ -27,7 +27,7 @@ body {
   padding: 0;
   min-width: 320px;
   min-height: 100vh;
-  width: 100vw; /* Full viewport width */
+  width: 100%; /* Full container width */
   height: 100vh;
   overflow: hidden; /* Prevent scrollbars for full screen experience */
   

@@ -9,7 +9,7 @@ import { useFullscreen } from '../hooks/useFullscreen';
 import { Maximize2, Minimize2 } from 'lucide-react';
 
 const EntryContainer = styled.div`
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   background: linear-gradient(135deg, #1a0a1a 0%, #2d1b2e 100%);
   display: flex;

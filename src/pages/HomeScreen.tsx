@@ -21,7 +21,7 @@ const HomeContainer = styled.div`
   flex-direction: column;
   align-items: center;
   position: relative;
-  width: 100vw; /* Full viewport width */
+  width: 100%; /* Use container width */
   margin: 0;
   box-sizing: border-box;
   justify-content: flex-start;
@@ -29,13 +29,13 @@ const HomeContainer = styled.div`
   @media (max-width: 768px) {
     padding: 12px 0 0 0;
     min-height: calc(100vh - 120px);
-    width: 100vw;
+    width: 100%;
   }
 `;
 
 const SwipeArea = styled.div`
   position: relative;
-  width: 100vw; /* Full viewport width */
+  width: 100%; /* Match container width */
   height: 67vh;
   min-height: 510px;
   max-height: 620px;
@@ -44,7 +44,7 @@ const SwipeArea = styled.div`
   box-sizing: border-box;
   
   @media (max-width: 768px) {
-    width: 100vw;
+    width: 100%;
     padding: 0 12px;
   }
 `;
@@ -54,10 +54,10 @@ const ActionButtons = styled.div`
   justify-content: center;
   gap: 18px;
   margin-bottom: ${props => props.theme.common.spacing.lg};
-  width: 100vw;
+  width: 100%;
   padding: 0 24px;
   box-sizing: border-box;
-  max-width: 100vw;
+  max-width: 100%;
   overflow: visible;
   
   @media (max-width: 768px) {
@@ -177,7 +177,7 @@ const MatchNotification = styled(motion.div)`
     padding: ${props => props.theme.common.spacing.md};
   }
   @media (max-width: 375px) {
-    max-width: calc(100vw - 32px);
+    max-width: calc(100% - 32px);
   }
 `;
 

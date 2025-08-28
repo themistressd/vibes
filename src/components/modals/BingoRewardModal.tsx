@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import type { IConfettiOptions } from 'react-confetti';
 import styled from 'styled-components';
 import { AnimatePresence, motion } from 'framer-motion';
 import { X } from 'lucide-react';
@@ -53,14 +54,22 @@ const Message = styled.p`
   color: ${(props) => props.theme.current.colors.text};
 `;
 
+type ConfettiProps = Partial<IConfettiOptions> &
+  React.CanvasHTMLAttributes<HTMLCanvasElement> & { canvasRef?: React.Ref<HTMLCanvasElement> };
+
 export const BingoRewardModal: React.FC<BingoRewardModalProps> = ({ isOpen, onClose }) => {
   const unlockBingoBadge = useAppStore((state) => state.unlockBingoBadge);
-  const [Confetti, setConfetti] = useState<React.ComponentType<unknown> | null>(null);
+  const [Confetti, setConfetti] = useState<React.ComponentType<ConfettiProps> | null>(null);
 
   useEffect(() => {
     let interval: number | undefined;
     if (isOpen && typeof window !== 'undefined') {
-      import('react-confetti').then((mod) => setConfetti(() => mod.default));
+      import('react-confetti').then((mod) =>
+        setConfetti((prev: React.ComponentType<ConfettiProps> | null) => {
+          void prev;
+          return mod.default;
+        })
+      );
       import('canvas-confetti').then((mod) => {
         const duration = 3 * 1000;
         const animationEnd = Date.now() + duration;
