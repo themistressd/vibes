@@ -192,7 +192,7 @@ const TopBarContent = styled.div`
 
 const navigationItems = [
   { path: '/home', icon: Flame, label: 'Discover' },
-  { path: '/likes', icon: Star, label: 'Likes' },
+  { path: '/tea', icon: Star, label: 'Tea' },
   { path: '/messages', icon: MessageCircle, label: 'Messages' },
   { path: '/communities', icon: Users, label: 'Groups' },
   { path: '/profile', icon: User, label: 'Profile' },

@@ -8,7 +8,7 @@ import { MessagesScreen } from './pages/MessagesScreen';
 import { ChatScreen } from './pages/ChatScreen';
 import { ProfileScreen } from './pages/ProfileScreen';
 import { SettingsScreen } from './pages/SettingsScreen';
-import { LikesScreen } from './pages/LikesScreen';
+import { TeaSpillScreen } from './pages/TeaSpillScreen';
 import { CommunitiesScreen } from './pages/CommunitiesScreen';
 
 export const AppRouter: React.FC = () => {
@@ -27,7 +27,7 @@ export const AppRouter: React.FC = () => {
       <Route path="/chat/:matchId" element={<ChatScreen />} />
       <Route path="/profile" element={<ProfileScreen />} />
       <Route path="/settings" element={<SettingsScreen />} />
-      <Route path="/likes" element={<LikesScreen />} />
+      <Route path="/tea" element={<TeaSpillScreen />} />
       <Route path="/communities" element={<CommunitiesScreen />} />
       
       {/* Default redirect */}
