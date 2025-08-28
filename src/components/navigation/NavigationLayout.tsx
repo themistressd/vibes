@@ -2,11 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { 
-  MessageCircle, 
-  User, 
+import {
+  MessageCircle,
+  User,
   Users,
-  Star,
+  Coffee,
   Flame,
   Maximize2,
   Minimize2
@@ -192,7 +192,7 @@ const TopBarContent = styled.div`
 
 const navigationItems = [
   { path: '/home', icon: Flame, label: 'Discover' },
-  { path: '/tea', icon: Star, label: 'Tea' },
+  { path: '/tea', icon: Coffee, label: 'Tea' },
   { path: '/messages', icon: MessageCircle, label: 'Messages' },
   { path: '/communities', icon: Users, label: 'Groups' },
   { path: '/profile', icon: User, label: 'Profile' },
