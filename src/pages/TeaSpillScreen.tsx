@@ -5,7 +5,7 @@ import { useAppStore } from '../stores/appStore';
 import type { VibeType } from '../styles/themes/types';
 import { Button } from '../components/common/Button';
 import BingoRewardModal from '../components/modals/BingoRewardModal';
-import { TeaSpillFeed } from '../components/TeaSpillFeed';
+import { TeaSpillFeed } from '../components/teaSpill/TeaSpillFeed';
 
 const TeaSpillContainer = styled.div`
   padding: ${props => props.theme.common.spacing.lg};
