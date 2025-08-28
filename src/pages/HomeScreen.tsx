@@ -165,7 +165,7 @@ const MatchNotification = styled(motion.div)`
   text-align: center;
   z-index: 100;
   min-width: 280px;
-  max-width: 90vw;
+  max-width: calc(100% - 32px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -175,9 +175,6 @@ const MatchNotification = styled(motion.div)`
   @media (max-width: 350px) {
     min-width: 260px;
     padding: ${props => props.theme.common.spacing.md};
-  }
-  @media (max-width: 375px) {
-    max-width: calc(100% - 32px);
   }
 `;
 
