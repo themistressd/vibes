@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import {
   mockTeaPosts,
-  TeaSpillPost as TeaSpillPostType,
+  type TeaSpillPost as TeaSpillPostType,
 } from '../../data/socialData';
 import { TeaSpillPost } from './TeaSpillPost';
 import { TeaSpillComposer } from './TeaSpillComposer';

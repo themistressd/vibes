@@ -10,9 +10,9 @@ import { useNavigate } from 'react-router-dom';
 // Import custom metallic icons
 import rewindIcon from '../assets/rewind.png';
 import passIcon from '../assets/pass.png';
-import superlikeIcon from '../assets/superlike.png';
 import likeIcon from '../assets/like.png';
 import boostIcon from '../assets/boost.png';
+import { Coffee } from 'lucide-react';
 
 const HomeContainer = styled.div`
   padding: 16px 0 0 0; /* Minimal top padding, zero sides for edge-to-edge */
@@ -98,7 +98,7 @@ const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'supe
       transform: translateY(0) scale(0.92);
     }
   }
-  img {
+  img, svg {
     width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '38px' : '30px'};
     height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '38px' : '30px'};
     object-fit: contain;
@@ -112,7 +112,7 @@ const ActionButton = styled(motion.button)<{ $variant: 'rewind' | 'pass' | 'supe
     min-height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '80px' : '64px'};
     max-width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '80px' : '64px'};
     max-height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '80px' : '64px'};
-    img {
+    img, svg {
       width: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '40px' : '32px'};
       height: ${props => (props.$variant === 'pass' || props.$variant === 'like') ? '40px' : '32px'};
     }
@@ -375,7 +375,7 @@ export const HomeScreen: React.FC = () => {
           onClick={() => handleManualAction('boots')}
           title="Super Like!"
         >
-          <img src={superlikeIcon} alt="Super Like" />
+          <Coffee aria-label="Super Like" />
         </ActionButton>
         <ActionButton
           $variant="like"
