@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import type { TeaSpillPost as TeaSpillPostType } from '../../data/socialData';
 import { TeaSpillComments } from './TeaSpillComments';
+import { submitReport } from './moderationUtils';
 
 const PostCard = styled.div`
   background: ${props => props.theme.current.colors.surface};
@@ -43,11 +44,25 @@ const Meta = styled.span`
   color: ${props => props.theme.current.colors.textSecondary};
 `;
 
+const Reactions = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: ${props => props.theme.common.spacing.xs};
+  align-items: center;
+`;
+
 const ReactionButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
   color: ${props => props.theme.current.colors.primary};
+`;
+
+const ReportButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: ${props => props.theme.current.colors.textSecondary};
   align-self: flex-start;
 `;
 
@@ -55,8 +70,22 @@ interface TeaSpillPostProps {
   post: TeaSpillPostType;
 }
 
+const defaultReactions = ['👍', '😂', '🔥', '❤️'];
+
 export const TeaSpillPost: React.FC<TeaSpillPostProps> = ({ post }) => {
-  const [likes, setLikes] = useState(post.likes);
+  const [reactions, setReactions] = useState<Record<string, number>>({
+    '👍': post.likes,
+    ...(post.reactions || {}),
+  });
+
+  const addReaction = (key: string) => {
+    setReactions(prev => ({ ...prev, [key]: (prev[key] || 0) + 1 }));
+  };
+
+  const addGifReaction = () => {
+    const url = prompt('GIF URL');
+    if (url) addReaction(url);
+  };
 
   return (
     <PostCard>
@@ -65,9 +94,22 @@ export const TeaSpillPost: React.FC<TeaSpillPostProps> = ({ post }) => {
         <Author>{post.author}</Author>
       </Header>
       <Content>{post.content}</Content>
-      <ReactionButton onClick={() => setLikes(l => l + 1)}>
-        👍 {likes}
-      </ReactionButton>
+      <Reactions>
+        {defaultReactions.map(r => (
+          <ReactionButton key={r} onClick={() => addReaction(r)}>
+            {r} {reactions[r] || 0}
+          </ReactionButton>
+        ))}
+        <ReactionButton onClick={addGifReaction}>GIF</ReactionButton>
+        {Object.entries(reactions).map(([key, count]) => (
+          !defaultReactions.includes(key) && (
+            <ReactionButton key={key} onClick={() => addReaction(key)}>
+              <img src={key} alt="gif" width={20} height={20} /> {count}
+            </ReactionButton>
+          )
+        ))}
+      </Reactions>
+      <ReportButton onClick={() => submitReport(post)}>Report</ReportButton>
       <Meta>{post.timestamp.toLocaleString()}</Meta>
       <TeaSpillComments comments={post.comments} />
     </PostCard>
